@@ -1,0 +1,6 @@
+72310be8-7b58-4970-9c80-8c582970274b
+enabled
+enabled
+Result=success
+ExecMainStatus=0
+12288cb5b0d58a4a629b1e3b28c1d2516e163bb453b6afb8a1e5114950fca07e  /opt/hello-lab/hello_world

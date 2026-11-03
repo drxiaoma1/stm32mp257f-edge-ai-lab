@@ -1,0 +1,12 @@
+Runtime check on ARM64 Ubuntu VM, NOT the physical board.
+hello world!
+Name: mingkang ma
+Student ID: 523031910621
+Message: My first OpenSTLinux application
+
+Kernel: 6.8.0-142-generic
+Architecture: aarch64
+Boot ID: 0a18a810-5ac7-42a5-9631-4f9c47ac7c12
+Built: Oct 26 2026 09:10:45
+Program completed successfully.
+Exit status: 0

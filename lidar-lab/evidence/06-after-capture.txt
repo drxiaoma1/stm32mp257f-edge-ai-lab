@@ -1,0 +1,14 @@
+e9e76cf511785f3ae7622da26206255d4bf603ccb229c1ecd59cdb320e3e98a7  /home/root/c1-lab/bin/c1_capture
+f97544c0907c0d4285f0b03718116111d379b5434783780044bd9eeb4f51cf11  /home/root/c1-lab/bin/simple_grabber
+67a21f8275dac875c3f8a93a6fb996b3cd61bd321f6d371f8033c12997eb7340  /home/root/c1-lab/bin/ultra_simple
+8115fac8dd1bd24e044869cd86b6466a8515d68a7eb8a07ea4b75b59b00380f1  /home/root/c1-lab/data/c1-20261027-100scans.csv
+[   12.569913] rpmsg_i2c virtio0.rpmsg_i2c.-1.1025: new channel: 0x401 -> 0x401!
+[   21.186186] weston[1341]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[   21.198441] EDID block 0 is all zeroes
+[   32.196295] vddio3: disabling
+[   32.196375] vddio4: disabling
+[   32.196644] vdda18adc: disabling
+[   32.199960] v5v_vconn: disabling
+[   46.206006] EDID block 0 is all zeroes
+[   71.286426] EDID block 0 is all zeroes
+[   96.593656] EDID block 0 is all zeroes

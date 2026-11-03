@@ -1,0 +1,3 @@
+simple-egl exiting
+has EGL_EXT_buffer_age and EGL_EXT_swap_buffers_with_damage
+304 frames in 5 seconds: 60.799999 fps

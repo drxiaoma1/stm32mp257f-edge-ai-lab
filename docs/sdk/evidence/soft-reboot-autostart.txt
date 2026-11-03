@@ -1,0 +1,18 @@
+Linux stm32mp2-e3-ab-b8 6.6.78-gkc-sdk #1 SMP PREEMPT Sun Oct 25 21:23:42 CST 2026 aarch64 GNU/Linux
+Linux version 6.6.78-gkc-sdk (youart@lima-edge-ai) (aarch64-ostl-linux-gcc (GCC) 13.3.0, GNU ld (GNU Binutils) 2.42.0.20240723) #1 SMP PREEMPT Sun Oct 25 21:23:42 CST 2026
+e4e7fe32-e0d2-4ffa-a9f4-e7843e152215
+Result=success
+ExecMainStartTimestampMonotonic=10474155
+ExecMainStatus=0
+Starting Edge AI midterm hello world boot demonstration...
+hello world!
+Student: mingkang ma
+Student ID: 523031910621
+User space program: edge-ai midterm
+Running kernel: 6.6.78-gkc-sdk | Architecture: aarch64
+Boot ID: e4e7fe32-e0d2-4ffa-a9f4-e7843e152215
+Countdown: 3
+Countdown: 2
+Countdown: 1
+hello world completed successfully
+Finished Edge AI midterm hello world boot demonstration.

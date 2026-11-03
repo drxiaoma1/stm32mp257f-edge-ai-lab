@@ -1,0 +1,30 @@
+{
+  "boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d",
+  "kernel": "6.6.78-gkc-sdk",
+  "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360705312927925",
+  "phase": "complete",
+  "seconds": 10,
+  "hello_exit_status": 0,
+  "student_name": "mingkang ma",
+  "student_id": "523031910621",
+  "hello_uptime_s": 136.7,
+  "capture_pid": 2095,
+  "scanning_uptime_s": 144.01,
+  "capture_exit_status": 0,
+  "rendering_uptime_s": 155.84,
+  "capture": {
+    "frames": 76,
+    "valid_points": 29648,
+    "below_0_05m": 0,
+    "timed": true,
+    "requested_seconds": 10.0,
+    "scan_window_seconds": 10.001,
+    "samples": 38107,
+    "scan_rate_hz": 10.140903,
+    "first_record_s": 2.554755,
+    "last_record_s": 9.950546,
+    "stop_command_ok": true
+  },
+  "image": "/var/lib/c1-lab/runs/0b82dd8e-1736360705312927925/pointcloud.png",
+  "complete_uptime_s": 160.44
+}

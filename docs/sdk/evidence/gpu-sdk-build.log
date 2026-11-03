@@ -1,0 +1,47 @@
+make: Entering directory '/home/youart.guest/edge-ai-official/build/kernel'
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_device.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_linux.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_os.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_iommu.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_debug.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_debugfs.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_allocator.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dma.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_reserved_mem.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_driver.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/platform/st/gc_hal_kernel_platform_mp2.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_drm.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_drm_v2.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_ttm.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_bo.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_command.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_db.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_event.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_heap.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_mmu.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_video_memory.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_power.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/gc_hal_kernel_preemption.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_context.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_hardware.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_hardware_func.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_hardware_func_flop_reset.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_hardware_async_fe.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_hardware_mc_fe.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_hardware_waitlink_fe.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/kernel/arch/gc_hal_kernel_recorder.o
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/hal/os/linux/kernel/gc_hal_kernel_sync.o
+  LD [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/galcore.o
+  MODPOST /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/Module.symvers
+  CC [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/galcore.mod.o
+  LD [M]  /home/youart.guest/edge-ai-official/src/gcnano/gcnano-driver-stm32mp/galcore.ko
+make: Leaving directory '/home/youart.guest/edge-ai-official/build/kernel'
+make: Entering directory '/home/youart.guest/edge-ai-official/build/kernel'
+  INSTALL /home/youart.guest/edge-ai-official/build/kernel/install_artifact/lib/modules/6.6.78-gkc-sdk/updates/galcore.ko
+  STRIP   /home/youart.guest/edge-ai-official/build/kernel/install_artifact/lib/modules/6.6.78-gkc-sdk/updates/galcore.ko
+  DEPMOD  /home/youart.guest/edge-ai-official/build/kernel/install_artifact/lib/modules/6.6.78-gkc-sdk
+make: Leaving directory '/home/youart.guest/edge-ai-official/build/kernel'

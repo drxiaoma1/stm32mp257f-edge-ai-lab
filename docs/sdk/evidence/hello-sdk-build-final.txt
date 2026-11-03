@@ -1,0 +1,15 @@
+rm -f hello_world hello_world.o
+aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/youart.guest/edge-ai-official/SDK/sysroots/cortexa35-ostl-linux   -O2 -pipe -g -feliminate-unused-debug-types  -c hello_world.c -o hello_world.o
+aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/youart.guest/edge-ai-official/SDK/sysroots/cortexa35-ostl-linux -Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed  -o hello_world hello_world.o 
+install -d /home/youart.guest/edge-ai-official/hello_world/install_artifact/usr/local/bin
+install -m 0755 hello_world /home/youart.guest/edge-ai-official/hello_world/install_artifact/usr/local/bin/hello_world
+hello_world: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=1b5b33a87996afb0cc82908d479e00fa95d63dc9, for GNU/Linux 5.15.0, with debug_info, not stripped
+
+String dump of section '.comment':
+  [     0]  GCC: (GNU) 13.3.0
+
+d5d4b45be14773e969f5c1c5caa792dc4a2c99de648b94ab3bec78227bca46d9  hello_world
+
+Without SDK environment (expected rejection):
+Makefile:3: *** Load the OpenSTLinux SDK environment before running make.  Stop.
+Makefile correctly rejects an unset compiler environment.

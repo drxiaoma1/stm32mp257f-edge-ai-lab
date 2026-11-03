@@ -1,0 +1,1 @@
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="fcd91045e273ef11aa56d18c8fcc3fa0", SYMLINK+="c1lidar", GROUP="dialout", MODE="0660"

@@ -1,0 +1,125 @@
+Linux stm32mp2-e3-ab-b8 6.6.78-gkc-sdk #1 SMP PREEMPT Sun Oct 25 21:23:42 CST 2026 aarch64 GNU/Linux
+164.37 240.67
+0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d
+6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+Module                  Size  Used by
+ucsi_stm32g0           20480  0
+typec_ucsi             32768  1 ucsi_stm32g0
+typec                  90112  1 typec_ucsi
+rpmsg_ctrl             12288  0
+rpmsg_char             20480  1 rpmsg_ctrl
+virtio_rpmsg_bus       24576  0
+aes_neon_blk           24576  2
+algif_skcipher         12288  1
+hid_multitouch         28672  0
+usb_f_ncm              32768  2
+u_ether                32768  1 usb_f_ncm
+snd_soc_hdmi_codec     24576  1
+stm32_amdf             16384  4
+industrialio_buffer_cb    12288  1 stm32_amdf
+libcomposite           81920  11 u_ether,usb_f_ncm
+imx335                 28672  3
+pwm_stm32              16384  0
+adv7511                36864  0
+stm32_mdf_adc          36864  1 stm32_amdf
+industrialio_backend    24576  1 stm32_mdf_adc
+v4l2_cci               12288  1 imx335
+cec                    49152  1 adv7511
+stm32_timer_trigger    20480  1 stm32_mdf_adc
+stm32_lptimer_trigger    12288  1 stm32_mdf_adc
+stm32_mdf_serial       16384  1 stm32_mdf_adc
+brcmfmac_cyw           12288  0
+hci_uart              110592  0
+hantro_vpu            348160  0
+btqca                  24576  1 hci_uart
+stm32_dcmipp          122880  50
+brcmfmac              266240  1 brcmfmac_cyw
+v4l2_jpeg              12288  1 hantro_vpu
+btbcm                  24576  1 hci_uart
+stm32_csi              28672  3
+v4l2_vp9               24576  1 hantro_vpu
+snd_soc_audio_graph_card    16384  1
+brcmutil               16384  1 brcmfmac
+dwmac_stm32            24576  0
+v4l2_h264              16384  1 hantro_vpu
+v4l2_mem2mem           40960  1 hantro_vpu
+videobuf2_dma_contig    24576  2 hantro_vpu,stm32_dcmipp
+bluetooth             778240  26 btqca,hci_uart,btbcm
+stmmac_platform        24576  1 dwmac_stm32
+v4l2_fwnode            28672  3 imx335,stm32_csi,stm32_dcmipp
+crct10dif_ce           12288  1
+snd_soc_simple_card_utils    32768  1 snd_soc_audio_graph_card
+stmmac                245760  3 stmmac_platform,dwmac_stm32
+videobuf2_vmalloc      16384  1 stm32_dcmipp
+galcore               389120  5
+cfg80211              425984  1 brcmfmac
+v4l2_async             28672  4 v4l2_fwnode,imx335,stm32_csi,stm32_dcmipp
+videobuf2_memops       16384  2 videobuf2_vmalloc,videobuf2_dma_contig
+stm32_cryp             40960  1
+pcs_xpcs               24576  1 stmmac
+videobuf2_v4l2         32768  3 hantro_vpu,stm32_dcmipp,v4l2_mem2mem
+ecdh_generic           16384  1 bluetooth
+rtc_stm32              20480  1
+ecc                    36864  1 ecdh_generic
+mr75203                20480  0
+videodev              274432  40 v4l2_async,v4l2_fwnode,imx335,videobuf2_v4l2,hantro_vpu,stm32_csi,stm32_dcmipp,v4l2_mem2mem
+dw_mipi_dsi_stm        24576  0
+i2c_rpmsg              16384  0
+videobuf2_common       57344  7 videobuf2_vmalloc,videobuf2_dma_contig,videobuf2_v4l2,hantro_vpu,stm32_dcmipp,v4l2_mem2mem,videobuf2_memops
+crypto_engine          24576  1 stm32_cryp
+rfkill                 32768  4 bluetooth,cfg80211
+dw_mipi_dsi            24576  1 dw_mipi_dsi_stm
+mc                     73728  11 v4l2_async,videodev,imx335,videobuf2_v4l2,hantro_vpu,stm32_csi,videobuf2_common,stm32_dcmipp,v4l2_mem2mem
+libdes                 20480  1 stm32_cryp
+i2c_stm32f7_drv        36864  0
+stm32_mdf_core         24576  2 stm32_mdf_adc
+stm32_lptimer          12288  0
+stm32_timers           16384  1 pwm_stm32
+phy_stm32_combophy     20480  1
+i2c_smbus              20480  1 i2c_stm32f7_drv
+snd_soc_stm32_i2s      24576  2
+dwc3_stm32             12288  0
+usbh_stm32             12288  0
+stm32_crc32            16384  0
+stm32_rproc            32768  0
+phy_stm32_usb2phy      20480  2
+stm32_m0_rproc         16384  0
+irq_rpmsg              12288  0
+mailbox_client_cdev    16384  0
+display_connector      16384  0
+snd_soc_dmic           12288  2
+sch_fq_codel           16384  6
+cp210x                 36864  0
+usbserial              53248  1 cp210x
+nfnetlink              20480  1
+ip_tables              28672  0
+x_tables               45056  1 ip_tables
+ipv6                  577536  30
+/sys/bus/usb-serial/drivers/cp210x
+enabled
+[   11.425885] stm32mp2-e3-ab-b8 systemd[1]: Starting Personal Hello World at boot...
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: hello world!
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Name: Shuhan Ge
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Student ID: 523031910863
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Message: From SJTU with love
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Kernel: 6.6.78-gkc-sdk
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Architecture: aarch64
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Boot ID: 0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Built: Oct 27 2026 04:39:11
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Program completed successfully.
+[   11.632677] stm32mp2-e3-ab-b8 run-once.sh[809]: Exit status: 0
+[   12.006185] stm32mp2-e3-ab-b8 systemd[1]: Finished Personal Hello World at boot.
+[   20.701620] stm32mp2-e3-ab-b8 systemd[1]: Started Hello World then a 10-second C1 scan and point-cloud display.
+[   35.064091] stm32mp2-e3-ab-b8 start-demo.sh[1380]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500", "phase": "hello", "seconds": 10, "hello_exit_status": 0, "hello_uptime_s": 35.05}
+[   42.016096] stm32mp2-e3-ab-b8 start-demo.sh[1380]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500", "phase": "scanning", "seconds": 10, "hello_exit_status": 0, "hello_uptime_s": 35.05, "capture_pid": 1621, "scanning_uptime_s": 42.01}
+[   53.845259] stm32mp2-e3-ab-b8 start-demo.sh[1380]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500", "phase": "rendering", "seconds": 10, "hello_exit_status": 0, "hello_uptime_s": 35.05, "capture_pid": 1621, "scanning_uptime_s": 42.01, "capture_exit_status": 0, "rendering_uptime_s": 53.84}
+[   58.503730] stm32mp2-e3-ab-b8 start-demo.sh[1380]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500", "phase": "complete", "seconds": 10, "hello_exit_status": 0, "hello_uptime_s": 35.05, "capture_pid": 1621, "scanning_uptime_s": 42.01, "capture_exit_status": 0, "rendering_uptime_s": 53.84, "capture": {"frames": 75, "valid_points": 29262, "below_0_05m": 0, "timed": true, "requested_seconds": 10.0, "scan_window_seconds": 10.000723, "samples": 37752, "scan_rate_hz": 10.102033, "first_record_s": 2.58092, "last_record_s": 9.906178, "stop_command_ok": true}, "image": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500/pointcloud.png", "complete_uptime_s": 58.5}
+[  123.275409] stm32mp2-e3-ab-b8 systemd[1]: Stopping Hello World then a 10-second C1 scan and point-cloud display...
+[  123.458162] stm32mp2-e3-ab-b8 systemd[1]: c1-demo.service: Deactivated successfully.
+[  123.459008] stm32mp2-e3-ab-b8 systemd[1]: Stopped Hello World then a 10-second C1 scan and point-cloud display.
+[  123.459303] stm32mp2-e3-ab-b8 systemd[1]: c1-demo.service: Consumed 6.630s CPU time, 1.4M memory peak, 0B memory swap peak.
+[  123.482484] stm32mp2-e3-ab-b8 systemd[1]: Started Hello World then a 10-second C1 scan and point-cloud display.
+[  136.708626] stm32mp2-e3-ab-b8 start-demo.sh[1937]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360705312927925", "phase": "hello", "seconds": 10, "hello_exit_status": 0, "student_name": "mingkang ma", "student_id": "523031910621", "hello_uptime_s": 136.7}
+[  144.024114] stm32mp2-e3-ab-b8 start-demo.sh[1937]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360705312927925", "phase": "scanning", "seconds": 10, "hello_exit_status": 0, "student_name": "mingkang ma", "student_id": "523031910621", "hello_uptime_s": 136.7, "capture_pid": 2095, "scanning_uptime_s": 144.01}
+[  155.851884] stm32mp2-e3-ab-b8 start-demo.sh[1937]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360705312927925", "phase": "rendering", "seconds": 10, "hello_exit_status": 0, "student_name": "mingkang ma", "student_id": "523031910621", "hello_uptime_s": 136.7, "capture_pid": 2095, "scanning_uptime_s": 144.01, "capture_exit_status": 0, "rendering_uptime_s": 155.84}
+[  160.450692] stm32mp2-e3-ab-b8 start-demo.sh[1937]: C1_DEMO {"boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d", "kernel": "6.6.78-gkc-sdk", "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360705312927925", "phase": "complete", "seconds": 10, "hello_exit_status": 0, "student_name": "mingkang ma", "student_id": "523031910621", "hello_uptime_s": 136.7, "capture_pid": 2095, "scanning_uptime_s": 144.01, "capture_exit_status": 0, "rendering_uptime_s": 155.84, "capture": {"frames": 76, "valid_points": 29648, "below_0_05m": 0, "timed": true, "requested_seconds": 10.0, "scan_window_seconds": 10.001, "samples": 38107, "scan_rate_hz": 10.140903, "first_record_s": 2.554755, "last_record_s": 9.950546, "stop_command_ok": true}, "image": "/var/lib/c1-lab/runs/0b82dd8e-1736360705312927925/pointcloud.png", "complete_uptime_s": 160.44}

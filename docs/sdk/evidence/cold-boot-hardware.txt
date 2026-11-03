@@ -1,0 +1,32 @@
+6.6.78-gkc-sdk
+filename:       /lib/modules/6.6.78-gkc-sdk/updates/galcore.ko
+import_ns:      VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver
+license:        Dual MIT/GPL
+description:    Vivante Graphics Driver
+import_ns:      DMA_BUF
+alias:          of:N*T*Cvivante,gcC*
+alias:          of:N*T*Cvivante,gc
+depends:        
+name:           galcore
+vermagic:       6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+parm:           registerMemBase:Base of bus address of GC core AHB register (ulong)
+parm:           registerMemSize:Size of bus address range of GC core AHB register (ulong)
+Module                  Size  Used by
+ucsi_stm32g0           20480  0
+typec_ucsi             32768  1 ucsi_stm32g0
+typec                  90112  1 typec_ucsi
+rpmsg_ctrl             12288  0
+rpmsg_char             20480  1 rpmsg_ctrl
+virtio_rpmsg_bus       24576  0
+aes_neon_blk           24576  2
+algif_skcipher         12288  1
+hid_multitouch         28672  0
+stm32_amdf             16384  4
+industrialio_buffer_cb    12288  1 stm32_amdf
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.
+1024x600
+25f5a07388989dbaa3689915435c7c9b027cb10057c39b82ce76913551e00eeb  /boot/Image-6.6.78-gkc-sdk.gz
+d5d4b45be14773e969f5c1c5caa792dc4a2c99de648b94ab3bec78227bca46d9  /usr/local/bin/hello_world
+WESTON_USER=weston

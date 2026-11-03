@@ -1,0 +1,48 @@
+HOST: stm32mp2-e3-ab-b8
+KERNEL: 6.6.78-gkc-sdk
+ARCHITECTURE: aarch64
+BOOT_ID: e4e7fe32-e0d2-4ffa-a9f4-e7843e152215
+UPTIME: 34.92 31.50
+
+MANUAL PROGRAM RUN
+hello world!
+Student: mingkang ma
+Student ID: 523031910621
+User space program: edge-ai midterm
+Running kernel: 6.6.78-gkc-sdk | Architecture: aarch64
+Boot ID: e4e7fe32-e0d2-4ffa-a9f4-e7843e152215
+Countdown: 3
+Countdown: 2
+Countdown: 1
+hello world completed successfully
+PROGRAM_EXIT_STATUS: 0
+
+BOOT SERVICE CONFIGURATION AND RESULT
+enabled
+active
+Result=success
+ExecMainStartTimestampMonotonic=10474155
+ExecMainStatus=0
+
+CURRENT BOOT SERVICE JOURNAL
+Starting Edge AI midterm hello world boot demonstration...
+hello world!
+Student: mingkang ma
+Student ID: 523031910621
+User space program: edge-ai midterm
+Running kernel: 6.6.78-gkc-sdk | Architecture: aarch64
+Boot ID: e4e7fe32-e0d2-4ffa-a9f4-e7843e152215
+Countdown: 3
+Countdown: 2
+Countdown: 1
+hello world completed successfully
+Finished Edge AI midterm hello world boot demonstration.
+Running kernel: 6.6.78-gkc-sdk | Architecture: aarch64
+Student: mingkang ma
+Student ID: 523031910621
+
+DISPLAY SESSION
+active
+1024x600
+
+Verification completed successfully.

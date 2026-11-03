@@ -1,0 +1,13 @@
+[Unit]
+Description=Edge AI midterm hello world boot demonstration
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/hello_world
+RemainAfterExit=yes
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target

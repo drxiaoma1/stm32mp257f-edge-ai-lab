@@ -1,0 +1,39 @@
+FINAL STATE AFTER RESTORING SCREENSHOT CONFIGURATION
+WESTON_USER=weston
+    781 /usr/bin/seatd -u weston -g video
+   1558 weston-terminal --maximized --font-size=18 --shell=/opt/hello-lab/view-output.sh
+   1562 /usr/bin/weston --modules=systemd-notify.so --log=/home/weston/weston.log
+   1646 /bin/sh /opt/hello-lab/view-output.sh
+   1662 sh -c printf "FINAL STATE AFTER RESTORING SCREENSHOT CONFIGURATION\n"; cmp /etc/default/weston /home/root/hello-lab-screen-evidence/weston-default.before; cat /etc/default/weston; ps -eo pid,args | grep -E "[w]eston($| )|[w]eston-terminal|[v]iew-output"; systemctl is-enabled hello-lab hello-lab-screen; systemctl status hello-lab-screen --no-pager; systemctl show hello-lab -p Result -p ExecMainStatus; cat /proc/sys/kernel/random/boot_id; cat /run/hello-lab/output.txt
+enabled
+enabled
+* hello-lab-screen.service - Show personal Hello World on the HDMI screen
+     Loaded: loaded (/etc/systemd/system/hello-lab-screen.service; enabled; preset: disabled)
+     Active: active (running) since Sat 2000-01-01 00:01:43 UTC; 22s ago
+   Main PID: 1558 (weston-terminal)
+      Tasks: 3 (limit: 4364)
+     Memory: 7.4M (peak: 7.6M)
+        CPU: 213ms
+     CGroup: /system.slice/hello-lab-screen.service
+             |-1558 weston-terminal --maximized --font-size=18 --shell=/opt/hello-lab/view-output.sh
+             `-1646 /bin/sh /opt/hello-lab/view-output.sh
+
+Jan 01 00:01:43 stm32mp2-e3-ab-b8 systemd[1]: Started Show personal Hello World on the HDMI screen.
+Jan 01 00:01:55 stm32mp2-e3-ab-b8 open-screen.sh[1558]: could not load cursor 'dnd-move'
+Jan 01 00:01:55 stm32mp2-e3-ab-b8 open-screen.sh[1558]: could not load cursor 'dnd-copy'
+Jan 01 00:01:55 stm32mp2-e3-ab-b8 open-screen.sh[1558]: could not load cursor 'dnd-none'
+Result=success
+ExecMainStatus=0
+645c9911-4c1d-47e4-9780-0c7ceec0aa8a
+hello world!
+Name: mingkang ma
+Student ID: 523031910621
+Message: My first OpenSTLinux application
+
+Kernel: 6.6.78-gkc-sdk
+Architecture: aarch64
+Boot ID: 645c9911-4c1d-47e4-9780-0c7ceec0aa8a
+Built: Oct 26 2026 09:43:55
+Program completed successfully.
+
+Exit status: 0

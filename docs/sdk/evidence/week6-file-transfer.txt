@@ -1,0 +1,8 @@
+6.6.78-gkc-midterm
+WEEK6 SCP round-trip demonstration
+Student: mingkang ma
+Student ID: 523031910621
+5ee083707ac80956d4f084bb78beca03d86b21ad12a03b43aa7338224f4c6c9b  /home/root/week6-transfer.txt
+49837de2496a3863ef0fcc79688a84088ea6d31a06ee66f5625eba2f1264fa85  /home/root/week6-test-pattern.png
+5ee083707ac80956d4f084bb78beca03d86b21ad12a03b43aa7338224f4c6c9b  assets/week6-transfer.txt
+5ee083707ac80956d4f084bb78beca03d86b21ad12a03b43aa7338224f4c6c9b  evidence/sdk-method/week6-returned.txt

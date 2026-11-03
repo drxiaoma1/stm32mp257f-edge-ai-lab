@@ -1,0 +1,789 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>mingkang ma · STM32MP257F-DK 实验全流程</title><style>
+:root{--ink:#172b42;--muted:#5b6f82;--accent:#007d6b;--line:#dbe5eb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f3f6f8;color:var(--ink);font:16px/1.85 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}a{color:#006e90;text-underline-offset:3px}a:hover{color:var(--accent)}.top{background:#123047;color:white;padding:35px max(28px,calc((100vw - 1360px)/2));border-bottom:5px solid #4cc9ad}.eyebrow{font-size:12px;letter-spacing:2px;color:#96dccc}.top h1{font-size:32px;line-height:1.35;margin:8px 0 14px}.top p{margin:0;color:#d7e5ee}.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.badges span{padding:5px 13px;border:1px solid #63877f;border-radius:5px;background:#1b4b50;font-size:14px}.layout{max-width:1420px;margin:auto;display:grid;grid-template-columns:270px minmax(0,1fr);gap:30px;padding:32px 28px}aside{position:sticky;top:24px;max-height:calc(100vh - 48px);overflow:auto;align-self:start;font-size:13px;line-height:1.7;padding-right:10px}aside .label{font-weight:700;font-size:14px;display:block;margin:0 0 12px}aside ul{list-style:none;padding:0;margin:0}aside li{padding:3px 0}aside ul ul{padding-left:12px;border-left:1px solid var(--line);margin:4px 0}aside a{text-decoration:none;color:#41596f}.links{border-top:1px solid var(--line);margin-top:18px;padding-top:14px;display:grid;gap:8px}article{background:white;padding:36px 44px 64px;border:1px solid var(--line);border-radius:8px;min-width:0}article>h1{font-size:27px;line-height:1.45;margin-top:0}h2{font-size:24px;line-height:1.5;padding-top:28px;margin-top:36px;border-top:1px solid var(--line);scroll-margin-top:20px}h3{font-size:19px;scroll-margin-top:20px}p{margin:16px 0}strong{color:#123e54}table{width:100%;border-collapse:collapse;font-size:14px;margin:22px 0}th{background:#eaf4f2;text-align:left}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:top}tbody tr:nth-child(even){background:#f8fafb}pre{background:#102336;color:#e9f2f9;padding:20px 22px;border-radius:6px;overflow-x:auto;position:relative;line-height:1.65;font-size:13px;tab-size:4}code{font-family:Menlo,Consolas,monospace}pre code{white-space:pre}article img{max-width:100%;height:auto;border:1px solid #c9d8e1;border-radius:5px;display:block;margin:28px auto 12px}li{margin:6px 0}.copy{display:block;margin:0 0 10px auto;border:1px solid #668392;background:#1c3b50;color:white;border-radius:3px;font-size:12px;padding:4px 10px;cursor:pointer}.copy:hover{background:#29556b}footer{color:var(--muted);font-size:13px;margin:36px 0 0;border-top:1px solid var(--line);padding-top:18px}button.print{border:1px solid #86acae;color:white;background:transparent;padding:6px 13px;border-radius:4px;cursor:pointer;margin-top:15px}
+@media(max-width:960px){.layout{display:block;padding:20px 12px}aside{position:static;max-height:none;padding:0 16px 24px}aside .toc{max-height:200px;overflow:auto}article{padding:22px}.top{padding:26px 24px}.top h1{font-size:27px}table{display:block;overflow:auto}pre{font-size:12px}}
+@media print{body{background:white;font-size:10pt}aside,.top,.copy{display:none!important}.layout{display:block;padding:0}article{border:0;padding:0}h2{break-before:auto}pre{white-space:pre-wrap;overflow:visible;background:#f2f4f6;color:black;border:1px solid #ccc;font-size:8pt}pre code{white-space:pre-wrap;overflow-wrap:anywhere}table{font-size:9pt}img,tr,pre{break-inside:avoid}a{color:inherit}article img{max-height:210mm;object-fit:contain}}
+</style></head><body><header class="top"><div class="eyebrow">EDGE AI LAB · STM32MP257F-DK</div><h1>从 Linux 编译到板卡上电自启</h1><p>mingkang ma · 523031910621 · 2026-10-25</p><div class="badges"><span>✓ 官方 OpenSTLinux SDK</span><span>✓ WEEK6 实操</span><span>✓ 中期三项验收通过</span></div><button class="print" onclick="window.print()">打印 / 保存为 PDF</button></header><div class="layout"><aside><span class="label">SDK 实验流程 · macOS / Windows</span><div class="toc">
+<ul>
+<li><a href="#1">1. 实验目标、版本与验收</a></li>
+<li><a href="#2">2. 板卡、屏幕和接线</a></li>
+<li><a href="#3">3. 三个执行位置</a></li>
+<li><a href="#4-week5">4. WEEK5：检查已有系统</a></li>
+<li><a href="#5-ubuntu">5. 创建 Ubuntu 构建环境：宿主差异</a><ul>
+<li><a href="#51-macosapple-lima">5.1 macOS：Apple 芯片 + Lima（本次实测）</a></li>
+<li><a href="#52-windowsintelamd-ubuntu">5.2 Windows：Intel/AMD + Ubuntu 虚拟机（复现指南）</a></li>
+<li><a href="#53-ubuntu">5.3 以下 Ubuntu 步骤两种宿主共用</a></li>
+</ul>
+</li>
+<li><a href="#6-sdk">6. 下载、安装并初始化官方 SDK</a></li>
+<li><a href="#7-week7">7. 按 WEEK7 准备源码</a><ul>
+<li><a href="#71-st">7.1 本次路径：ST 官方源码标签／提交</a></li>
+<li><a href="#72-bsp">7.2 若使用成功下载的官方 BSP 包</a></li>
+</ul>
+</li>
+<li><a href="#8">8. 配置与编译内核、模块和设备树</a><ul>
+<li><a href="#81-gcnano">8.1 重编译 gcnano 图形模块</a></li>
+</ul>
+</li>
+<li><a href="#9-hello-world-makefile">9. Hello World 源码与 Makefile</a></li>
+<li><a href="#10-usb-ssh">10. 串口、USB 网络、SSH：宿主差异</a><ul>
+<li><a href="#101-macos">10.1 macOS</a></li>
+<li><a href="#102-windows">10.2 Windows</a></li>
+<li><a href="#103">10.3 登录后的共用检查</a></li>
+</ul>
+</li>
+<li><a href="#11">11. 打包、部署与重启</a><ul>
+<li><a href="#111">11.1 理解课件的手动部署步骤</a></li>
+</ul>
+</li>
+<li><a href="#12">12. 设置上电自动运行与三项验证</a><ul>
+<li><a href="#121">12.1 先验证软件重启</a></li>
+<li><a href="#122">12.2 再验证真实断电上电</a></li>
+</ul>
+</li>
+<li><a href="#13-week6">13. WEEK6：手动复现终端控制与图形演示</a><ul>
+<li><a href="#131">13.1 远程终端与文件往返</a></li>
+<li><a href="#132-weston">13.2 停止、启动和重启 Weston 桌面</a></li>
+<li><a href="#133-weston-image">13.3 用 weston-image 显示图片</a></li>
+<li><a href="#134-gpu">13.4 GPU 三角形与图形终端</a></li>
+<li><a href="#135">13.5 视频及键盘控制</a></li>
+<li><a href="#136">13.6 截图并传回主机</a></li>
+</ul>
+</li>
+<li><a href="#14">14. 验收展示顺序与证据位置</a></li>
+<li><a href="#15">15. 常见问题与回退</a></li>
+<li><a href="#16">16. 参考与复现边界</a></li>
+</ul>
+</div>
+<div class="links"><a href="实验全流程.md">可编辑 Markdown 手册</a><a href="evidence/证据索引.md">原始证据索引</a><a href="evidence/sdk-environment.txt">官方 SDK 环境记录</a></div></aside><article><h1 id="stm32mp257f-dk-openstlinux-sdk">STM32MP257F-DK 实验全流程：OpenSTLinux SDK 方法</h1>
+<p><strong>mingkang ma · 523031910621</strong><br />
+构建主机：macOS + Ubuntu 24.04 ARM64；同时提供 Windows + Ubuntu x86_64 的复现步骤。</p>
+<p>这份手册面向手动操作。每段命令标注执行位置；Linux 与板卡步骤共用，仅在宿主系统不同的地方分开说明。源码、Makefile、部署程序和真实输出随手册提供。Windows 步骤根据官方说明编写，尚未在组员 Windows 电脑上完整实测。</p>
+<h2 id="1">1. 实验目标、版本与验收</h2>
+<p>本次按 WEEK7 的 SDK 初始化、源码准备、ST 配置片段、内核与模块编译、网络部署、用户程序交叉编译流程实施。WEEK6 补充终端、传输、图像、GPU 和视频控制。WEEK8 激光雷达因暂无设备不实施。</p>
+<p><strong>本版验收：官方 SDK 构建的内核、Makefile 与 Hello World、真实断电上电后的自动运行，三项均已通过。</strong> 用户完成物理断电再上电后，先读取本次启动日志，确认服务在开机约 11.42 秒自动执行。</p>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>必须看到的结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自己配置与编译的 Linux 内核</td>
+<td>板上 <code>uname -r</code> 为 <code>6.6.78-gkc-sdk</code>，<code>/proc/version</code> 含 SDK GCC 13.3.0；运行配置与构建配置一致</td>
+</tr>
+<tr>
+<td>Hello World 和 Makefile</td>
+<td>实际编译命令使用 <code>aarch64-ostl-linux-gcc</code> 和 SDK sysroot；ELF 为 AArch64；在板上输出姓名学号、退出 0</td>
+</tr>
+<tr>
+<td>上电自动运行</td>
+<td>实际断电再上电后，当前 Boot ID 的服务日志已有完整输出，服务成功且退出 0；不能以手动启动服务代替</td>
+</tr>
+</tbody>
+</table>
+<p>旧的 <code>6.6.78-gkc-midterm</code> 是 Ubuntu GNU 工具链的历史结果，保留作回退。验收 SDK 流程时，应展示本版 <code>6.6.78-gkc-sdk</code> 的证据。</p>
+<p>课件页码在本文均指 <strong>PDF 的物理页码</strong>，不是页内印刷编号：WEEK7 第 38–44 页是内核步骤，第 66 页起为用户程序；第 41 页明确允许从 ST 官方 GitHub 获取源码。</p>
+<h2 id="2">2. 板卡、屏幕和接线</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>实际确认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开发板</td>
+<td>STM32MP257F-DK，MB1605；STM32MP257FAK3</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>双 Cortex-A35 + Cortex-M33；运行 Linux 的架构为 AArch64</td>
+</tr>
+<tr>
+<td>系统</td>
+<td>OpenSTLinux Weston v25.06.11，Yocto Scarthgap，版本字符串 <code>5.0.8-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11</code></td>
+</tr>
+<tr>
+<td>对应 Developer Package</td>
+<td>STM32MP2Dev <strong>6.1.0</strong>；原厂内核 6.6.78</td>
+</tr>
+<tr>
+<td>屏幕</td>
+<td>HDMI，实测 1024×600；完整产品型号尚待屏幕背面标签确认</td>
+</tr>
+<tr>
+<td>触摸</td>
+<td>WaveShare WS170120，USB VID:PID <code>0eef:0005</code>，用户已确认触摸正常</td>
+</tr>
+</tbody>
+</table>
+<p>课件中存在 Cortex-A7/M4、LVDS 和其他版本示例；它们不能直接覆盖这块实物的确认结果。USB 名称 WS170120 也不等于完整屏幕型号。</p>
+<table>
+<thead>
+<tr>
+<th>接线</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CN21 Power/ST-LINK → 宿主电脑或合适的供电设备</td>
+<td>供电；连电脑时还提供串口</td>
+</tr>
+<tr>
+<td>CN15 USB OTG → 宿主电脑，使用数据线</td>
+<td>USB 网络；主机 192.168.7.80，板卡 192.168.7.1</td>
+</tr>
+<tr>
+<td>CN1 HDMI → 屏幕</td>
+<td>视频</td>
+</tr>
+<tr>
+<td>屏幕 USB 触摸线 → 板卡 USB-A 主机接口</td>
+<td>触摸；屏幕供电按该屏幕标签接好</td>
+</tr>
+</tbody>
+</table>
+<p>本次不使用 CN2 LVDS。屏幕仅接 HDMI 通常不足以同时满足供电与触摸需求；不要将触摸线插到仅供电的端口。</p>
+<h2 id="3">3. 三个执行位置</h2>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>打开的终端</th>
+<th>如何区分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>宿主—macOS</td>
+<td>Mac“终端”</td>
+<td><code>uname -s</code> 是 Darwin</td>
+</tr>
+<tr>
+<td>宿主—Windows</td>
+<td>PowerShell</td>
+<td>用于串口、SSH、SCP、宿主文件</td>
+</tr>
+<tr>
+<td>Linux VM</td>
+<td>Ubuntu 虚拟机中的终端</td>
+<td>SDK、源码和编译都在这里；内核名通常含 generic</td>
+</tr>
+<tr>
+<td>板卡</td>
+<td>SSH 或 ST-LINK 串口登录 root 后</td>
+<td>主机名类似 stm32mp2-…；验收内核应为 6.6.78-gkc-sdk</td>
+</tr>
+</tbody>
+</table>
+<p>两台 ARM64 机器能够运行同一个简单 ELF，并不说明程序已在板上通过。验收必须在板卡终端进行。</p>
+<h2 id="4-week5">4. WEEK5：检查已有系统</h2>
+<p>本板已经由用户刷入 Starter 镜像，本次不重刷整张 SD 卡。新内核通过网络部署，保留原厂启动入口、旧内核与现有引导链。</p>
+<p><strong>板卡：</strong></p>
+<pre><code class="language-sh">uname -a
+cat /etc/os-release
+cat /proc/device-tree/model
+cat /proc/cmdline
+df -h / /boot
+</code></pre>
+<p>确认 v25.06.11 / 6.6.78 基线，再选配套 SDK 6.1.0。课件文件名里的 v26.02.18 是另一套示例；若组员板上是新版，应让 Starter、SDK、BSP 三者配套，不能只替换其中一个版本。</p>
+<p>空卡刷机仍按 WEEK5 的对应 FlashLayout 和 STM32CubeProgrammer 指导执行；当前已完成实验的卡无需重复。本文的部署程序只接受已核对的 6.6.78 基线，不能用于任意型号或发行版。</p>
+<h2 id="5-ubuntu">5. 创建 Ubuntu 构建环境：宿主差异</h2>
+<h3 id="51-macosapple-lima">5.1 macOS：Apple 芯片 + Lima（本次实测）</h3>
+<p>把项目文件夹放到 <code>~/Desktop/gkc</code>。本次工作目录已包含 <code>tools/lima</code>；分享资料包不捆绑虚拟机软件，新电脑先创建 <code>tools/lima</code> 目录，从 <a href="https://github.com/lima-vm/lima/releases/tag/v2.2.1">Lima 2.2.1 官方发布页</a> 下载 Darwin ARM64 包并核对发布方校验值，解压到该目录，使 <code>tools/lima/bin/limactl</code> 存在。Intel Mac 应使用对应宿主架构和 x86_64 Ubuntu，不能照搬这里的 ARM64 参数。</p>
+<p><strong>宿主—macOS，仅新建虚拟机执行一次：</strong></p>
+<pre><code class="language-sh">cd &quot;$HOME/Desktop/gkc&quot;
+tools/lima/bin/limactl start --name=edge-ai \
+  --vm-type=vz --arch=aarch64 --cpus=6 --memory=6 --disk=60 \
+  --containerd=none --mount-only=&quot;$PWD:w&quot; \
+  --tty=false template:ubuntu-24.04
+</code></pre>
+<p>已存在时启动并进入：</p>
+<pre><code class="language-sh">cd &quot;$HOME/Desktop/gkc&quot;
+tools/lima/bin/limactl start edge-ai
+tools/lima/bin/limactl shell edge-ai
+</code></pre>
+<p><strong>Linux VM：</strong> 设置共享目录变量为实际 Mac 项目路径。本次如下；其他组员替换用户名。</p>
+<pre><code class="language-sh">export PROJECT=/Users/youart/Desktop/gkc
+ls &quot;$PROJECT/scripts&quot;
+uname -m
+</code></pre>
+<p>应看到 <code>aarch64</code>。源码、SDK 与编译输出放在虚拟机自己的 Linux 文件系统；共享目录只收发压缩包、脚本和成果。</p>
+<h3 id="52-windowsintelamd-ubuntu">5.2 Windows：Intel/AMD + Ubuntu 虚拟机（复现指南）</h3>
+<p>推荐安装 Ubuntu 24.04 LTS x86_64 虚拟机。ST 推荐近期 Ubuntu LTS，并给出 Windows 虚拟机方案；<a href="https://wiki.st.com/stm32mpu/wiki/PC_prerequisites">ST 主机要求</a>。Windows 原生 PowerShell 不能执行 Linux SDK 安装器。</p>
+<ol>
+<li>安装 <a href="https://www.virtualbox.org/">VirtualBox</a> 或已有的虚拟机软件；下载 <a href="https://releases.ubuntu.com/24.04/">Ubuntu 24.04 AMD64 镜像</a>。</li>
+<li>新建 Ubuntu 虚拟机，建议 4–6 核、6–8 GiB 内存、60 GiB 以上磁盘，使用 NAT 联网；在虚拟机磁盘中安装 Ubuntu。</li>
+<li>以 VirtualBox 为例，安装与宿主版本配套的 Guest Additions。先在 Ubuntu 执行 <code>sudo apt-get install build-essential dkms linux-headers-$(uname -r)</code>，从虚拟机“设备”菜单插入增强功能光盘，运行其 <code>VBoxLinuxAdditions.run</code>，重启。</li>
+<li>将 Windows 项目放在 <code>C:\gkc</code>，在虚拟机共享文件夹设置中添加该目录，名称 <code>gkc</code>，勾选自动挂载与固定分配。在 Ubuntu 将自己加入 <code>vboxsf</code> 组后注销再登录。</li>
+</ol>
+<p><strong>Linux VM：</strong></p>
+<pre><code class="language-sh">sudo usermod -aG vboxsf &quot;$USER&quot;
+# 注销 Ubuntu 登录会话并重新登录后：
+export PROJECT=/media/sf_gkc
+ls &quot;$PROJECT/scripts&quot;
+uname -m
+</code></pre>
+<p>应看到 <code>x86_64</code>。共享文件夹的细节见 <a href="https://docs.oracle.com/en/virtualization/virtualbox/7.0/user/guestadditions.html">VirtualBox Guest Additions 官方说明</a>。没有共享目录时，也可在 Ubuntu 内下载 SDK 和源码，最后通过自己配置的文件传输方式导出成果。</p>
+<p>本方案中 <strong>Windows 直接连接板卡的 CN15 与串口</strong>，虚拟机只编译；无需让 Ubuntu 抢占这些 USB 设备。后面从共享目录把成品交给 Windows，再由 PowerShell SCP 到板卡。WSL2 可另作选择，但不作为本文已验证的主路径。</p>
+<h3 id="53-ubuntu">5.3 以下 Ubuntu 步骤两种宿主共用</h3>
+<p><strong>Linux VM：</strong></p>
+<pre><code class="language-sh">sudo apt-get update
+sudo apt-get install -y \
+  build-essential bc bison flex libssl-dev libelf-dev libncurses-dev \
+  libyaml-dev u-boot-tools dwarves device-tree-compiler kmod \
+  gawk diffstat chrpath socat texinfo python3 python3-pip python3-pexpect \
+  git rsync cpio file wget curl xz-utils unzip minicom
+mkdir -p &quot;$HOME/edge-ai-official&quot;/{downloads,src,build}
+export LAB=&quot;$HOME/edge-ai-official&quot;
+</code></pre>
+<p>不要把 SDK、Linux 源码与构建目录放进 Windows NTFS／Mac 默认不区分大小写的共享目录。安装宿主依赖与使用 SDK 是两件事；<code>apt install gcc-aarch64-linux-gnu</code> 不能代替 SDK。</p>
+<h2 id="6-sdk">6. 下载、安装并初始化官方 SDK</h2>
+<p>打开 <a href="https://www.st.com/en/embedded-software/stm32mp2dev.html#get-software">STM32MP2 Developer Package</a>，选择 <strong>6.1.0</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>Linux 构建主机</th>
+<th>下载行</th>
+<th>目标板</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apple 芯片 Mac 的 ARM64 Ubuntu</td>
+<td>MP2-DEV-Arm</td>
+<td>AArch64 Cortex-A35</td>
+</tr>
+<tr>
+<td>常见 Intel/AMD Windows 的 x86_64 Ubuntu</td>
+<td>MP2-DEV-x86</td>
+<td>AArch64 Cortex-A35</td>
+</tr>
+</tbody>
+</table>
+<p>两种包的差别是“编译器本身在哪种 Linux 主机运行”，不是把板卡改成 x86。阅读并接受自己同意的许可，经账号或邮件验证下载。邮件地址和一次性下载令牌不写进共享手册或脚本。</p>
+<p>本次实际 ARM64 包为：</p>
+<pre><code class="language-text">SDK-aarch64-stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11.tar.gz
+</code></pre>
+<p>把自己的包放入项目 <code>downloads</code>。<strong>Linux VM：</strong></p>
+<pre><code class="language-sh">export LAB=&quot;$HOME/edge-ai-official&quot;
+# 先 ls 确认只有本次所选架构和版本的包；若浏览器加了 en. 前缀，按实际文件名修改。
+ls &quot;$PROJECT&quot;/downloads/*SDK*stm32mp2*v25.06.11*.tar.gz
+cp &quot;$PROJECT&quot;/downloads/*SDK*stm32mp2*v25.06.11*.tar.gz &quot;$LAB/downloads/&quot;
+tar -xf &quot;$LAB&quot;/downloads/*SDK*stm32mp2*v25.06.11*.tar.gz -C &quot;$LAB/downloads&quot;
+find &quot;$LAB/downloads&quot; -name '*toolchain*.sh'
+</code></pre>
+<p>确认安装器唯一，运行它。下面会安装到 <code>$LAB/SDK</code>；不需要 root：</p>
+<pre><code class="language-sh">INSTALLER=$(find &quot;$LAB/downloads&quot; -type f -name '*toolchain*.sh')
+printf '%s\n' &quot;$INSTALLER&quot;
+bash &quot;$INSTALLER&quot; -y -d &quot;$LAB/SDK&quot;
+source &quot;$LAB/SDK/environment-setup-cortexa35-ostl-linux&quot;
+printf 'CC=%s\nCROSS_COMPILE=%s\nSYSROOT=%s\n' \
+  &quot;$CC&quot; &quot;$CROSS_COMPILE&quot; &quot;$SDKTARGETSYSROOT&quot;
+$CC --version
+</code></pre>
+<p>本次实际结果：</p>
+<pre><code class="language-text">SDK has been successfully set up and is ready to be used.
+CROSS_COMPILE=aarch64-ostl-linux-
+aarch64-ostl-linux-gcc (GCC) 13.3.0
+</code></pre>
+<p><code>CC</code> 还应包含 <code>-mcpu=cortex-a35+crc</code> 与 SDK 中 <code>sysroots/cortexa35-ostl-linux</code> 的 <code>--sysroot</code> 参数。环境只对当前 shell 生效；每次新开编译终端都重新 <code>source</code>。本包没有要求使用一个不存在的裸 <code>environment-setup</code> 文件，使用安装器实际提示的完整文件名。</p>
+<p><img alt="官方 SDK 环境实际输出的排版图" src="images/sdk-environment.png" /></p>
+<p>上图由原始日志排版生成，不是终端截图。</p>
+<p>原始记录：<a href="evidence/sdk-install.log">安装日志</a>、<a href="evidence/sdk-environment.txt">环境与版本</a>、<a href="evidence/sdk-archive.sha256">下载包 SHA-256</a>。</p>
+<h2 id="7-week7">7. 按 WEEK7 准备源码</h2>
+<p>课件提供三种源码管理方法：官方 BSP 压缩包解压后打补丁、ST 官方 GitHub 已打补丁源码、社区内核加 ST 补丁。它们是可选路径，不能对已包含 ST 补丁的源码再次打同一补丁。</p>
+<p>本次构建采用 WEEK7 第 41 页的 <strong>ST 官方 GitHub 路径</strong>，版本与板上 v25.06.11 匹配。官方 SDK 已实际安装并用于内核和用户程序编译，对应内核发行配方明确指定 6.6.78、ST r2。</p>
+<p>老师提供的 <strong>FLASH 包可以使用</strong>：它用于 WEEK5 刷入现成系统，也可留作恢复。FLASH 中的成品内核不能替代 WEEK7 要求的源码编译。三类文件作用如下；本次 GitHub 源码路径已完整实施，不必再等待 SOURCES 包。</p>
+<table>
+<thead>
+<tr>
+<th>文件／来源</th>
+<th>内容和用途</th>
+<th>本次使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FLASH / Starter</td>
+<td>预编译系统、引导固件、文件系统与 FlashLayout，用于刷机</td>
+<td>用户此前已刷机；新下载包可用于恢复</td>
+</tr>
+<tr>
+<td>SDK / MP2-DEV-Arm 或 MP2-DEV-x86</td>
+<td>Linux 主机上的交叉工具链与目标 sysroot</td>
+<td>已安装并实际编译</td>
+</tr>
+<tr>
+<td>SOURCES / MP2-DEV-SRC，或课件列出的 ST GitHub</td>
+<td>内核、补丁、配置及相关源码</td>
+<td>使用配套 ST GitHub 标签／提交；SOURCES 邮件下载曾返回 403</td>
+</tr>
+</tbody>
+</table>
+<h3 id="71-st">7.1 本次路径：ST 官方源码标签／提交</h3>
+<p><strong>Linux VM：</strong> 如果沿用项目内已经下载、核验的包，直接解压；从头复现则先运行这四条下载命令。</p>
+<pre><code class="language-sh">mkdir -p &quot;$PROJECT/downloads&quot;
+cd &quot;$PROJECT/downloads&quot;
+curl -fL https://api.github.com/repos/STMicroelectronics/linux/tarball/v6.6-stm32mp-r2 \
+  -o linux-v6.6-stm32mp-r2.tar.gz
+curl -fL https://api.github.com/repos/STMicroelectronics/meta-st-stm32mp/tarball/openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11 \
+  -o meta-st-stm32mp-v25.06.11.tar.gz
+curl -fL https://api.github.com/repos/STMicroelectronics/dt-stm32mp/tarball/ea2e971efac93f4644ceede7b997081ed49780ad \
+  -o dt-stm32mp-v6-r2.tar.gz
+curl -fL https://api.github.com/repos/STMicroelectronics/gcnano-binaries/tarball/7c181cacf89f918039e64934fdc33fe817a052cd \
+  -o gcnano-v6.4.21-r1.tar.gz
+sha256sum *.tar.gz
+</code></pre>
+<p>下载的是官方 GitHub 源码快照，Git 历史管理可选。若需要 Git，课件对应命令为 <code>git clone</code> 后 checkout <code>v6.6-stm32mp-r2</code>。本文的构建不依赖 <code>.git</code>。</p>
+<pre><code class="language-sh">export LAB=&quot;$HOME/edge-ai-official&quot;
+mkdir -p &quot;$LAB/src&quot;/{linux,meta-st,external-dt,gcnano}
+tar -xf &quot;$PROJECT/downloads/linux-v6.6-stm32mp-r2.tar.gz&quot; \
+  -C &quot;$LAB/src/linux&quot; --strip-components=1
+tar -xf &quot;$PROJECT/downloads/meta-st-stm32mp-v25.06.11.tar.gz&quot; \
+  -C &quot;$LAB/src/meta-st&quot; --strip-components=1
+tar -xf &quot;$PROJECT/downloads/dt-stm32mp-v6-r2.tar.gz&quot; \
+  -C &quot;$LAB/src/external-dt&quot; --strip-components=1
+tar -xf &quot;$PROJECT/downloads/gcnano-v6.4.21-r1.tar.gz&quot; \
+  -C &quot;$LAB/src/gcnano&quot; --strip-components=1
+</code></pre>
+<p>上面只在空目录第一次执行。该版本外部设备树路径为 <code>src/external-dt/stm32mp2/a35-td/linux</code>；gcnano 模块源码在 <code>src/gcnano/gcnano-driver-stm32mp</code>。</p>
+<h3 id="72-bsp">7.2 若使用成功下载的官方 BSP 包</h3>
+<p>解压 <code>SOURCES-stm32mp-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11.tar.gz</code>，打开其中 <code>linux-stm32mp-6.6.78-…/README.HOW_TO.txt.stm32mp2</code>、external-dt 与 gcnano 的同名说明。按 README 解压原始内核并依次应用 <code>series</code>／<code>*.patch</code>，再应用 <code>fragment*.config</code>。这条路径不要再套用 7.1 的已打补丁源码。</p>
+<p>第三份 PDF 展示了较新版的目录名和 <code>stm32mp2-m33td</code>，本板是 A35-TD；选择 <code>stm32mp2</code> 说明。内核实际用到外部设备树；本次不重新制作 TF-A、OP-TEE、U-Boot、DDR 固件或整套 Starter 镜像。</p>
+<h2 id="8">8. 配置与编译内核、模块和设备树</h2>
+<p><strong>Linux VM，保持 SDK 已 source：</strong></p>
+<pre><code class="language-sh">source &quot;$LAB/SDK/environment-setup-cortexa35-ostl-linux&quot;
+export OUTPUT_BUILD_DIR=&quot;$LAB/build/kernel&quot;
+export EXTDT_DIR=&quot;$LAB/src/external-dt/stm32mp2/a35-td&quot;
+mkdir -p &quot;$OUTPUT_BUILD_DIR&quot;
+cd &quot;$LAB/src/linux&quot;
+make O=&quot;$OUTPUT_BUILD_DIR&quot; defconfig
+scripts/kconfig/merge_config.sh -m -r -O &quot;$OUTPUT_BUILD_DIR&quot; \
+  &quot;$OUTPUT_BUILD_DIR/.config&quot; \
+  arch/arm64/configs/fragment-01-defconfig-cleanup.config \
+  arch/arm64/configs/fragment-02-defconfig-addons.config \
+  &quot;$LAB/src/meta-st/recipes-kernel/linux/linux-stm32mp/6.6/fragment-03-systemd.config&quot; \
+  &quot;$LAB/src/meta-st/recipes-kernel/linux/linux-stm32mp/6.6/fragment-04-modules.config&quot;
+scripts/config --file &quot;$OUTPUT_BUILD_DIR/.config&quot; \
+  --set-str LOCALVERSION '-gkc-sdk' --disable LOCALVERSION_AUTO
+make O=&quot;$OUTPUT_BUILD_DIR&quot; olddefconfig
+make -j6 O=&quot;$OUTPUT_BUILD_DIR&quot; Image.gz vmlinux modules dtbs \
+  KBUILD_EXTDTS=&quot;$EXTDT_DIR/linux&quot;
+make O=&quot;$OUTPUT_BUILD_DIR&quot; INSTALL_MOD_PATH=&quot;$OUTPUT_BUILD_DIR/install_artifact&quot; \
+  INSTALL_MOD_STRIP=1 modules_install
+mkdir -p &quot;$OUTPUT_BUILD_DIR/install_artifact/boot&quot;
+cp &quot;$OUTPUT_BUILD_DIR/arch/arm64/boot/Image.gz&quot; &quot;$OUTPUT_BUILD_DIR/install_artifact/boot/&quot;
+find &quot;$OUTPUT_BUILD_DIR/arch/arm64/boot/dts&quot; -name 'stm32mp257f-dk*.dtb' \
+  -exec cp {} &quot;$OUTPUT_BUILD_DIR/install_artifact/boot/&quot; \;
+cp &quot;$OUTPUT_BUILD_DIR/.config&quot; &quot;$OUTPUT_BUILD_DIR/install_artifact/boot/config-gkc-sdk&quot;
+make -s O=&quot;$OUTPUT_BUILD_DIR&quot; kernelrelease
+</code></pre>
+<p>预期最后一行为 <code>6.6.78-gkc-sdk</code>。本次重新编译的三份 STM32MP257F-DK 设备树与原厂对应文件逐字节相同，证明所选设备树基线配套；详见 <a href="evidence/config-dtb-comparison.txt">设备树与配置对照</a>。<code>LOCALVERSION</code> 是实际编译配置的一部分，可让老师核对自编译结果。内核是 ARM64，使用 <code>Image.gz</code>；不要照抄 32 位例子的 <code>uImage</code>。</p>
+<p>这组命令也保存为 <code>scripts/build-sdk-kernel.sh</code>，可从 Ubuntu 执行：</p>
+<pre><code class="language-sh">bash &quot;$PROJECT/scripts/build-sdk-kernel.sh&quot; 2&gt;&amp;1 | tee &quot;$LAB/kernel-sdk-build.log&quot;
+</code></pre>
+<p>选择手动命令或脚本一种即可。脚本自己初始化 SDK，检查 <code>aarch64-ostl-linux-</code>，不会切换回 Ubuntu GNU 交叉编译器。</p>
+<h3 id="81-gcnano">8.1 重编译 gcnano 图形模块</h3>
+<p>更换内核版本后，需要为它编译匹配的 <code>galcore.ko</code>，否则桌面可能因 GPU 模块版本不匹配失败。</p>
+<pre><code class="language-sh">source &quot;$LAB/SDK/environment-setup-cortexa35-ostl-linux&quot;
+GPU_SRC=&quot;$LAB/src/gcnano/gcnano-driver-stm32mp&quot;
+make -j6 -C &quot;$OUTPUT_BUILD_DIR&quot; M=&quot;$GPU_SRC&quot; AQROOT=&quot;$GPU_SRC&quot; \
+  SOC_PLATFORM=st-mp2 DEBUG=0 modules
+make -C &quot;$OUTPUT_BUILD_DIR&quot; M=&quot;$GPU_SRC&quot; AQROOT=&quot;$GPU_SRC&quot; \
+  SOC_PLATFORM=st-mp2 DEBUG=0 \
+  INSTALL_MOD_PATH=&quot;$OUTPUT_BUILD_DIR/install_artifact&quot; INSTALL_MOD_STRIP=1 modules_install
+</code></pre>
+<p>对应脚本是 <code>scripts/build-sdk-gpu.sh</code>。所有模块必须与部署的内核同一次配置、同一版本；不能把旧 <code>galcore.ko</code> 改个目录名就当作新模块。</p>
+<h2 id="9-hello-world-makefile">9. Hello World 源码与 Makefile</h2>
+<p>源码见 <a href="code/hello_world/hello_world.c">hello_world.c</a>。其他组员复现时，先在该文件中改为自己的姓名和学号，再重新编译。程序输出 <code>hello world!</code>、姓名 <code>mingkang ma</code>、学号 <code>523031910621</code>、运行内核、架构、Boot ID 和三秒倒计时，成功退出 0。</p>
+<p>随包 <code>scripts/verify-board.sh</code> 也默认检查本次姓名与学号；改名后，同时修改其中两处 <code>Student:</code>／<code>Student ID:</code> 检查字符串，再打包。仅修改身份文本不需要重新编译内核。</p>
+<p><strong>Linux VM：</strong></p>
+<pre><code class="language-sh">source &quot;$LAB/SDK/environment-setup-cortexa35-ostl-linux&quot;
+mkdir -p &quot;$LAB/hello_world&quot;
+cp &quot;$PROJECT/hello_world/hello_world.c&quot; &quot;$PROJECT/hello_world/Makefile&quot; &quot;$LAB/hello_world/&quot;
+cd &quot;$LAB/hello_world&quot;
+make clean
+make
+file hello_world
+$READELF -h hello_world
+$READELF -p .comment hello_world
+make install
+</code></pre>
+<p>本次构建日志显示：SDK GCC 13.3.0、<code>-mcpu=cortex-a35+crc</code>、配套 <code>--sysroot</code>，生成 <code>ELF 64-bit … ARM aarch64</code>。<code>file</code> 中 “for GNU/Linux 5.15.0” 是该 ELF 的最低 ABI 标记，不是说板卡正在运行 5.15 内核。</p>
+<p>Makefile 接收 SDK 环境变量中的 <code>CC</code>、<code>CFLAGS</code>、<code>LDFLAGS</code>，不会把完整 <code>CC</code> 字符串加引号当成一个可执行文件名。recipe 的行首必须是 <strong>Tab</strong>。直接使用提供的文件最稳妥。</p>
+<pre><code class="language-makefile">.DEFAULT_GOAL := all
+ifeq ($(origin CC),default)
+$(error Load the OpenSTLinux SDK environment before running make)
+endif
+CFLAGS ?= -O2 -g -Wall -Wextra -Werror
+PROG := hello_world
+OBJS := hello_world.o
+DESTDIR ?= $(CURDIR)/install_artifact
+PREFIX ?= /usr/local
+.PHONY: all clean install
+all: $(PROG)
+$(PROG): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $&lt; -o $@
+install: $(PROG)
+	install -d $(DESTDIR)$(PREFIX)/bin
+	install -m 0755 $(PROG) $(DESTDIR)$(PREFIX)/bin/$(PROG)
+clean:
+	rm -f $(PROG) $(OBJS)
+</code></pre>
+<p>Makefile 在没有加载编译环境时会明确报错，防止不小心用宿主默认编译器生成错误结果。<strong>必须先 source SDK</strong>，并核对实际命令前缀为 <code>aarch64-ostl-linux-gcc</code>。</p>
+<p>原始记录：<a href="evidence/hello-sdk-build-final.txt">SDK Makefile 编译结果</a>。从头重新编译时，文件哈希可能因构建时间、主机路径等发生变化；应比较自己构建、传输和板上安装的同一份文件，不要求复现本手册成品的固定哈希。</p>
+<h2 id="10-usb-ssh">10. 串口、USB 网络、SSH：宿主差异</h2>
+<h3 id="101-macos">10.1 macOS</h3>
+<p>若需要现场保存终端过程，macOS 可在 SSH 前运行 <code>script -q board-session.txt</code>，结束后输入 <code>exit</code>；Windows PowerShell 可用 <code>Start-Transcript -Path board-session.txt</code> 与 <code>Stop-Transcript</code>。Tera Term 也可通过 File → Log 保存串口会话。</p>
+<p><strong>宿主—macOS：</strong></p>
+<pre><code class="language-sh">ls /dev/cu.usbmodem*
+screen /dev/cu.usbmodem102 115200
+</code></pre>
+<p>串口设备名以本机枚举为准。设置 115200、8N1、无流控；按 Enter，必要时以 <code>root</code> 登录。退出 screen：Ctrl+A，再按 K，确认。本机另有 <code>scripts/board-terminal.command</code> 可双击进入串口；其他电脑按上面的设备枚举结果连接。</p>
+<p>接好 CN15 数据线后，网络设置中应出现 USB 网络，IPv4 使用 DHCP。本次 Mac 得到 192.168.7.80。验证：</p>
+<pre><code class="language-sh">ping -c 3 192.168.7.1
+ssh root@192.168.7.1
+</code></pre>
+<h3 id="102-windows">10.2 Windows</h3>
+<p>安装 <a href="https://teratermproject.github.io/">Tera Term</a> 或使用已有串口工具；设备管理器找到 ST-LINK Virtual COM Port，选择相应 COM 端口，115200、8N1、无流控。若无法枚举，安装 <a href="https://www.st.com/en/development-tools/stsw-link009.html">ST 官方 ST-LINK USB 驱动</a>。</p>
+<p>CN15 连接 Windows 后，会出现 USB/RNDIS 以太网接口。本次之前的 Windows 枚举已看到 192.168.7.80/24；现在实验使用 Mac 直连，<strong>不再需要 Windows 中转或端口转发</strong>。</p>
+<p><strong>宿主—Windows PowerShell：</strong></p>
+<pre><code class="language-powershell">Get-NetIPAddress -AddressFamily IPv4 | Select-Object InterfaceAlias,IPAddress,PrefixLength
+Test-NetConnection 192.168.7.1 -Port 22
+ssh root@192.168.7.1
+</code></pre>
+<p>Windows 10/11 若没有 <code>ssh</code>／<code>scp</code>，在“可选功能”安装 OpenSSH Client。虚拟机无需访问 192.168.7.1；由宿主直接传输。</p>
+<h3 id="103">10.3 登录后的共用检查</h3>
+<p>SSH 首次连接时，通过串口读取板卡主机密钥指纹，与提示核对再接受；使用本项目的 <code>tools/board_ssh_config</code> 时密钥已固定为本次实物。其他板卡不要直接沿用这份 known_hosts。</p>
+<p><strong>板卡：</strong></p>
+<pre><code class="language-sh">hostname
+uname -r
+ip -4 addr show usb0
+cat /etc/os-release
+</code></pre>
+<p><code>root</code> 密码按 Starter 配置填写，本次为空。SCP 使用大写 <code>-O</code> 选择传统 SCP，因为板上 Dropbear 默认没有 SFTP 服务。</p>
+<h2 id="11">11. 打包、部署与重启</h2>
+<p><strong>Linux VM：</strong> 在第 8、9 节完成后执行：</p>
+<pre><code class="language-sh">PROJECT_ROOT=&quot;$PROJECT&quot; bash &quot;$PROJECT/scripts/package-sdk.sh&quot;
+</code></pre>
+<p>本次产物为约 24 MiB，SHA-256：<code>122d942e37545d64fd199c3aa37e0dbc48345fd1c2299631a2bca5fcbf322c34</code>。</p>
+<p>它重新构建 Hello World，归集新内核、模块、DTB、配置、服务，移除指向构建主机的模块开发链接，生成文件校验清单和 <code>delivery/gkc-sdk-6.6.78.tar.gz</code>。不要在已存在的同名打包目录上重复执行；若要重打包，先将旧 <code>$LAB/package/gkc-sdk</code> 改名保存。</p>
+<p><strong>宿主—macOS：</strong></p>
+<pre><code class="language-sh">cd &quot;$HOME/Desktop/gkc&quot;
+shasum -a 256 delivery/gkc-sdk-6.6.78.tar.gz
+scp -O delivery/gkc-sdk-6.6.78.tar.gz root@192.168.7.1:/home/root/
+ssh root@192.168.7.1
+</code></pre>
+<p><strong>宿主—Windows PowerShell：</strong></p>
+<pre><code class="language-powershell">cd C:\gkc
+Get-FileHash .\delivery\gkc-sdk-6.6.78.tar.gz -Algorithm SHA256
+scp -O .\delivery\gkc-sdk-6.6.78.tar.gz root@192.168.7.1:/home/root/
+ssh root@192.168.7.1
+</code></pre>
+<p><strong>板卡：</strong></p>
+<pre><code class="language-sh">cd /home/root
+sha256sum gkc-sdk-6.6.78.tar.gz
+tar -xzf gkc-sdk-6.6.78.tar.gz 2&gt; gkc-sdk-extract.log
+python3 gkc-sdk/scripts/deploy-sdk-board.py /home/root/gkc-sdk
+</code></pre>
+<p>板卡 RTC 若停在 2000 年，解压日志可能出现“time stamp … in the future”；这是时钟差异，不等于包损坏。继续核对部署程序的全部校验值及返回状态。</p>
+<p>先检查上面输出的计划：板型、现有版本、可用空间、包校验值、新启动项。确认符合本板后执行写入：</p>
+<pre><code class="language-sh">python3 gkc-sdk/scripts/deploy-sdk-board.py /home/root/gkc-sdk --apply
+sync
+reboot
+</code></pre>
+<p>脚本对部署进行具体保护：旧 <code>Image.gz</code>、旧 <code>gkc-midterm</code> 入口不覆盖；新内核为 <code>/boot/Image-6.6.78-gkc-sdk.gz</code>，新 DTB 在 <code>/boot/gkc-sdk/</code>，模块在 <code>/lib/modules/6.6.78-gkc-sdk/</code>；克隆本机 extlinux 的根分区参数，新入口使用 <code>FDTDIR /gkc-sdk/</code>。全部文件写入并同步后才切换默认启动项。</p>
+<p>它同时安装 <code>/usr/local/bin/hello_world</code> 和 <code>/etc/systemd/system/hello-world.service</code>。不要照搬其他同学的 PARTUUID；脚本从当前运行系统与实际配置中匹配。脚本仅适用于本手册检查过的板型／基线，第二次运行会拒绝覆盖已存在的新部署，应先检查状态。</p>
+<h3 id="111">11.1 理解课件的手动部署步骤</h3>
+<p>本次实际使用上面的检查式部署程序完成写入。若希望理解每一步，下面是它执行的核心文件操作，与 WEEK7 的网络部署对应。<strong>这是一条替代操作路径，不要在脚本部署完成后再重复执行。</strong> 先检查包的 SHA256SUMS、板型、版本和空间，并备份启动配置、原用户程序与服务。</p>
+<p><strong>板卡，在已解压的包目录中：</strong></p>
+<pre><code class="language-sh">cd /home/root/gkc-sdk
+sha256sum -c SHA256SUMS
+uname -r
+df -h /boot /
+BACKUP=/home/root/before-sdk-manual
+mkdir &quot;$BACKUP&quot;
+cp /boot/mmc0_extlinux/extlinux.conf &quot;$BACKUP/&quot;
+# 如已有 hello_world 和 hello-world.service，先各自复制到 BACKUP。
+cp kernel/boot/Image.gz /boot/Image-6.6.78-gkc-sdk.gz
+mkdir /boot/gkc-sdk
+cp kernel/boot/stm32mp257f-dk*.dtb /boot/gkc-sdk/
+cp -a kernel/lib/modules/6.6.78-gkc-sdk /lib/modules/
+depmod 6.6.78-gkc-sdk
+install -m 0755 hello_world/install_artifact/usr/local/bin/hello_world /usr/local/bin/hello_world
+install -m 0644 systemd/hello-world.service /etc/systemd/system/hello-world.service
+systemctl daemon-reload
+systemctl enable hello-world.service
+</code></pre>
+<p>接着编辑 <code>/boot/mmc0_extlinux/extlinux.conf</code>：复制原 <code>LABEL OpenSTLinux</code> 整个段落，给副本改名 <code>LABEL gkc-sdk</code>，将 KERNEL 改为 <code>/Image-6.6.78-gkc-sdk.gz</code>，FDTDIR 改为 <code>/gkc-sdk/</code>，保持 INITRD 与 APPEND 完全一致，再设置 <code>DEFAULT gkc-sdk</code>。保留原入口与原文件。保存后执行 <code>sync</code>、<code>reboot</code>，进入第 12 节检查。</p>
+<p>这也解释了为什么仅复制一个 Image.gz 不够：驱动模块、设备树、启动选择和用户空间服务需要相互对应。推荐直接执行前面的部署程序，因为它还会检查校验值、模块版本、根分区和回退条件。</p>
+<h2 id="12">12. 设置上电自动运行与三项验证</h2>
+<p>systemd 服务内容如下，源文件见 <a href="code/systemd/hello-world.service">hello-world.service</a>：</p>
+<pre><code class="language-ini">[Unit]
+Description=Edge AI midterm hello world boot demonstration
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/hello_world
+RemainAfterExit=yes
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>若手动安装服务，在板上执行 <code>systemctl daemon-reload</code>、<code>systemctl enable hello-world.service</code>。部署程序已完成这两步。<code>enable</code> 将服务接入启动目标；<code>start</code> 只运行一次，两者不同。</p>
+<h3 id="121">12.1 先验证软件重启</h3>
+<p>重新 SSH 连接，先读取本次启动日志，再手动运行程序：</p>
+<pre><code class="language-sh">uname -r
+cat /proc/version
+cat /proc/sys/kernel/random/boot_id
+systemctl is-enabled hello-world.service
+systemctl show hello-world.service -p Result -p ExecMainStatus -p ExecMainStartTimestampMonotonic
+journalctl -b -u hello-world.service --no-pager -o cat
+/usr/local/bin/hello_world
+printf 'exit=%s\n' &quot;$?&quot;
+modinfo galcore | head
+systemctl is-active weston-graphical-session
+systemctl --failed --no-pager
+</code></pre>
+<p>看到 <code>6.6.78-gkc-sdk</code>、SDK 编译器标记、姓名学号、<code>Result=success</code>、<code>ExecMainStatus=0</code>。服务是 oneshot，显示 <code>active (exited)</code> 正常。<code>ExecMainStartTimestampMonotonic</code> 单位微秒，例如 11000000 表示本次开机约 11 秒启动。</p>
+<p>提供的整体验证程序可运行：</p>
+<pre><code class="language-sh">sh /home/root/gkc-sdk/scripts/verify-board.sh
+</code></pre>
+<p>本次软件重启实际结果：Boot ID 为 <code>e4e7fe32-e0d2-4ffa-a9f4-e7843e152215</code>，服务在本次开机 10.474155 秒启动，<code>Result=success</code>、<code>ExecMainStatus=0</code>，桌面 active，系统失败单元数为 0。运行配置与构建配置逐字节相同，SHA-256 为 <code>445ede30359592b0ea4f366caf1ed748d07e1d595a9980a1b3c5bd506d767833</code>。</p>
+<p><img alt="SDK 内核中手动运行 Hello World 的板卡真实截图" src="images/hello-screen.png" /></p>
+<p>上图在后续冷启动验收完成后采集，来自板卡真实 Weston 终端。手动运行用于验证程序本身；自动运行证据单独见下一节。</p>
+<p><img alt="SDK 内核中 Hello World 的实际输出排版" src="images/hello-output.png" /></p>
+<p>此图来自真实日志排版，不是终端原始截图。原始记录：<a href="evidence/soft-reboot-verification.txt">软件重启验收</a>、<a href="evidence/soft-reboot-autostart.txt">先读取的自启日志</a>。</p>
+<h3 id="122">12.2 再验证真实断电上电</h3>
+<ol>
+<li>记录旧 Boot ID，执行 <code>poweroff</code>，等待安全关机。</li>
+<li>断开所有可能给板卡供电的线，至少包括本次 CN21 与 CN15，确认板卡电源灯熄灭；等约 5 秒再恢复原接线。</li>
+<li>等系统启动、USB 网络恢复后，重新 SSH 连接。</li>
+<li><strong>先读取</strong> Boot ID、<code>systemctl show</code> 和 <code>journalctl -b -u hello-world</code>，不要先运行 <code>systemctl start/restart hello-world</code>。</li>
+<li>新 Boot ID 不同，并且当前日志已经有 <code>6.6.78-gkc-sdk</code>、姓名、学号和完成行，服务成功退出，才证明这一轮上电自动运行。</li>
+</ol>
+<p><strong>本次实际冷启动已通过。</strong> 用户确认完成断电上电后，主机于 2026-10-25 21:32:55（UTC+8）保存第一次只读检查记录。新 Boot ID 为 <code>3c09cd7b-19c2-49df-a3f1-d332e1575a2e</code>，与软件重启那次不同；服务在开机 11.416478 秒启动。读取时尚未手动启动或重启该服务。</p>
+<pre><code class="language-text">Kernel: 6.6.78-gkc-sdk
+Boot ID: 3c09cd7b-19c2-49df-a3f1-d332e1575a2e
+enabled
+Result=success
+ExecMainStartTimestampMonotonic=11416478
+ExecMainStatus=0
+hello world!
+Student: mingkang ma
+Student ID: 523031910621
+hello world completed successfully
+</code></pre>
+<p>这是原始输出的节选。完整记录：<a href="evidence/cold-boot-autostart.txt">首次读取的冷启动自启日志</a>、<a href="evidence/cold-boot-verification.txt">后续程序与桌面检查</a>、<a href="evidence/cold-boot-hardware.txt">模块和文件校验</a>。冷启动后运行配置仍与构建配置相同，GPU 模块版本匹配，HDMI 为 1024×600，失败单元数为 0。</p>
+<p><img alt="冷启动后自启服务日志的板卡真实截图" src="images/autostart-screen.png" /></p>
+<p>上图是板卡终端显示当前启动日志的真实截图；显示这些日志不会重新启动 Hello World 服务。</p>
+<p>这里“用户程序随上电启动”的机制是：内核启动 Linux → systemd 启动用户空间服务 → 运行 ELF。无需把 Hello World 写成内核模块或把打印语句塞进内核源码。</p>
+<p>板卡 RTC 在断电后可能回到 2000 年，验收以主机记录时间、Boot ID 和开机单调时间对应证据，不能仅凭日历日期判断是否新启动。</p>
+<h2 id="13-week6">13. WEEK6：手动复现终端控制与图形演示</h2>
+<h3 id="131">13.1 远程终端与文件往返</h3>
+<p>SSH 登录方式见第 10 节。先在宿主新建 <code>week6-transfer.txt</code>，写入自己的姓名学号。</p>
+<p><strong>两种宿主的终端都可用：</strong></p>
+<pre><code class="language-sh">scp -O week6-transfer.txt root@192.168.7.1:/home/root/
+ssh root@192.168.7.1 'cat /home/root/week6-transfer.txt; sha256sum /home/root/week6-transfer.txt'
+scp -O root@192.168.7.1:/home/root/week6-transfer.txt week6-returned.txt
+</code></pre>
+<p>macOS 用 <code>shasum -a 256 week6-transfer.txt week6-returned.txt</code>；Windows 用 <code>Get-FileHash week6-transfer.txt,week6-returned.txt</code>。本次往返文件内容与校验值一致，见 <a href="evidence/week6-file-transfer.txt">文件传输记录</a>。这覆盖 WEEK6 第 15–18 页的网络传输；未将未插入的 USB U 盘写为已验证。</p>
+<h3 id="132-weston">13.2 停止、启动和重启 Weston 桌面</h3>
+<p><strong>板卡（保持 SSH／串口连接）：</strong></p>
+<pre><code class="language-sh">systemctl stop weston-graphical-session
+systemctl is-active weston-graphical-session
+systemctl start weston-graphical-session
+systemctl is-active weston-graphical-session
+systemctl restart weston-graphical-session
+</code></pre>
+<p>停止时显示器桌面消失、状态为 inactive；启动后返回 active。<code>systemctl is-active</code> 对 inactive 返回非零，这是预期结果。SSH 不依赖桌面，可继续控制。对应 WEEK6 第 27 页。</p>
+<h3 id="133-weston-image">13.3 用 weston-image 显示图片</h3>
+<p>把随包 <code>assets/week6-test-pattern.png</code> 通过 SCP 放到 <code>/home/root/</code>。<strong>板卡：</strong></p>
+<pre><code class="language-sh">export XDG_RUNTIME_DIR=/run/user/1000
+export WAYLAND_DISPLAY=wayland-0
+weston-image /home/root/week6-test-pattern.png
+</code></pre>
+<p><code>Ctrl+C</code> 结束；或屏幕点击窗口关闭。该环境路径适用于本机 UID 1000 的 Weston；若镜像不同，先核对 Weston 运行用户。</p>
+<p><img alt="WEEK6 weston-image 板卡真实截图" src="images/image.png" /></p>
+<p>图片素材是本项目生成的输入测试图；上图是该素材在物理板卡 Weston 中显示后的真实截图，二者区别明确。</p>
+<h3 id="134-gpu">13.4 GPU 三角形与图形终端</h3>
+<pre><code class="language-sh">export XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-0
+weston-simple-egl -f
+# Ctrl+C 结束后，可继续打开图形终端：
+weston-terminal
+</code></pre>
+<p>本节图像、GPU 与视频截图已在新内核 <code>6.6.78-gkc-sdk</code> 上重新采集，见 <a href="evidence/sdk-kernel-week6-demo.txt">新内核 WEEK6 操作记录</a>。早先旧内核的记录另行保留，不用于替代 SDK 内核验收。</p>
+<p>本次新内核 GPU 输出 <code>304 frames in 5 seconds: 60.799999 fps</code>，属于一次短时演示结果，原文见 <a href="evidence/sdk-kernel-week6-egl.log">GPU 日志</a>。</p>
+<p><img alt="WEEK6 GPU 三角形真实截图" src="images/egl.png" /></p>
+<h3 id="135">13.5 视频及键盘控制</h3>
+<p>通过有交互终端的 SSH 或串口运行。<strong>板卡：</strong></p>
+<pre><code class="language-sh">gst-play-1.0 --help
+su -s /bin/sh weston -c 'XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-0 gst-play-1.0 /usr/local/demo/media/ST2297_visionv3.webm --audiosink=&quot;fakesink sync=true&quot;'
+</code></pre>
+<p><code>fakesink</code> 丢弃音频输出，与课件的“仅视频播放”一致；补充 <code>sync=true</code> 让音频时钟按正常速率推进。本次未验证扬声器音频。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>操作</th>
+<th>本次实际观察</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k</td>
+<td>列出快捷键</td>
+<td>显示 Interactive mode - keyboard controls</td>
+</tr>
+<tr>
+<td>空格</td>
+<td>暂停／继续</td>
+<td>播放位置停在 0:00:15.2，并显示 Paused；再次按下继续</td>
+</tr>
+<tr>
+<td>+</td>
+<td>加速</td>
+<td>Playback rate: 1.10</td>
+</tr>
+<tr>
+<td>-</td>
+<td>减速</td>
+<td>Playback rate: 1.00</td>
+</tr>
+<tr>
+<td>q</td>
+<td>退出</td>
+<td>播放器正常退出</td>
+</tr>
+</tbody>
+</table>
+<p>以上按键也已在 SDK 新内核上逐个测试，播放器正常退出，主机记录退出码 0。按键逐个按，不要一次粘贴多个字符。真实原始记录：<a href="evidence/sdk-kernel-week6-interactive-raw.txt">交互播放日志</a>。</p>
+<p><img alt="WEEK6 键盘控制日志排版图" src="images/week6-controls.png" /></p>
+<p>上图由交互日志排版，省略重复的进度刷新行；原始日志仍完整保留。</p>
+<p><img alt="WEEK6 视频播放真实截图" src="images/video.png" /></p>
+<p>上图来自另一次 <code>--no-interactive</code> 视频播放演示；键盘控制证据来自上面单独保存的交互日志。后台播放时可使用 <code>--no-interactive &amp;</code>，记下 <code>$!</code>，通过 <code>kill "$PID"</code> 停止自己启动的进程。不要无差别结束桌面所有播放器。</p>
+<h3 id="136">13.6 截图并传回主机</h3>
+<p>WEEK6 第 33–34 页使用 <code>weston-screenshooter</code>。本镜像默认关闭所需调试接口；本次演示临时给 Weston 添加 <code>--debug</code>，截图完成后恢复 <code>/etc/default/weston</code> 原文件并重启桌面。脚本 <code>scripts/week6-board-demo.sh</code> 保存原配置并通过退出清理恢复它。</p>
+<p>如果手动操作，先备份 <code>/etc/default/weston</code>，保留原有 <code>OPTARGS</code> 并追加 <code>--debug</code>，重启 <code>weston-graphical-session</code>。然后在板上运行：</p>
+<pre><code class="language-sh">CAPTURE_DIR=$(mktemp -d /home/weston/manual-capture.XXXXXX)
+chown weston:weston &quot;$CAPTURE_DIR&quot;
+su -s /bin/sh weston -c &quot;cd '$CAPTURE_DIR'; XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-0 weston-screenshooter&quot;
+ls &quot;$CAPTURE_DIR&quot;/*.png
+</code></pre>
+<p>每次使用新目录，避免板卡 RTC 复位后按时间排序误选旧截图。用 SCP 从宿主取回该目录中的 PNG；最后恢复原配置、重启 Weston 并确认 active。本手册所有“板卡真实截图”都来自板上 compositor 输出；它们不是相机照片，无法单独证明触摸手势，触摸正常是用户实际操作的确认。</p>
+<h2 id="14">14. 验收展示顺序与证据位置</h2>
+<p>建议展示顺序：先展示 SDK 环境与 Makefile 编译记录 → 通过宿主 SSH 登录板卡 → <code>uname -r</code>、<code>/proc/version</code> → 手动运行 Hello World → 当前启动的自启日志 → WEEK6 图片、GPU 或视频控制。</p>
+<p>实际断电上电验证应提前做一次，现场可再次演示。读取自启日志前不要手动重启该服务，避免混淆证据。</p>
+<table>
+<thead>
+<tr>
+<th>证据</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdk-install.log、sdk-environment.txt</td>
+<td>官方 SDK 安装成功、环境初始化</td>
+</tr>
+<tr>
+<td>kernel-sdk-build.log、gpu-sdk-build.log</td>
+<td>内核、模块与 GPU 驱动实际构建</td>
+</tr>
+<tr>
+<td>hello-sdk-build-final.txt</td>
+<td>最终 Makefile 使用 SDK 编译、ELF 架构</td>
+</tr>
+<tr>
+<td>kernel-deploy.txt、soft-reboot-verification.txt、soft-reboot-autostart.txt</td>
+<td>部署及软件重启验证</td>
+</tr>
+<tr>
+<td>cold-boot-autostart.txt、cold-boot-verification.txt、cold-boot-hardware.txt</td>
+<td>本次真实断电上电自启、程序与硬件验证</td>
+</tr>
+<tr>
+<td>sdk-kernel-week6-*.txt / *.log</td>
+<td>新 SDK 内核的 WEEK6 实操及桌面恢复记录</td>
+</tr>
+<tr>
+<td>week6-*.txt、egl.log、video.log</td>
+<td>早先基线的 WEEK6 操作记录，供对照</td>
+</tr>
+<tr>
+<td>images/*.png</td>
+<td>实际板卡屏幕截图；日志排版图会单独标注</td>
+</tr>
+</tbody>
+</table>
+<p>未实施：激光雷达、USB U 盘、HTTP 流媒体、扬声器音频、重新刷写完整引导链。不要在实验报告中把这些列为成功结果。</p>
+<h2 id="15">15. 常见问题与回退</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>检查与处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mac/Windows 无法运行 SDK 安装器</td>
+<td>它是 Linux 安装器；进入 Ubuntu VM，再核对 <code>uname -m</code> 与宿主 SDK 包架构</td>
+</tr>
+<tr>
+<td>编译命令仍用 aarch64-linux-gnu-gcc</td>
+<td>新 shell 中未 source SDK，或手动覆盖了 CC/CROSS_COMPILE；检查后重新 clean 构建</td>
+</tr>
+<tr>
+<td><code>missing separator</code></td>
+<td>Makefile 命令行没有使用 Tab；使用随包原始文件</td>
+</tr>
+<tr>
+<td><code>scp: … sftp-server: not found</code></td>
+<td>改用 <code>scp -O</code></td>
+</tr>
+<tr>
+<td>SSH 不通</td>
+<td>保留串口，检查 CN15 数据线、USB 网卡 IPv4；连接同一 Wi-Fi 本身不等于板子已联网</td>
+</tr>
+<tr>
+<td>屏幕黑、触摸不能用</td>
+<td>区分 HDMI、屏幕供电、USB 触摸三条路径；<code>cat /sys/class/drm/card0-HDMI-A-1/modes</code>；检查 Weston 与 galcore</td>
+</tr>
+<tr>
+<td>新内核上 GPU 模块加载失败</td>
+<td>重编译匹配版本的 galcore，运行 depmod；不要复制旧版本模块充数</td>
+</tr>
+<tr>
+<td>services 为 active (exited)</td>
+<td>oneshot + RemainAfterExit 的预期状态，配合 Result=success 和退出值判断</td>
+</tr>
+<tr>
+<td>BSP 下载 403</td>
+<td>保存错误记录；可重试自己的官方邮件／账号，或用课件列出的 ST GitHub 路径；不要混入不同发布版源码</td>
+</tr>
+</tbody>
+</table>
+<p>部署时输出备份目录 <code>/home/root/gkc-sdk-backup-…</code>。本次实际目录为 <code>/home/root/gkc-sdk-backup-946687754379430375</code>。其中 <code>extlinux.conf</code> 保存部署前的启动配置，<code>rollback.sh</code> 可恢复默认启动项；同时保留了旧 Hello World 和服务文件。需要完整回退时，在串口中选旧启动项进入系统，再按备份恢复配置与这两个用户空间文件，执行 daemon-reload、sync、reboot。</p>
+<p>若新内核无法启动，可通过串口在 U-Boot 的 extlinux 菜单选择 <code>gkc-midterm</code> 或 <code>OpenSTLinux</code>。保持原厂 Image.gz、DTB 与原入口完整比直接覆盖它们更容易恢复。</p>
+<h2 id="16">16. 参考与复现边界</h2>
+<ul>
+<li>课程：WEEK5 系统安装、WEEK6 平台应用、WEEK7 交叉编译 Linux 内核及应用；文件位于项目 <code>PPT</code>。</li>
+<li><a href="https://www.st.com/en/embedded-software/stm32mp2dev.html#get-software">ST Developer Package 下载</a></li>
+<li><a href="https://github.com/STMicroelectronics/linux/tree/v6.6-stm32mp-r2">ST Linux v6.6-stm32mp-r2</a></li>
+<li><a href="https://github.com/STMicroelectronics/meta-st-stm32mp/tree/openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11">配套 v25.06.11 发行配方与 README 模板</a></li>
+<li><a href="https://wiki.st.com/stm32mpu/wiki/PC_prerequisites">ST 主机环境要求</a></li>
+<li><a href="https://wiki.st.com/stm32mpu/wiki/How_to_make_a_screen_capture_in_Weston">Weston 截图说明</a></li>
+</ul>
+<p>本次实测的是 Apple 芯片 Mac + ARM64 Ubuntu + ARM64 宿主 SDK。Windows 小节提供相同 Linux 流程的宿主迁移方法；需由组员在实际电脑上核对驱动、共享目录、COM 端口与 SDK 主机架构。</p><footer>本页可离线查看。实际截图与日志排版图已分别标注，原始日志及可执行脚本随报告提供。</footer></article></div><script>document.querySelectorAll('pre').forEach(pre=>{const code=pre.querySelector('code');const button=document.createElement('button');button.className='copy';button.type='button';button.textContent='复制命令 / 代码';button.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(code.textContent);button.textContent='已复制';setTimeout(()=>button.textContent='复制命令 / 代码',1600)}catch(e){const range=document.createRange();range.selectNodeContents(code);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);button.textContent='已选中，请按 ⌘C / Ctrl+C'}});pre.prepend(button)});</script></body></html>

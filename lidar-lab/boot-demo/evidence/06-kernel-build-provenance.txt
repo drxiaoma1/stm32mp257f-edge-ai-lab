@@ -1,0 +1,16 @@
+445ede30359592b0ea4f366caf1ed748d07e1d595a9980a1b3c5bd506d767833  build/kernel/.config
+1bf277932051076e855ef3fa098cf2c9bcb53f24dd5198889ce5105d55b58983  build/kernel/Module.symvers
+4cf7f3d20e712ae56df9ed373b570825576a7d9b329b45ed686b9a69c830a109  build/kernel/install_artifact/lib/modules/6.6.78-gkc-sdk/kernel/drivers/usb/serial/cp210x.ko
+6f369abcc6d8747f61d91dc85dd9d41be49e0d49b62720496a3d7b21f41802ee  build/kernel/install_artifact/lib/modules/6.6.78-gkc-sdk/kernel/drivers/usb/serial/usbserial.ko
+# SPDX-License-Identifier: GPL-2.0
+VERSION = 6
+PATCHLEVEL = 6
+SUBLEVEL = 78
+EXTRAVERSION =
+NAME = Pinguïn Aangedreven
+
+# *DOCUMENTATION*
+# To see a list of typical targets execute "make help"
+# More info can be located in ./README
+# Comments in this file are targeted only to the developer, do not
+# expect to learn how to build the kernel reading this file.

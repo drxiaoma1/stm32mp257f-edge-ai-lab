@@ -1,0 +1,83 @@
+VALIDATION: x86_64 Ubuntu 24.04 userspace under QEMU, network namespace disconnected.
+x86_64
+PRETTY_NAME="Ubuntu 24.04 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04 LTS (Noble Numbat)"
+
+IPv4 route table (empty apart from header):
+
+Before setup, make lookup:
+
+OFFLINE SDK INSTALL
+file_1%3a5.41-3ubuntu0.1_amd64.deb: OK
+libbz2-1.0_1.0.8-5ubuntu0.1_amd64.deb: OK
+liblzma5_5.2.5-2ubuntu1.2_amd64.deb: OK
+libmagic-mgc_1%3a5.41-3ubuntu0.1_amd64.deb: OK
+libmagic1_1%3a5.41-3ubuntu0.1_amd64.deb: OK
+libzstd1_1.4.8+dfsg-3build1_amd64.deb: OK
+make_4.3-4.1build1_amd64.deb: OK
+xz-utils_5.2.5-2ubuntu1.2_amd64.deb: OK
+zlib1g_1%3a1.2.11.dfsg-2ubuntu9.2_amd64.deb: OK
+GNU Make 4.3
+file-5.41
+xz (XZ Utils) 5.2.5
+SDK-x86_64-stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11.tar: OK
+/home/labuser/.hello-lab-sdk-install.CRHSzj/stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11/sdk/st-image-weston-openstlinux-weston-stm32mp2.rootfs-x86_64-toolchain-5.0.8-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11.sh: line 3: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8): No such file or directory
+ST OpenSTLinux - Weston - (A Yocto Project Based Distro) SDK installer version 5.0.8-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11
+==================================================================================================================================
+You are about to install the SDK to "/home/labuser/hello-lab-sdk". Proceed [Y/n]? Extracting SDK...............................................................................................................................................................................................................................................................................done
+Setting it up...done
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+SDK has been successfully set up and is ready to be used.
+Each time you wish to use the SDK in a new shell session, you need to source the environment setup script e.g.
+ $ . /home/labuser/hello-lab-sdk/environment-setup-cortexa35-ostl-linux
+aarch64-ostl-linux-gcc (GCC) 13.3.0
+
+SDK ready. Next: edit src/hello_world.c and run bash build.sh.
+
+OFFLINE MAKEFILE BUILD
+aarch64-ostl-linux-gcc (GCC) 13.3.0
+Compiler: aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/labuser/hello-lab-sdk/sysroots/cortexa35-ostl-linux
+make: Entering directory '/home/labuser/.hello-lab-build.FpUvvL'
+rm -f hello_world hello_world.o
+aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/labuser/hello-lab-sdk/sysroots/cortexa35-ostl-linux   -O2 -pipe -g -feliminate-unused-debug-types  -Wall -Wextra -c hello_world.c -o hello_world.o
+aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/labuser/hello-lab-sdk/sysroots/cortexa35-ostl-linux -Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed  -o hello_world hello_world.o 
+make: Leaving directory '/home/labuser/.hello-lab-build.FpUvvL'
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           AArch64
+  Version:                           0x1
+  Entry point address:               0x400900
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          75776 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         11
+  Size of section headers:           64 (bytes)
+  Number of section headers:         38
+  Section header string table index: 37
+
+Build succeeded: /home/labuser/hello-lab/output/hello-lab-deploy.tar.gz
+Next: transfer this file from the host computer to the board.
+
+Deployment archive contents:
+hello-lab-deploy/
+hello-lab-deploy/SHA256SUMS
+hello-lab-deploy/hello_world
+hello-lab-deploy/open-screen.sh
+hello-lab-deploy/hello-lab.service
+hello-lab-deploy/hello-lab-screen.service
+hello-lab-deploy/install-board.sh
+hello-lab-deploy/run-once.sh
+hello-lab-deploy/view-output.sh
+
+OFFLINE INSTALL AND BUILD CHECK PASSED

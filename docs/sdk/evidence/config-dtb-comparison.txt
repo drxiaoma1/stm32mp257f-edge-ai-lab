@@ -1,0 +1,17 @@
+stm32mp257f-dk-ca35tdcid-ostl-m33-examples.dtb
+5c2b1395069f42a427810823e33716513375635b56cc35865023c388706b3926  /Users/youart/Desktop/gkc/evidence/sdk-method/factory-dtbs/stm32mp257f-dk-ca35tdcid-ostl-m33-examples.dtb
+5c2b1395069f42a427810823e33716513375635b56cc35865023c388706b3926  /home/youart.guest/edge-ai-official/build/kernel/arch/arm64/boot/dts/st/stm32mp257f-dk-ca35tdcid-ostl-m33-examples.dtb
+stm32mp257f-dk-ca35tdcid-ostl.dtb
+608688d151a59d4bfd8d64f819ec881692e0bf61fd09c19114542af68522381d  /Users/youart/Desktop/gkc/evidence/sdk-method/factory-dtbs/stm32mp257f-dk-ca35tdcid-ostl.dtb
+608688d151a59d4bfd8d64f819ec881692e0bf61fd09c19114542af68522381d  /home/youart.guest/edge-ai-official/build/kernel/arch/arm64/boot/dts/st/stm32mp257f-dk-ca35tdcid-ostl.dtb
+stm32mp257f-dk.dtb
+0b9ab92b36e495e57005ecc52fadd922c20f7d6d72909c8d76e14eedceadfd64  /Users/youart/Desktop/gkc/evidence/sdk-method/factory-dtbs/stm32mp257f-dk.dtb
+0b9ab92b36e495e57005ecc52fadd922c20f7d6d72909c8d76e14eedceadfd64  /home/youart.guest/edge-ai-official/build/kernel/arch/arm64/boot/dts/st/stm32mp257f-dk.dtb
+-CC_CAN_LINK y
+-CC_CAN_LINK_STATIC y
+-DEBUG_INFO_COMPRESSED_ZSTD n
+-SAMPLE_AUXDISPLAY n
+-SAMPLE_WATCHDOG n
+ CC_VERSION_TEXT "aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0" -> "aarch64-ostl-linux-gcc (GCC) 13.3.0"
+ LOCALVERSION "-gkc-midterm" -> "-gkc-sdk"
++GCC_PLUGINS n

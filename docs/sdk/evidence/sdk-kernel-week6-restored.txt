@@ -1,0 +1,7 @@
+6.6.78-gkc-sdk
+3c09cd7b-19c2-49df-a3f1-d332e1575a2e
+active
+WESTON_USER=weston
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.

@@ -1,0 +1,20 @@
+[
+  {
+    "csv": "c1-20261027-100scans.csv",
+    "valid_points": 39986,
+    "within_0_30m": 8359,
+    "within_0_30m_percent": 20.904816685840043,
+    "below_0_05m": 0,
+    "minimum_reported_m": 0.163,
+    "maximum_reported_m": 5.278
+  },
+  {
+    "csv": "c1-20261027-obstacles-100scans.csv",
+    "valid_points": 37030,
+    "within_0_30m": 18282,
+    "within_0_30m_percent": 49.370780448285174,
+    "below_0_05m": 2024,
+    "minimum_reported_m": 0.043,
+    "maximum_reported_m": 4.511
+  }
+]

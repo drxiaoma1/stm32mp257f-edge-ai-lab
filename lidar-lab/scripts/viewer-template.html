@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C1 激光点云 · 实测回放</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f7f8;color:#173039;font:16px/1.75 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}main{max-width:1080px;margin:32px auto;padding:0 28px}h1{font-size:32px;line-height:1.3;margin:10px 0}p{margin:12px 0}.label{color:#176d80;font-size:13px;letter-spacing:1px}canvas{display:block;width:100%;max-width:760px;background:#fff;border:1px solid #cddfe3;margin:20px auto;touch-action:none}.controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap}button,select{border:1px solid #abc5ca;background:white;border-radius:5px;padding:8px 15px;font:inherit;color:inherit}button{cursor:pointer}#play{background:#146e7e;color:white;border-color:#146e7e}input[type=range]{flex:1;min-width:160px;accent-color:#146e7e}#status{font-variant-numeric:tabular-nums;color:#146e7e}small{color:#5c737a}a{color:#146e7e}footer{margin:30px 0;border-top:1px solid #d0e0e4;padding-top:16px}code{font:14px ui-monospace,monospace}
+</style><main>
+<div class="label">WEEK8 · STM32MP257F-DK · RPLIDAR C1</div>
+<h1>激光点云：真实采集回放</h1>
+<p>mingkang ma · 523031910621 · 2026-10-27</p>
+<p id="summary"></p>
+<div class="controls"><button id="play">播放</button><input id="frame" aria-label="扫描圈数" type="range" min="0" value="0"><label>视野 <select id="range"><option value="1">±1 m</option><option value="2">±2 m</option><option value="6" selected>±6 m</option><option value="12">±12 m</option></select></label><label><input id="all" type="checkbox">叠加全部圈</label><button id="save">保存当前图</button></div>
+<p id="status" aria-live="polite"></p><canvas id="cloud" width="1000" height="1000" aria-label="二维点云坐标图"></canvas>
+<p>红色十字为雷达原点。每个蓝点是一个有效测距点；距离为 0 或质量为 0 的采样不画在原点。角度按 SDK 原始定义转换：<code>x=r·cosθ，y=−r·sinθ</code>，单位为米。</p>
+<p><strong>这是已采集数据的离线回放。</strong>C1 测量一个扫描平面；本实验没有位姿估计、SLAM 或三维重建，不能把多圈叠加称为房间地图。缩小视野仅裁剪显示，不修改原始数据。</p>
+<footer><a href="实验指导.html">实验指导</a> · <a href="data/c1-20261027-100scans.csv">本次实验 CSV</a> · <a href="data/__PCD_FILE__">单圈 PCD</a> · <a href="evidence/05-c1-capture.txt">本次实验日志</a><br><small>数据已内嵌在此文件中，双击即可查看；无需网络、Python、ROS 或板卡显示屏。</small></footer>
+</main><script>
+const DATA=__DATA_JSON__;
+const frames=DATA.frames,summary=DATA.summary;
+const canvas=document.getElementById('cloud'),ctx=canvas.getContext('2d');
+const slider=document.getElementById('frame'),range=document.getElementById('range'),all=document.getElementById('all'),play=document.getElementById('play');
+slider.max=frames.length-1;slider.value=summary.selected_scan_id;
+document.getElementById('summary').textContent=`${summary.scans} 圈 · ${summary.samples.toLocaleString()} 个采样 · ${summary.valid_points.toLocaleString()} 个有效点 · ${summary.scan_rate_hz.toFixed(2)} 圈/秒 · 实测距离 ${summary.min_distance_m.toFixed(3)}–${summary.max_distance_m.toFixed(3)} m`;
+let timer=null;
+function draw(){
+ const index=+slider.value,f=frames[index],lim=+range.value;
+ const w=1000,pad=70,size=w-2*pad,scale=size/(2*lim),mid=w/2;
+ ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,w);
+ ctx.font='20px system-ui';ctx.fillStyle='#536e77';ctx.lineWidth=1;
+ const step=lim<=2?lim/4:lim/6;
+ for(let v=-lim;v<=lim+step/10;v+=step){const pos=mid+v*scale;ctx.strokeStyle='#e5eef1';ctx.beginPath();ctx.moveTo(pos,pad);ctx.lineTo(pos,w-pad);ctx.moveTo(pad,pos);ctx.lineTo(w-pad,pos);ctx.stroke();ctx.fillText(v.toFixed(lim<=2?2:0),pos-12,w-pad+28);ctx.fillText((-v).toFixed(lim<=2?2:0),10,pos+7);}
+ ctx.strokeStyle='#90aeb7';ctx.beginPath();ctx.moveTo(pad,mid);ctx.lineTo(w-pad,mid);ctx.moveTo(mid,pad);ctx.lineTo(mid,w-pad);ctx.stroke();
+ ctx.save();ctx.beginPath();ctx.rect(pad,pad,size,size);ctx.clip();
+ ctx.fillStyle='#087d95';ctx.globalAlpha=all.checked?.10:.9;
+ const scans=all.checked?frames:[f];for(const scan of scans)for(const [x,y] of scan.points){ctx.beginPath();ctx.arc(mid+x*scale,mid-y*scale,all.checked?1.8:3.2,0,Math.PI*2);ctx.fill();}
+ ctx.restore();ctx.strokeStyle='#e15b36';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(mid-10,mid);ctx.lineTo(mid+10,mid);ctx.moveTo(mid,mid-10);ctx.lineTo(mid,mid+10);ctx.stroke();
+ ctx.fillStyle='#173039';ctx.font='22px system-ui';ctx.fillText('y (m)',pad,35);ctx.fillText('x (m)',w-pad-40,w-16);
+ document.getElementById('status').textContent=all.checked?`叠加 ${frames.length} 圈，共 ${summary.valid_points.toLocaleString()} 个有效点`:`第 ${index+1}/${frames.length} 圈 · t=${(f.time-frames[0].time).toFixed(2)} s · ${f.points.length}/${f.samples} 点有效`;
+}
+function stop(){if(timer!==null)clearTimeout(timer);timer=null;play.textContent='播放';}
+function tick(){const prev=+slider.value;slider.value=(prev+1)%frames.length;draw();const next=+slider.value;const dt=next+1<frames.length?(frames[next+1].time-frames[next].time)*1000:100;timer=setTimeout(tick,Math.max(25,Math.min(500,dt)));}
+play.onclick=()=>{if(timer!==null){stop();return;}all.checked=false;play.textContent='暂停';timer=setTimeout(tick,0);};
+slider.oninput=()=>{stop();draw();};range.onchange=draw;all.onchange=()=>{stop();draw();};
+document.getElementById('save').onclick=()=>{const a=document.createElement('a');a.download='C1-point-cloud.png';a.href=canvas.toDataURL('image/png');a.click();};
+draw();
+</script></html>

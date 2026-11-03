@@ -1,0 +1,20 @@
+[Unit]
+Description=Show personal Hello World on the HDMI screen
+Requires=hello-lab.service
+Wants=weston-graphical-session.service
+After=hello-lab.service weston-graphical-session.service
+PartOf=weston-graphical-session.service
+StartLimitIntervalSec=120
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=weston
+Group=weston
+ExecStart=/opt/hello-lab/open-screen.sh
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target weston-graphical-session.service

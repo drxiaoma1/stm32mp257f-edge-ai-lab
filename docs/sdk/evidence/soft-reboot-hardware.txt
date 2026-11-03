@@ -1,0 +1,93 @@
+filename:       /lib/modules/6.6.78-gkc-sdk/updates/galcore.ko
+import_ns:      VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver
+license:        Dual MIT/GPL
+description:    Vivante Graphics Driver
+import_ns:      DMA_BUF
+alias:          of:N*T*Cvivante,gcC*
+alias:          of:N*T*Cvivante,gc
+depends:        
+name:           galcore
+vermagic:       6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+parm:           registerMemBase:Base of bus address of GC core AHB register (ulong)
+parm:           registerMemSize:Size of bus address range of GC core AHB register (ulong)
+parm:           registerMemBase2D:Base of bus address of G2D core, if registerMemBase2D is used for a G3D core (ulong)
+parm:           registerMemSize2D:Size of bus address range of G2D core, if registerMemSize is used for a G3D core (ulong)
+parm:           registerMemBaseVG:Base of bus address of VG core (ulong)
+parm:           registerMemSizeVG:Size of bus address range of VG core (ulong)
+parm:           registerBases:Array of bases of bus address of register of multi-core (array of ullong)
+parm:           registerSizes:Array of sizes of bus address range of register of multi-core (array of ulong)
+parm:           register2DBases:Array of bases of bus address of register of multi-2D (array of ullong)
+parm:           register2DSizes:Array of sizes of bus address range of register of multi-2D (array of ulong)
+parm:           registerAPB:The offset of APB register to the register base address. (uint)
+parm:           contiguousSize:Size of reserved system memory (ulong)
+parm:           contiguousBase:Base address of reserved system memory (ullong)
+parm:           contiguousSizes:Sizes of reserved system memory array (array of ulong)
+parm:           contiguousBases:Base addresses of reserved system memory array (array of ullong)
+parm:           externalSize:Size of external local memory, if it is 0, means there is no external pool (array of ulong)
+parm:           externalBase:Base address of external memory (array of ullong)
+parm:           exclusiveSize:Size of exclusive local memory, if it is 0, means there is no exclusive pool (array of ulong)
+parm:           exclusiveBase:Base address of exclusive memory(GPU access only) (array of ullong)
+parm:           irqLine:IRQ number of GC core (int)
+parm:           irqLine2D:IRQ number of G2D core if irqLine is used for a G3D core (int)
+parm:           irqLineVG:IRQ number of VG core (int)
+parm:           irqs:Array of IRQ numbers of multi-core (array of int)
+parm:           irq2Ds:Array of IRQ numbers of multi-2D (array of int)
+parm:           isrPoll:Bits isr polling for per-core, default 0'1b means disable, 1'1b means auto enable isr polling mode (ulong)
+parm:           platformIDs:Array of platform id of each hardware device (array of uint)
+parm:           hwDevCounts:Array of hw device count of each platform (array of uint)
+parm:           devCoreCounts:Array of core count of each hardware device (array of uint)
+parm:           dev2DCoreCounts:Array of core 2D count of each hardware device (array of uint)
+parm:           devMemIDs:Array of local memory index of each hardware device (array of uint)
+parm:           devSysMemIDs:Array of system reserved memory index of each hardware device, each bit represents memory id (array of uint)
+parm:           devSRAMIDs:Array of SRAM index of each hardware device, each bit represents memory id (array of uint)
+parm:           chipIDs:Array of chipIDs of multi-chips (array of uint)
+parm:           fastClear:Disable fast clear if set it to 0, enabled by default (int)
+parm:           compression:Disable compression if set it to 0, enabled by default (int)
+parm:           powerManagement:Disable auto power saving if set it to 0, enabled by default (int)
+parm:           recovery:Recover GPU from stuck (1: Enable, 0: Disable) (uint)
+parm:           stuckDump:Level of stuck dump content. (uint)
+parm:           debugLevel:Level of debug. (uint)
+parm:           showArgs:Display parameters value when driver loaded (int)
+parm:           userClusterMasks:Array of user defined per-core cluster enable mask (array of uint)
+parm:           enableNN:How many NN cores will be enabled in one VIP, 0xFF means all enabled, 0 means all disabled, 1 means enable 1 NN core... (uint)
+parm:           smallBatch:Enable/disable GPU small batch feature, enable by default (int)
+parm:           allMapInOne:Mapping kernel video memory to user, 0 means mapping every time, otherwise only mapping one time (int)
+parm:           softReset:Disable soft reset when insert the driver if set it to 0, enabled by default. (uint)
+parm:           sRAMLoopMode:Default 0 means SRAM pool must be specified when allocating SRAM memory, 1 means SRAM memory will be looped as default pool. (uint)
+parm:           sRAMBases:Array of base of bus address of SRAM,INTERNAL, EXTERNAL0, EXTERNAL1..., gcvINVALID_PHYSICAL_ADDRESS means no bus address (array of ullong)
+parm:           sRAMSizes:Array of size of per-core SRAMs, 0 means no SRAM (array of uint)
+parm:           extSRAMBases:Shared SRAM physical address bases. (array of ullong)
+parm:           extSRAMSizes:Shared SRAM sizes. (array of uint)
+parm:           sRAMRequested:Default 1 means AXI-SRAM is already reserved for GPU, 0 means GPU driver need request the memory region. (uint)
+parm:           mmu:Disable MMU if set it to 0, enabled by default (int)
+parm:           flatMapping:Flat mapping for reserve memory, enabled by default (int)
+parm:           mmuPageTablePool:Default 1 means alloc mmu page table in virtual memory(external if PCIE), 0 means auto select memory pool. (uint)
+parm:           mmuCmdPool:Default 1 means auto select memory pool to allocate mmu initial command, specific the pool type with gcvPOOL_XXXX (uint)
+parm:           mmuDynamicMap:Default 1 means enable mmu dynamic mapping in virsual memory, 0 means disable dynnamic mapping. (uint)
+parm:           sharedPageTable:Default 1 means all the cores in one HW device share one MMU page table, 0 means per core page table. (uint)
+parm:           processPageTable:Default 0 means the page table is shared by all the cores in one device or per-core. 1 means the page table is per-process. (uint)
+parm:           baseAddress:The pre-flatmapping CPU view base address in MMU page table. It's shared for all core (ulong)
+parm:           physSize:The pre-flatmapping size in MMU page table. If set it to 0, driver will skip all the pre-flatmapping related work (ulong)
+parm:           major:major device number for GC device (uint)
+parm:           type:0 - Char Driver (Default), 1 - Misc Driver (uint)
+parm:           vGPUType:0 - vGPU is disabled(Default), 1 - MDEV vGPU, 2 - SRIOV vGPU (uint)
+parm:           vGPUId:The vGPU id will be used set for debug register when the vGPU is enabled (uint)
+parm:           cmdQueueSizeByPage:The each kernel command queue page number (uint)
+Module                  Size  Used by
+ucsi_stm32g0           20480  0
+typec_ucsi             32768  1 ucsi_stm32g0
+typec                  90112  1 typec_ucsi
+rpmsg_ctrl             12288  0
+rpmsg_char             20480  1 rpmsg_ctrl
+virtio_rpmsg_bus       24576  0
+aes_neon_blk           24576  2
+algif_skcipher         12288  1
+hid_multitouch         28672  0
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.
+1024x600
+11a325c8b3b72bc56e61c3fc9496818b1bd5204bea2d5f393cd7a6aeb61690eb  /boot/Image.gz
+ec4d1feb373f8f354f2f18398bade8e0b3ad3ec0c281579ff91947a5da5e1242  /boot/Image-6.6.78-gkc-midterm.gz
+25f5a07388989dbaa3689915435c7c9b027cb10057c39b82ce76913551e00eeb  /boot/Image-6.6.78-gkc-sdk.gz
+d5d4b45be14773e969f5c1c5caa792dc4a2c99de648b94ab3bec78227bca46d9  /usr/local/bin/hello_world

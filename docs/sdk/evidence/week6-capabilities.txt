@@ -1,0 +1,31 @@
+WESTON_USER=weston
+Usage:
+  gst-play-1.0 [OPTION?] FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ...
+
+Help Options:
+  -h, --help                        Show help options
+  --help-all                        Show all help options
+  --help-gst                        Show GStreamer Options
+
+Application Options:
+  -v, --verbose                     Output status information and property notifications
+  --flags                           Control playback behaviour setting playbin 'flags' property
+  --version                         Print version information and exit
+  --videosink                       Video sink to use (default is autovideosink)
+  --audiosink                       Audio sink to use (default is autoaudiosink)
+  --gapless                         Enable gapless playback
+  --instant-uri                     Enable instantaneous uri changes (only with playbin3)
+  --shuffle                         Shuffle playlist
+  --no-interactive                  Disable interactive control via the keyboard
+  --volume                          Volume
+  -s, --start-position              Start position in seconds.
+  -a, --accurate-seeks              Enable accurate seeking
+  --playlist                        Playlist file containing input media files
+  -i, --instant-rate-changes        Use the experimental instant-rate-change flag when changing rate
+  -q, --quiet                       Do not print any output (apart from errors)
+  --use-playbin3                    Use playbin3 pipeline (default varies depending on 'USE_PLAYBIN' env variable)
+  --wait-on-eos                     Keep showing the last frame on EOS until quit or playlist change command (gapless is ignored)
+  --no-position                     Do not print current position of pipeline
+
+1024x600
+d156debb-c9b4-45a4-91e5-78ff5404c9a6

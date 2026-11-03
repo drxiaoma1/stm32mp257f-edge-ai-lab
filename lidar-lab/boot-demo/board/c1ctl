@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+case "${1:-status}" in
+    start|restart) systemctl restart c1-demo.service ;;
+    stop) systemctl stop c1-demo.service ;;
+    enable) systemctl enable c1-demo.service ;;
+    disable) systemctl disable --now c1-demo.service ;;
+    status)
+        printf 'Kernel: ';uname -r
+        printf 'Driver: ';modinfo -F vermagic cp210x
+        systemctl is-enabled c1-demo.service || true
+        systemctl is-active c1-demo.service || true
+        test ! -f /var/lib/c1-lab/latest/state.json || cat /var/lib/c1-lab/latest/state.json
+        ;;
+    result) readlink -f /var/lib/c1-lab/latest ;;
+    *) echo 'Usage: c1ctl start|stop|status|enable|disable|result' >&2;exit 2 ;;
+esac

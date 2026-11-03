@@ -1,0 +1,43 @@
+Excerpt of sdk-kernel-week6-interactive-raw.txt; repeated progress updates omitted.
+6.6.78-gkc-sdk
+Press 'k' to see a list of keyboard shortcuts.
+Now playing /usr/local/demo/media/ST2297_visionv3.webm
+Prerolling...
+Redistribute latency...
+Prerolled.
+Redistribute latency...
+
+
+Interactive mode - keyboard controls:
+
+	space    : pause/unpause
+	q or ESC : quit
+	> or n   : play next
+	< or b   : play previous
+	?        : seek forward
+	?        : seek backward
+	?        : volume up
+	?        : volume down
+	m        : toggle audio mute on/off
+	+        : increase playback rate
+	-        : decrease playback rate
+	d        : change playback direction
+	t        : enable/disable trick modes
+	A/a      : change to previous/next audio track
+	V/v      : change to previous/next video track
+	S/s      : change to previous/next subtitle track
+	0        : seek to beginning
+	k        : show keyboard shortcuts
+
+Redistribute latency...
+Prerolled.
+Redistribute latency...
+0:00:15.2 / 0:04:02.4 Paused
+Playback rate: 1.10
+Redistribute latency...
+Prerolled.
+Redistribute latency...
+Playback rate: 1.00
+Redistribute latency...
+Prerolled.
+Redistribute latency...

@@ -1,0 +1,24 @@
+make:
+  Installed: (none)
+  Candidate: 4.3-4.1build1
+  Version table:
+     4.3-4.1build1 500
+        500 https://archive.ubuntu.com/ubuntu jammy/main amd64 Packages
+file:
+  Installed: (none)
+  Candidate: 1:5.41-3ubuntu0.1
+  Version table:
+     1:5.41-3ubuntu0.1 500
+        500 https://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages
+        500 https://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages
+     1:5.41-3 500
+        500 https://archive.ubuntu.com/ubuntu jammy/main amd64 Packages
+xz-utils:
+  Installed: (none)
+  Candidate: 5.2.5-2ubuntu1.2
+  Version table:
+     5.2.5-2ubuntu1.2 500
+        500 https://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages
+        500 https://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages
+     5.2.5-2ubuntu1 500
+        500 https://archive.ubuntu.com/ubuntu jammy/main amd64 Packages

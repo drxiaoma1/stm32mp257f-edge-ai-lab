@@ -1,0 +1,32 @@
+tar: c1-boot-demo/99-c1-lidar.rules: time stamp 2026-10-27 09:28:25.9757218 is 846406792.24577355 s in the future
+tar: c1-boot-demo/SHA256SUMS: time stamp 2026-10-27 09:29:08.7904377 is 846406835.06015285 s in the future
+tar: c1-boot-demo/c1-demo.service: time stamp 2026-10-27 09:28:25.9751148 is 846406792.244621 s in the future
+tar: c1-boot-demo/c1-lidar.conf: time stamp 2026-10-27 09:28:25.9755065 is 846406792.244775325 s in the future
+tar: c1-boot-demo/c1_capture: time stamp 2026-10-27 09:28:53.6510737 is 846406819.868884525 s in the future
+tar: c1-boot-demo/c1_demo.py: time stamp 2026-10-27 09:28:25.9746919 is 846406792.192088925 s in the future
+tar: c1-boot-demo/c1ctl: time stamp 2026-10-27 09:28:25.9752932 is 846406792.192508125 s in the future
+tar: c1-boot-demo/cp210x.ko: time stamp 2026-10-27 09:28:53.6542845 is 846406819.870164225 s in the future
+tar: c1-boot-demo/install.sh: time stamp 2026-10-27 09:28:53.6957564 is 846406819.911264025 s in the future
+tar: c1-boot-demo/render_pointcloud.py: time stamp 2026-10-27 09:28:25.9743853 is 846406792.189716425 s in the future
+tar: c1-boot-demo/start-demo.sh: time stamp 2026-10-27 09:28:25.9749076 is 846406792.190086775 s in the future
+tar: c1-boot-demo/usbserial.ko: time stamp 2026-10-27 09:28:53.6556122 is 846406819.869068925 s in the future
+tar: c1-boot-demo: time stamp 2026-10-27 09:29:08.7903836 is 846406835.003317425 s in the future
+99-c1-lidar.rules: OK
+c1-demo.service: OK
+c1-lidar.conf: OK
+c1_capture: OK
+c1_demo.py: OK
+c1ctl: OK
+cp210x.ko: OK
+install.sh: OK
+render_pointcloud.py: OK
+start-demo.sh: OK
+usbserial.ko: OK
+Removed "/etc/systemd/system/multi-user.target.wants/hello-lab-screen.service".
+Removed "/etc/systemd/system/weston-graphical-session.service.wants/hello-lab-screen.service".
+Created symlink /etc/systemd/system/multi-user.target.wants/c1-demo.service -> /etc/systemd/system/c1-demo.service.
+Created symlink /etc/systemd/system/weston-graphical-session.service.wants/c1-demo.service -> /etc/systemd/system/c1-demo.service.
+Installed. Backup: /home/root/c1-demo-backup.EFjJm7
+Driver: 6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+C1: lrwxrwxrwx 1 root root 7 Jan  1 00:28 /dev/c1lidar -> ttyUSB0
+Start now: c1ctl start

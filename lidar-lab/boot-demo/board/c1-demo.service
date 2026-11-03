@@ -1,0 +1,23 @@
+[Unit]
+Description=Hello World then a 10-second C1 scan and point-cloud display
+Requires=hello-lab.service
+Wants=weston-graphical-session.service
+After=hello-lab.service weston-graphical-session.service systemd-udev-trigger.service
+PartOf=weston-graphical-session.service
+
+[Service]
+Type=simple
+User=weston
+Group=weston
+SupplementaryGroups=dialout
+StateDirectory=c1-lab
+StateDirectoryMode=0755
+UMask=0022
+ExecStart=/opt/c1-lab/start-demo.sh
+KillSignal=SIGINT
+KillMode=control-group
+TimeoutStopSec=10
+Restart=no
+
+[Install]
+WantedBy=multi-user.target weston-graphical-session.service

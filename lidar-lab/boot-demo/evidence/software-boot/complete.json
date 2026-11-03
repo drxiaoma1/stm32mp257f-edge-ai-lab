@@ -1,0 +1,28 @@
+{
+  "boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d",
+  "kernel": "6.6.78-gkc-sdk",
+  "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500",
+  "phase": "complete",
+  "seconds": 10,
+  "hello_exit_status": 0,
+  "hello_uptime_s": 35.05,
+  "capture_pid": 1621,
+  "scanning_uptime_s": 42.01,
+  "capture_exit_status": 0,
+  "rendering_uptime_s": 53.84,
+  "capture": {
+    "frames": 75,
+    "valid_points": 29262,
+    "below_0_05m": 0,
+    "timed": true,
+    "requested_seconds": 10.0,
+    "scan_window_seconds": 10.000723,
+    "samples": 37752,
+    "scan_rate_hz": 10.102033,
+    "first_record_s": 2.58092,
+    "last_record_s": 9.906178,
+    "stop_command_ok": true
+  },
+  "image": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500/pointcloud.png",
+  "complete_uptime_s": 58.5
+}

@@ -1,0 +1,11 @@
+hello world!
+Student: mingkang ma
+Student ID: 523031910621
+User space program: edge-ai midterm
+Running kernel: 6.6.78-gkc-midterm | Architecture: aarch64
+Boot ID: d156debb-c9b4-45a4-91e5-78ff5404c9a6
+Countdown: 3
+Countdown: 2
+Countdown: 1
+hello world completed successfully
+d5d4b45be14773e969f5c1c5caa792dc4a2c99de648b94ab3bec78227bca46d9  /home/root/hello_world-sdk

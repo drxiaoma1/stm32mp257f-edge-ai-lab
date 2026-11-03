@@ -1,0 +1,16 @@
+官方 SDK（已包含在 sdk/）
+MP2-DEV-x86 6.1.0 / OpenSTLinux v25.06.11
+https://www.st.com/en/embedded-software/stm32mp2dev.html#get-software
+SDK-x86_64-stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11.tar
+该文件由用户从 ST 官网下载；收到时为解开 gzip 外层的 .tar，内部官方安装器和许可保持原样。
+保留原始归档及随包许可；未包含任何私人下载 token 或邮箱验证链接。
+
+Ubuntu 离线小工具（offline-debs/）
+来自 Ubuntu Jammy / Jammy Updates / Jammy Security 官方仓库；通过 Ubuntu 签名索引解析版本。
+https://archive.ubuntu.com/ubuntu/
+https://security.ubuntu.com/ubuntu/
+包含 make、file、xz-utils 及所需的 libmagic、libbz2、liblzma、libzstd、zlib。
+安装时解包至 ~/.local/share/hello-lab-host-tools，不修改系统包管理器。
+各软件版权与许可仍保存在原始 .deb 的 usr/share/doc/*/copyright 内。
+
+本实验源码、Makefile、安装和显示脚本可以由小组成员修改后用于课程复现。

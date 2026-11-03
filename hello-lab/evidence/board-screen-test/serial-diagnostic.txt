@@ -1,0 +1,6 @@
+
+HOST TIME 2026-10-26 18:10:06 +0800
+Retrieving file: /st-image-resize-initrd
+append: root=PARTUUID=e91c4e10-16e6-4c0e-bd0e-77becf4a3582 rootwait rw   earlycon console=ttySTM0,115200
+Retrieving file: /gkc-sdk/stm32mp257f-dk.dtb
+   Uncompressing Kernel Image

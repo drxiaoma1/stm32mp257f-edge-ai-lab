@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-27",
+  "name": "mingkang ma",
+  "student_id": "523031910621",
+  "model": "RPLIDAR C1M1",
+  "board": "STM32MP257F-DK",
+  "kernel": "6.6.78-gkc-sdk",
+  "scans": 100,
+  "samples": 50395,
+  "valid_points": 39986,
+  "valid_percent": 79.34517313225518,
+  "scan_rate_hz": 10.090792671515954,
+  "min_distance_m": 0.163,
+  "max_distance_m": 5.278,
+  "selected_scan_id": 50,
+  "selected_scan_valid_points": 405,
+  "csv_sha256": "8115fac8dd1bd24e044869cd86b6466a8515d68a7eb8a07ea4b75b59b00380f1",
+  "coordinates": "x=r*cos(theta), y=-r*sin(theta), z=0; SDK theta is clockwise; SDK zero is +x.",
+  "meaning": "Actual 2D lidar scans, no pose estimation or SLAM; stacked scans are not a reconstructed map."
+}
