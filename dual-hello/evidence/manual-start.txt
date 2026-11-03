@@ -1,0 +1,6 @@
+
+HOST TIME 2026-11-03 16:36:19 +0800
+cat /dev/hello_kernel; dmesg | grep 
+"\[kernel\] hello, world"; c1ctl start
+[kernel] hello, world (hello_kernel_init, boot +348.392s)
+[  348.876101] [kernel] hello, world (hello_kernel_init, boot +348.392s)
