@@ -1,3 +1,5 @@
+**English** | [简体中文](README.zh-CN.md)
+
 # STM32MP257F-DK: Linux, Hello World and C1 LiDAR
 
 ```text
