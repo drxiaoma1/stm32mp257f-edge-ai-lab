@@ -18,7 +18,7 @@ __pycache__/
 **/output/*
 !**/output/build.log
 **/obj/
-**/hello_world
+**/hello-example/hello_world
 **/simple_grabber
 **/ultra_simple
 **/c1_capture
