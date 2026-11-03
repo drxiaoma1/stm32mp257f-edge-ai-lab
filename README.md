@@ -21,7 +21,7 @@ The author order is intentionally unassigned. All members must confirm the final
 
 This report covers work **after the board was flashed**. The tested release is OpenSTLinux **v25.06.11**, with the self-built kernel **6.6.78-gkc-sdk**. The teacher's sample uses `6.6.116 / r3` as an example; this project retains the tested `6.6.78 / r2` source, SDK, device trees and modules as a matched set.
 
-**Repository:** [drxiaoma1/stm32mp257f-edge-ai-lab](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab) (personal account; private).
+**Repository:** [drxiaoma1/stm32mp257f-edge-ai-lab](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab) (personal account; public). Teachers and group members can view the source and download release attachments without a repository invitation.
 
 **Submission binaries:** [v1.0-midterm release](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.0-midterm). Download `STM32MP257F-Midterm-Submission.zip`, extract it, then run `sha256sum -c SHA256SUMS` in the extracted directory. Git stores source and evidence; the release ZIP supplies the compiled kernel, executables, modules and board installers. The release also supplies the standalone `Image`, `Image.gz`, and their checksum list.
 
@@ -416,7 +416,7 @@ The screenshots above were captured from the board's actual HDMI output. `eviden
 | Deployment archives | `packages/` |
 | Observed operation and output | `evidence/`, `SHA256SUMS` |
 
-Fill in the project name, group number and confirmed member order before handing in the report. The private GitHub repository must be made accessible to the intended reviewers using the owner's account. A private repository link alone does not grant access: invite the teacher's GitHub account and have them accept the invitation before assessment, or provide the submission ZIP through the course's submission channel. If the owner chooses to make the repository public, anyone can view its contents, including the displayed name, student ID and experiment evidence.
+Fill in the project name, group number and confirmed member order before handing in the report. The owner has made the repository public for teacher review. Share the repository and release links with the teacher, and submit the ZIP through the course's submission channel if required. The source, release attachments, displayed name, student ID and experiment evidence are publicly accessible.
 
 ### Corrected defect discovered during the touchscreen trial
 
