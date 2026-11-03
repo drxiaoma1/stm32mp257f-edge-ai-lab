@@ -1,0 +1,2 @@
+PASS: SDK empty-frame error 0x80008001 reproduced; empty/zero-count/mixed frames handled.
+PASS: all-invalid live frame renders empty axes without exiting or replaying old points.

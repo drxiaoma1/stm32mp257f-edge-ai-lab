@@ -3,6 +3,11 @@ set -eu
 case "${1:-status}" in
     start|restart) systemctl restart c1-demo.service ;;
     stop) systemctl stop c1-demo.service ;;
+    home|scan)
+        mode=--home
+        if [ "$1" = scan ]; then mode=--manual; fi
+        runuser -u weston -- /opt/c1-lab/open-c1-app.sh "$mode"
+        ;;
     enable) systemctl enable c1-demo.service ;;
     disable) systemctl disable --now c1-demo.service ;;
     status)
@@ -13,5 +18,5 @@ case "${1:-status}" in
         test ! -f /var/lib/c1-lab/latest/state.json || cat /var/lib/c1-lab/latest/state.json
         ;;
     result) readlink -f /var/lib/c1-lab/latest ;;
-    *) echo 'Usage: c1ctl start|stop|status|enable|disable|result' >&2;exit 2 ;;
+    *) echo 'Usage: c1ctl start|stop|home|scan|status|enable|disable|result' >&2;exit 2 ;;
 esac

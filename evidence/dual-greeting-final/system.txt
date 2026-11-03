@@ -1,0 +1,20 @@
+Linux stm32mp2-e3-ab-b8 6.6.78-gkc-sdk #1 SMP PREEMPT Sun Oct 25 21:23:42 CST 2026 aarch64 GNU/Linux
+filename:       /lib/modules/6.6.78-gkc-sdk/extra/hello_kernel.ko
+version:        1.0
+description:    Kernel-space boot greeting with a read-only display device
+author:         mingkang ma
+license:        GPL
+srcversion:     9E23B6BEA36808F59A0EF5F
+depends:        
+name:           hello_kernel
+vermagic:       6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+cr--r--r-- 1 root root 10, 124 Jan  1 00:34 /dev/hello_kernel
+enabled
+enabled
+Result=success
+ExecStart={ path=/sbin/modprobe ; argv[]=/sbin/modprobe hello_kernel ; ignore_errors=no ; start_time=[Sat 2000-01-01 00:34:06 UTC] ; stop_time=[Sat 2000-01-01 00:34:07 UTC] ; pid=799 ; code=exited ; status=0 }
+ExecStart={ path=/bin/sh ; argv[]=/bin/sh -c test -c /dev/hello_kernel ; ignore_errors=no ; start_time=[Sat 2000-01-01 00:34:07 UTC] ; stop_time=[Sat 2000-01-01 00:34:07 UTC] ; pid=870 ; code=exited ; status=0 }
+6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+hello_kernel           12288  0
+cp210x                 36864  0
+usbserial              53248  1 cp210x

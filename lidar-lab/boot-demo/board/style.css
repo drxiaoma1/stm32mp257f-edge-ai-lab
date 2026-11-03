@@ -1,0 +1,17 @@
+window { background: #0d1d2b; color: #e8f2f6; font-family: Sans; font-size: 18px; }
+.header { padding: 10px 16px; background: #152c3d; }
+.title { font-size: 20px; font-weight: bold; }
+.hero { font-size: 28px; font-weight: bold; }
+.footer { padding: 12px 24px; background: #152c3d; color: #b5cbd6; font-size: 16px; }
+button { background-image: none; background-color: #213e51; color: #eefaff; border: 1px solid #436273; border-radius: 14px; padding: 12px 22px; font-size: 20px; box-shadow: none; text-shadow: none; }
+button:hover { background-color: #2b526a; }
+button:active { background-color: #166475; }
+button:disabled { color: #6b8190; background-color: #1b303f; border-color: #304553; }
+.scan-card { background-color: #126273; border-color: #47ccd1; }
+.scan-card:hover { background-color: #187888; }
+.terminal { background-color: #091521; color: #afead6; font-family: Monospace; font-size: 19px; padding: 14px; }
+progressbar trough { min-height: 16px; background-color: #213e51; border-radius: 8px; }
+progressbar progress { min-height: 16px; background-color: #47ccd1; border-radius: 8px; }
+progressbar text { color: #e8f2f6; padding: 8px; }
+
+button.stop { background-color: #a33b33; border-color: #ed9a8c; color: #fff; }

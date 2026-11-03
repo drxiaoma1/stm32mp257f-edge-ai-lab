@@ -1,0 +1,26 @@
+{
+  "boot_id": "b47220a7-a6c4-4049-a817-27606b6d28a8",
+  "kernel": "6.6.78-gkc-sdk",
+  "kernel_transport": "kernel",
+  "kernel_print_count": 1,
+  "kernel_print_uptime_s": 4.99384,
+  "user_transport": "stdout",
+  "user_print_count": 1,
+  "user_print_uptime_s": 34.928171,
+  "user_pid": "1532",
+  "stdout_collector_pid": "1378",
+  "user_uid": "1000",
+  "hello_exit_status": 0,
+  "lidar_phase": "complete",
+  "lidar_error": null,
+  "hello_two_contexts_passed": true
+}
+/home/root/hello-lab-screen-evidence/final-boot-result.png
+Linux stm32mp2-e3-ab-b8 6.6.78-gkc-sdk #1 SMP PREEMPT Sun Oct 25 21:23:42 CST 2026 aarch64 GNU/Linux
+6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+25f5a07388989dbaa3689915435c7c9b027cb10057c39b82ce76913551e00eeb  /boot/Image-6.6.78-gkc-sdk.gz
+194fe6b4b08f0f9511f9b27e3e94a75a8b8a7f603d6ffa033f7d8fe497983124  /opt/hello-lab/hello_world
+c78236e6d45e54d783c8ba906c042eeb0ea8503b4db0caa4b387cabf42b8be3e  /opt/c1-lab/c1_capture
+0560353d8f441a445b55ee52030cf0dfb1ce8079d65295945d609d8eae1708c2  /opt/c1-lab/c1_live
+lrwxrwxrwx 1 root root 7 Jan  1 00:34 /dev/c1lidar -> ttyUSB0

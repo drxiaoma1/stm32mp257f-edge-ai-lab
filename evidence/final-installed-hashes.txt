@@ -1,0 +1,4 @@
+active
+c78236e6d45e54d783c8ba906c042eeb0ea8503b4db0caa4b387cabf42b8be3e  /opt/c1-lab/c1_capture
+0560353d8f441a445b55ee52030cf0dfb1ce8079d65295945d609d8eae1708c2  /opt/c1-lab/c1_live
+e21cefc8933fce54c6f86345bd11492b818ab1c0277225e03f09be27e56bdff6  /usr/local/demo/application/c1-lidar/start-live.sh

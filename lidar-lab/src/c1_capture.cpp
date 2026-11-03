@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include "sl_lidar.h"
 #include "sl_lidar_driver.h"
+#include "scan_validity.h"
 
 static volatile sig_atomic_t interrupted = 0;
 static void interrupt_handler(int) { interrupted = 1; }
@@ -109,7 +110,8 @@ int main(int argc, char** argv) {
             }
             failures = 0;
             if (warmup++ < 5) continue;
-            check(drv->ascendScanData(nodes, count), "ascendScanData");
+            if (count == 0) continue;
+            check(prepare_measured_scan(*drv, nodes, count), "prepare_measured_scan");
             double elapsed = std::chrono::duration<double>(Clock::now() - start).count();
             if (frames == 0) first = elapsed;
             last = elapsed;

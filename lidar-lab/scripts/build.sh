@@ -21,11 +21,11 @@ rm -rf "$work/sdk/.git" "$work/sdk/obj" "$work/sdk/output"
     CC="$CC" CXX="$CXX" AR="$AR" LD="$LD" BUILD_TARGET_ARCH=aarch64 V=1
   cp output/Linux/Release/ultra_simple output/Linux/Release/simple_grabber \
      output/Linux/Release/libsl_lidar_sdk.a "$lab/output/"
-  if [ -f "$lab/src/c1_capture.cpp" ]; then
-    $CXX $CXXFLAGS -std=c++11 -Wall -Wextra -I sdk/include \
-      "$lab/src/c1_capture.cpp" output/Linux/Release/libsl_lidar_sdk.a \
-      $LDFLAGS -lpthread -lrt -o "$lab/output/c1_capture"
-  fi
+  for program in c1_capture c1_live; do
+    $CXX $CXXFLAGS -std=c++11 -Wall -Wextra -Werror -Wno-ignored-attributes -I sdk/include \
+      "$lab/src/$program.cpp" output/Linux/Release/libsl_lidar_sdk.a \
+      $LDFLAGS -lpthread -lrt -o "$lab/output/$program"
+  done
   $READELF -h "$lab/output/ultra_simple"
   $READELF -d "$lab/output/ultra_simple"
   printf 'BUILD PASSED\n'

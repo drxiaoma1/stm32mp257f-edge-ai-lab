@@ -1,0 +1,17 @@
+{
+  "boot_id": "9aa1c35f-ee6a-4db2-8ea8-9962b34c7569",
+  "kernel": "6.6.78-gkc-sdk",
+  "kernel_transport": "kernel",
+  "kernel_print_count": 1,
+  "kernel_print_uptime_s": 5.061239,
+  "user_transport": "stdout",
+  "user_print_count": 1,
+  "user_print_uptime_s": 35.1715,
+  "user_pid": "1535",
+  "stdout_collector_pid": "1373",
+  "user_uid": "1000",
+  "hello_exit_status": 0,
+  "lidar_phase": "complete",
+  "lidar_error": null,
+  "hello_two_contexts_passed": true
+}

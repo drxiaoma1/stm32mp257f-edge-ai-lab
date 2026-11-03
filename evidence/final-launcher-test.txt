@@ -1,0 +1,7 @@
+Injected evdev touch at 944, 35
+Injected evdev touch at 380, 390
+/home/root/hello-lab-screen-evidence/native-live-fixed.png
+Injected evdev touch at 832, 35
+Injected evdev touch at 65, 35
+/home/root/hello-lab-screen-evidence/native-home-fixed.png
+{"mode":"continuous","execution_context":"user space","elapsed_seconds":5.801451,"total_frames":32,"total_samples":15967,"total_valid_points":13395,"display_frames":3,"last_frame_elapsed_seconds":4.712967,"last_frame_samples":507,"last_frame_valid_points":431,"stop_requested":true,"stop_command_ok":true,"refresh_target_hz":1}

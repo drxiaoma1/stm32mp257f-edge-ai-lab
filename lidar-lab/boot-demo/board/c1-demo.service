@@ -1,5 +1,5 @@
 [Unit]
-Description=Hello World then a 10-second C1 scan and point-cloud display
+Description=Hello World, one boot C1 scan, and a touch-controlled C1 application
 Requires=hello-lab.service
 Wants=weston-graphical-session.service
 After=hello-lab.service weston-graphical-session.service systemd-udev-trigger.service

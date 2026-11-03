@@ -1,0 +1,25 @@
+C1 point-cloud experiment | mingkang ma | 523031910621
+SDK: 2.1.0
+Port: /dev/c1lidar @ 460800, 8N1
+Model: C1M1 (0x41)
+Serial: 8BEFE0F8C6E599D6B5E29FF6083A4D19
+Firmware: 1.02
+Hardware: 18
+Health: 0 (0=OK); error_code=0
+Supported mode 0: Standard; 200.0 us/sample; 16.0 m maximum
+Supported mode 1: DenseBoost; 200.0 us/sample; 40.0 m maximum
+Selected mode: DenseBoost; target seconds: 10.000
+Scan read failed: 0x80008002
+Scan 1: 408 samples, 270 valid; elapsed 2.659 / 10.000 s
+Scan 10: 529 samples, 383 valid; elapsed 3.506 / 10.000 s
+Scan 20: 508 samples, 384 valid; elapsed 4.526 / 10.000 s
+Scan 30: 505 samples, 399 valid; elapsed 5.521 / 10.000 s
+Scan 40: 509 samples, 390 valid; elapsed 6.518 / 10.000 s
+Scan 50: 511 samples, 383 valid; elapsed 7.522 / 10.000 s
+Scan 60: 510 samples, 379 valid; elapsed 8.517 / 10.000 s
+Scan 70: 509 samples, 392 valid; elapsed 9.521 / 10.000 s
+Summary: 74 scans, 37421 samples, 28230 valid, 10.052 Hz
+Scan window: 10.000975 seconds (steady clock)
+Saved: /var/lib/c1-lab/boots/b47220a7-a6c4-4049-a817-27606b6d28a8/automatic/scan.csv
+CAPTURE PASSED
+Scan stopped; channel disconnected.

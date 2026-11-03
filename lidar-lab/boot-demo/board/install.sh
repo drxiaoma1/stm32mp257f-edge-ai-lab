@@ -18,9 +18,15 @@ for path in /etc/systemd/system/c1-demo.service /etc/udev/rules.d/99-c1-lidar.ru
     if [ -f "$path" ]; then cp -p "$path" "$backup/"; fi
 done
 systemctl stop c1-demo.service 2>/dev/null || true
-systemctl disable --now hello-lab-screen.service
+systemctl disable --now hello-lab-screen.service 2>/dev/null || true
 install -d /opt/c1-lab /etc/modules-load.d /etc/udev/rules.d
-install -m 755 c1_capture c1_demo.py render_pointcloud.py start-demo.sh /opt/c1-lab/
+install -m 755 c1_capture c1_live c1_demo.py render_pointcloud.py start-demo.sh open-c1-app.sh /opt/c1-lab/
+install -m 644 style.css c1-icon.png /opt/c1-lab/
+install -d /usr/local/demo/application/c1-lidar /usr/share/applications
+install -m 644 c1-icon.png /usr/local/demo/application/c1-lidar/
+install -m 755 start-live.sh /usr/local/demo/application/c1-lidar/
+install -m 644 050-c1-lidar.yaml /usr/local/demo/gtk-application/
+install -m 644 c1-lidar.desktop /usr/share/applications/
 install -m 755 c1ctl /usr/bin/c1ctl
 install -m 644 c1-demo.service /etc/systemd/system/
 install -m 644 c1-lidar.conf /etc/modules-load.d/

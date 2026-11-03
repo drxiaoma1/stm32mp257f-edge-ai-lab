@@ -1,0 +1,12 @@
+Application:
+    Name: C1 Lidar
+    Description: Live scan
+    Icon: application/c1-lidar/c1-icon.png
+    Type: script
+    Board:
+        List: all
+    Script:
+        Start: application/c1-lidar/start-live.sh
+    Action:
+        button_release_event: script_start
+        button_press_event: highlight_eventBox

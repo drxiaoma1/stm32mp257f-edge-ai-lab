@@ -1,0 +1,22 @@
+6.6.78-gkc-sdk
+cp210x                 36864  0
+usbserial              53248  1 cp210x
+lrwxrwxrwx 1 root root 7 Jan  8 18:42 /dev/c1lidar -> ttyUSB0
+6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+[   32.194362] vddio3: disabling
+[   32.194442] vddio4: disabling
+[   32.194710] vdda18adc: disabling
+[   32.197974] v5v_vconn: disabling
+[ 1152.529683] usbserial: USB Serial deregistering driver cp210x
+[ 1152.530658] cp210x ttyUSB0: cp210x converter now disconnected from ttyUSB0
+[ 1152.544222] usbcore: deregistering interface driver cp210x
+[ 1152.544807] cp210x 1-1.2:1.0: device disconnected
+[ 1152.627837] usbcore: registered new interface driver cp210x
+[ 1152.627932] usbserial: USB Serial support registered for cp210x
+[ 1152.634259] cp210x 1-1.2:1.0: cp210x converter detected
+[ 1152.642905] usb 1-1.2: cp210x converter now attached to ttyUSB0
+25f5a07388989dbaa3689915435c7c9b027cb10057c39b82ce76913551e00eeb  /boot/Image-6.6.78-gkc-sdk.gz
+194fe6b4b08f0f9511f9b27e3e94a75a8b8a7f603d6ffa033f7d8fe497983124  /opt/hello-lab/hello_world
+b4eb64a2bdbeca7538e86e5f47b99a0fb1eef36337cacd1a38957244b8480342  /opt/c1-lab/c1_capture
+c938c5a5405a7309df1f2b7009be5e908bb4e5b6c020c7c0d8a2ceae54538bf0  /opt/c1-lab/c1_live
+root=PARTUUID=e91c4e10-16e6-4c0e-bd0e-77becf4a3582 rootwait rw   earlycon console=ttySTM0,115200

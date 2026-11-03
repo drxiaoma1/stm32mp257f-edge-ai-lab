@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=C1 Lidar
+Comment=Continuous C1 scan with a live point-cloud display
+Exec=/opt/c1-lab/open-c1-app.sh --manual
+Icon=/opt/c1-lab/c1-icon.png
+Terminal=false
+Categories=Education;Science;
