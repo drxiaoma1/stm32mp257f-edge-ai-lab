@@ -8,6 +8,7 @@ Date        : 2026-11-03
 Project     : [PROJECT NAME TO BE FILLED IN]
 Group No.   : [GROUP NUMBER TO BE FILLED IN]
 Author      : [Name 1] [Name 2] [Name 3] [Name 4] [Name 5] [Name 6]
+AI co-author: Codex (OpenAI)
 Description : Rebuild and boot Linux; print Hello World in kernel and user space;
               load the C1 USB serial driver; acquire, display and control LiDAR
               data through a touchscreen application.
@@ -15,6 +16,8 @@ Description : Rebuild and boot Linux; print Hello World in kernel and user space
 ```
 
 The author order is intentionally unassigned. All members must confirm the final roster and order before submission. The executable currently displays the demonstration identity **mingkang ma / 523031910621**; this is separate from the group roster.
+
+**AI contribution disclosure:** Codex (OpenAI) contributed to the environment setup, build and deployment scripts, kernel and user-space greetings, C1 acquisition and touchscreen application, debugging, automated checks, and English documentation under the experimenter's direction. The human experimenter connected the hardware, performed the requested physical power cycles, observed the display and touch behavior, and confirmed the experimental results. Codex is credited as an AI co-author and technical contributor; the student member roster and order remain reserved for the group.
 
 This report covers work **after the board was flashed**. The tested release is OpenSTLinux **v25.06.11**, with the self-built kernel **6.6.78-gkc-sdk**. The teacher's sample uses `6.6.116 / r3` as an example; this project retains the tested `6.6.78 / r2` source, SDK, device trees and modules as a matched set.
 
@@ -413,7 +416,7 @@ The screenshots above were captured from the board's actual HDMI output. `eviden
 | Deployment archives | `packages/` |
 | Observed operation and output | `evidence/`, `SHA256SUMS` |
 
-Fill in the project name, group number and confirmed member order before handing in the report. The private GitHub repository must be made accessible to the intended reviewers using the owner's account.
+Fill in the project name, group number and confirmed member order before handing in the report. The private GitHub repository must be made accessible to the intended reviewers using the owner's account. A private repository link alone does not grant access: invite the teacher's GitHub account and have them accept the invitation before assessment, or provide the submission ZIP through the course's submission channel. If the owner chooses to make the repository public, anyone can view its contents, including the displayed name, student ID and experiment evidence.
 
 ### Corrected defect discovered during the touchscreen trial
 
