@@ -7,26 +7,26 @@
 ```text
 /**************** (C) COPYRIGHT 2026 ShangHai Jiao Tong University ****************
 文件名称    : README.zh-CN.md（中文版）
-版本        : V1.1
+版本        : V1.2
 日期        : 2026-11-10
-项目名称    : [待填写]
-项目组号    : [待填写]
-作者        : [姓名 1] [姓名 2] [姓名 3] [姓名 4] [姓名 5] [姓名 6]
+项目名称    : stm32mp257f-edge-ai-lab
+项目组号    : 1
+作者        : 马铭康、张宇浩、葛树翰、周宇、孙铭阳
 AI 共同作者 : Codex (OpenAI)
 项目说明    : 重新编译并启动 Linux；在内核空间和用户空间分别打印 Hello World；
               加载 C1 的 USB 串口驱动；通过触摸屏程序采集、显示和控制雷达数据。
 ********************************************************************************/
 ```
 
-组员姓名与排列顺序暂未确定，提交前需由全体组员确认。当前程序中的演示身份为 **mingkang ma / 523031910621**，与项目组作者名单分开填写。
+项目组号为 **1**。按项目负责人提供的顺序署名：**马铭康、张宇浩、葛树翰、周宇、孙铭阳**。当前程序中的演示身份为 **mingkang ma / 523031910621**，与完整项目组作者名单分开记录。
 
-**AI 贡献说明：** Codex（OpenAI）在实验者指导下，参与了环境配置、编译与部署脚本、内核和用户空间问候程序、C1 数据采集与触屏程序、问题排查、自动检查及英文文档编写。硬件接线、要求进行的实际断电上电、屏幕与触摸效果观察以及实验结果确认由人类实验者完成。Codex 作为 AI 共同作者和技术贡献者署名；学生组员名单与排序由项目组自行确定。
+**AI 贡献说明：** Codex（OpenAI）在实验者指导下，参与了环境配置、编译与部署脚本、内核和用户空间问候程序、C1 数据采集与触屏程序、问题排查、自动检查及英文文档编写。硬件接线、要求进行的实际断电上电、屏幕与触摸效果观察以及实验结果确认由人类实验者完成。Codex 作为 AI 共同作者和技术贡献者署名；以上学生名单与排序按项目负责人提供的信息填写。
 
 本报告记录的是**板卡刷机完成之后**的工作。已测试的系统版本为 OpenSTLinux **v25.06.11**，自行编译的内核版本为 **6.6.78-gkc-sdk**。内核源码、SDK、设备树和模块使用已经验证的配套版本。
 
 **项目仓库：** [drxiaoma1/stm32mp257f-edge-ai-lab](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab)，属于个人账号，已公开。老师和组员无需仓库邀请即可查看源码、下载发布附件。
 
-**编译产物与提交包：** [v1.1-final 发布页](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.1-final)。下载并解压 `STM32MP257F-Final-Submission.zip`，在解压后的目录运行 `sha256sum -c SHA256SUMS` 校验文件。Git 仓库与发布 ZIP 均包含最终源码、实验记录、编译好的内核、可执行文件、模块和板端安装程序。发布页也单独提供 `Image`、`Image.gz` 及其校验清单。
+**编译产物与提交包：** [v1.2-final 发布页](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.2-final)。下载并解压 `STM32MP257F-Final-Submission.zip`，在解压后的目录运行 `sha256sum -c SHA256SUMS` 校验文件。Git 仓库与发布 ZIP 均包含最终源码、实验记录、编译好的内核、可执行文件、模块和板端安装程序。发布页也单独提供 `Image`、`Image.gz` 及其校验清单。
 
 **建议先查看[提交文件核对表](SUBMISSION-CHECKLIST.md)。** 核对表逐项对应老师的五项要求，并给出文件路径和最终实验记录。`artifacts/` 直接提供必交编译产物，`packages/` 提供配套部署包。本目录只描述一套完整实现：内核问候 → 用户问候 → 开机自动扫描 10 秒 → 触屏控制持续扫描。
 
@@ -240,6 +240,27 @@ Kernel: 6.6.78-gkc-sdk
 
 驱动输出保存在内核日志中。用户消息出现在应用的标准输出日志和 BusyBox 的 `/var/log/messages` 中；本板无法通过 `journalctl -t hello_user` 获取这条 syslog 记录。使用 `dual-hello/board/verify.sh` 检查两种执行环境、启动 ID、身份和先后顺序。
 
+### 将内核问候与普通内核日志一起查看
+
+第一句是真实内核日志：`hello_kernel_init()` 调用 `pr_info`，保存的[日志记录](evidence/dual-greeting-final/kernel.jsonl) 中有 `_TRANSPORT=kernel`、`SYSLOG_IDENTIFIER=kernel`、`PRIORITY=6`。最终启动记录中，内核问候发生在约 +4.994 秒，用户问候约在 +34.928 秒。模块在系统启动、PID 1 已运行后加载，并未直接编入 `Image` 的早期启动阶段。
+
+当前屏幕展示的是 GTK 应用。它通过 `/dev/hello_kernel` 读取已经产生的内核问候，再显示 Hello 程序输出，**不会展示完整内核启动日志**。同样，`dual-hello/board/verify.sh` 保存精简证据时会筛选日志；筛选只影响保存的证据文件，不会删除系统日志或内核缓冲区中的消息。
+
+提交的内核启用了 `CONFIG_PRINTK=y`、`CONFIG_SERIAL_STM32_CONSOLE=y`，默认控制台日志级别为 `CONFIG_CONSOLE_LOGLEVEL_DEFAULT=7`；没有启用 `CONFIG_FRAMEBUFFER_CONSOLE` 和 `CONFIG_DRM_FBDEV_EMULATION`。已记录配置把控制台指向 115200 波特率的 `ttySTM0`。部署脚本保留原有控制台参数，项目脚本没有清空内核日志，也没有添加 `quiet`/`loglevel` 来抑制输出。因此普通内核日志仍然保留，但没有配置 HDMI 原生启动文字控制台。
+
+设备拿回后，可查看**不经过筛选**的内核日志，让这句问候与普通驱动、启动消息出现在一起：
+
+```sh
+journalctl -b -k --no-pager -o short-monotonic
+dmesg
+cat /proc/cmdline
+cat /proc/sys/kernel/printk
+```
+
+以上是只读检查命令，不代表本次已经执行的新测试。如需观察实时启动过程，可在上电前以 **115200 8N1** 记录 ST-LINK 串口输出；实际控制台输出还取决于当时的日志级别，`pr_info` 的级别为 6。原理见 [Linux printk 官方文档](https://docs.kernel.org/core-api/printk-basics.html)。
+
+已有最终证据能证明消息来源于内核，但它经过筛选，并非完整的未筛选启动记录。设备不在手边，本次没有新增串口或 HDMI 实录。若考核要求在 HDMI 显示屏上直接滚动显示原生内核启动日志，目前尚未实现或验证这种显示方式。本次只补充文档说明，不改变实验程序或启动配置。
+
 ## STEP 3 — 将 C1 驱动模块 insmod 进 Linux
 
 USB 转接器使用的**内核驱动**是 `cp210x`，依赖 `usbserial`。**思岚 SDK 是用户空间库**，链接到采集程序中，不是 `.ko` 文件，也不能用 `insmod` 加载。
@@ -404,7 +425,7 @@ C1 是 **二维**扫描雷达。有效点要求距离和质量值均大于零。
 | 部署归档 | `packages/` |
 | 运行记录与输出 | `evidence/`、`SHA256SUMS` |
 
-提交前填写项目名称、组号和已确认的组员顺序。仓库已由所有者设为公开，供老师查看。向老师提供仓库与发布页链接，并按课程要求另行提交 ZIP。源码、发布附件、演示姓名、学号和实验记录均已公开。
+仓库已由所有者设为公开，供老师查看。向老师提供仓库与发布页链接，并按课程要求另行提交 ZIP。源码、发布附件、演示姓名、学号和实验记录均已公开。
 
 ### 无效回波与通信错误的处理
 
@@ -417,7 +438,7 @@ sha256sum -c SHA256SUMS
 python3 scripts/verify-submission.py
 ```
 
-核验程序检查必交文件、SHA-256、AArch64 可执行文件和模块格式、内核与模块版本、镜像压缩内容、嵌套安装包内容，以及与最终硬件记录中哈希值的一致性。[SUBMISSION-CHECKLIST.md](SUBMISSION-CHECKLIST.md) 和 [SUBMISSION-AUDIT.json](SUBMISSION-AUDIT.json) 提供清单与核验结果。这是文件包检查，不代表新增硬件实测。目前仅需由组员补填项目名称、组号和确认后的作者顺序。
+核验程序检查必交文件、SHA-256、AArch64 可执行文件和模块格式、内核与模块版本、镜像压缩内容、嵌套安装包内容，以及与最终硬件记录中哈希值的一致性。[SUBMISSION-CHECKLIST.md](SUBMISSION-CHECKLIST.md) 和 [SUBMISSION-AUDIT.json](SUBMISSION-AUDIT.json) 提供清单与核验结果。这是文件包检查，不代表新增硬件实测。项目名称、组号和组员署名顺序已填写。
 
 ## 参考资料与来源
 

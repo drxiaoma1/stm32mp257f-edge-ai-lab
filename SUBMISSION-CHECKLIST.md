@@ -4,7 +4,7 @@
 
 Audit date: **2026-11-10**. Runtime: **Linux 6.6.78-gkc-sdk** on STM32MP257F-DK.
 
-**All five required deliverable groups are present.** The files below are included directly in this repository and in the [final release ZIP](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.1-final). The ZIP is an installable project bundle, not a complete SD-card image.
+**All five required deliverable groups are present.** The files below are included directly in this repository and in the [final release ZIP](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.2-final). The ZIP is an installable project bundle, not a complete SD-card image.
 
 | Teacher's requirement | Submitted files | Final verification evidence |
 |---|---|---|
@@ -46,6 +46,13 @@ The final application has software-reboot, touch-control and continuous-scan evi
 
 The official OpenSTLinux SDK installer is a separately licensed build prerequisite, not one of the required submission binaries. The report provides its exact version and host-architecture selection. The original RPLIDAR SDK sources and their license notices are included under `lidar-lab/vendor/`.
 
-## Fields for the group to complete
+## Project and authors
 
-Only the **project name, group number, student names and confirmed author order** remain intentionally blank. Fill them into the English report before assessment. The program's demonstration identity is **mingkang ma / 523031910621**. Codex is acknowledged separately as an AI contributor.
+- **Project:** stm32mp257f-edge-ai-lab
+- **Group:** 1
+- **Student author order:** Mingkang Ma, Yuhao Zhang, Shuhan Ge, Yu Zhou, Mingyang Sun.
+- **AI contributor:** Codex (OpenAI), credited separately.
+
+The roster follows the order supplied by the project owner. The program's demonstration identity remains **mingkang ma / 523031910621**.
+
+The first greeting is recorded as a kernel-origin journal entry. The GTK screen and compact evidence file show the selected greeting, not a complete boot transcript. See STEP 2 in the README for unfiltered kernel-log inspection. Native HDMI scrolling kernel boot text has not been configured; this documentation update does not change the programs or console settings.

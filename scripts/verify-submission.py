@@ -193,7 +193,10 @@ def main():
     require(live['elapsed_seconds'] > 180 and live['stop_requested'] and live['stop_command_ok'], 'Continuous scan/stop evidence missing')
     report['checks'].append('Final two-context greeting, software-boot automatic scan and continuous Stop evidence verified')
     report['result'] = 'PASS'
-    report['remaining_human_fields'] = ['Project name', 'Group number', 'Confirmed student author names and order']
+    report['remaining_human_fields'] = []
+    report['project'] = {'name': 'stm32mp257f-edge-ai-lab', 'group_number': 1,
+        'student_authors_in_order': ['Mingkang Ma', 'Yuhao Zhang', 'Shuhan Ge', 'Yu Zhou', 'Mingyang Sun'],
+        'ai_contributor': 'Codex (OpenAI)'}
     report['verification_limits'] = ['No new hardware test during this packaging audit',
         'Latest runtime evidence covers software reboot, not a new physical power cycle',
         'Physical USB unplug/replug recovery and full Windows reproduction were not tested',

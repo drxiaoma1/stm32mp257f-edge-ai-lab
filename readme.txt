@@ -3,11 +3,11 @@
 ```text
 /**************** (C) COPYRIGHT 2026 ShangHai Jiao Tong University ****************
 File Name   : readme.txt / README.md
-Version     : V1.1
+Version     : V1.2
 Date        : 2026-11-10
-Project     : [PROJECT NAME TO BE FILLED IN]
-Group No.   : [GROUP NUMBER TO BE FILLED IN]
-Author      : [Name 1] [Name 2] [Name 3] [Name 4] [Name 5] [Name 6]
+Project     : stm32mp257f-edge-ai-lab
+Group No.   : 1
+Author      : Mingkang Ma, Yuhao Zhang, Shuhan Ge, Yu Zhou, Mingyang Sun
 AI co-author: Codex (OpenAI)
 Description : Rebuild and boot Linux; print Hello World in kernel and user space;
               load the C1 USB serial driver; acquire, display and control LiDAR
@@ -15,15 +15,15 @@ Description : Rebuild and boot Linux; print Hello World in kernel and user space
 ********************************************************************************/
 ```
 
-The author order is intentionally unassigned. All members must confirm the final roster and order before submission. The executable currently displays the demonstration identity **mingkang ma / 523031910621**; this is separate from the group roster.
+Group **1** submits this project under the author order provided by the project owner: **Mingkang Ma, Yuhao Zhang, Shuhan Ge, Yu Zhou, Mingyang Sun**. The executable displays the demonstration identity **mingkang ma / 523031910621**; this is separate from the complete group roster.
 
-**AI contribution disclosure:** Codex (OpenAI) contributed to the environment setup, build and deployment scripts, kernel and user-space greetings, C1 acquisition and touchscreen application, debugging, automated checks, and English documentation under the experimenter's direction. The human experimenter connected the hardware, performed the requested physical power cycles, observed the display and touch behavior, and confirmed the experimental results. Codex is credited as an AI co-author and technical contributor; the student member roster and order remain reserved for the group.
+**AI contribution disclosure:** Codex (OpenAI) contributed to the environment setup, build and deployment scripts, kernel and user-space greetings, C1 acquisition and touchscreen application, debugging, automated checks, and English documentation under the experimenter's direction. The human experimenter connected the hardware, performed the requested physical power cycles, observed the display and touch behavior, and confirmed the experimental results. Codex is credited as an AI co-author and technical contributor; the student roster above is the order supplied by the project owner.
 
 This report covers work **after the board was flashed**. The tested release is OpenSTLinux **v25.06.11**, with the self-built kernel **6.6.78-gkc-sdk**. The kernel source, SDK, device trees and modules are supplied as a matched set.
 
 **Repository:** [drxiaoma1/stm32mp257f-edge-ai-lab](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab) (personal account; public). Teachers and group members can view the source and download release attachments without a repository invitation.
 
-**Submission binaries:** [v1.1-final release](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.1-final). Download `STM32MP257F-Final-Submission.zip`, extract it, then run `sha256sum -c SHA256SUMS` in the extracted directory. The repository and release ZIP both contain the final source, evidence, compiled kernel, executables, modules and board installers. The release also supplies the standalone `Image`, `Image.gz`, and their checksum list.
+**Submission binaries:** [v1.2-final release](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.2-final). Download `STM32MP257F-Final-Submission.zip`, extract it, then run `sha256sum -c SHA256SUMS` in the extracted directory. The repository and release ZIP both contain the final source, evidence, compiled kernel, executables, modules and board installers. The release also supplies the standalone `Image`, `Image.gz`, and their checksum list.
 
 **Start with the [submission checklist](SUBMISSION-CHECKLIST.md).** It maps all five assessment requirements to the exact submitted files and final evidence. `artifacts/` contains the required binaries directly; `packages/` contains matching installers. This tree documents one complete implementation: kernel greeting → user greeting → automatic 10-second scan → touchscreen-controlled continuous scanning.
 
@@ -237,6 +237,27 @@ Kernel: 6.6.78-gkc-sdk
 
 The driver print is in the kernel journal. The user message appears in the application's stdout journal and in BusyBox `/var/log/messages`; this board does not retain that syslog entry under `journalctl -t hello_user`. Verify with `dual-hello/board/verify.sh`, which checks both contexts, boot ID, identity and ordering.
 
+### Viewing the kernel greeting with ordinary kernel messages
+
+The first greeting is a genuine kernel log entry: `hello_kernel_init()` calls `pr_info`, and the saved [journal record](evidence/dual-greeting-final/kernel.jsonl) has `_TRANSPORT=kernel`, `SYSLOG_IDENTIFIER=kernel`, and `PRIORITY=6`. The final boot records one kernel greeting at about +4.994 seconds and one user greeting at about +34.928 seconds. The module loads during system startup, after PID 1 starts; it is not built into the early boot portion of `Image`.
+
+The existing screen is a GTK application. It reads the saved kernel message through `/dev/hello_kernel` and displays the Hello program's output. It does **not** display the complete kernel boot log. Similarly, `dual-hello/board/verify.sh` filters journal output when saving the compact evidence file; this filtering does not delete messages from the system journal or kernel buffer.
+
+The submitted kernel enables `CONFIG_PRINTK=y`, `CONFIG_SERIAL_STM32_CONSOLE=y` and `CONFIG_CONSOLE_LOGLEVEL_DEFAULT=7`. It does not enable `CONFIG_FRAMEBUFFER_CONSOLE` or `CONFIG_DRM_FBDEV_EMULATION`. The recorded setup routes the console to `ttySTM0` at 115200 baud. The deployment script preserves the existing console arguments, and the project scripts do not clear the kernel log or add `quiet`/`loglevel` suppression. Thus, normal kernel logging is retained, while native HDMI boot-text output is not configured.
+
+When the board is available, inspect the **unfiltered** kernel log to show the greeting alongside ordinary driver and boot messages:
+
+```sh
+journalctl -b -k --no-pager -o short-monotonic
+dmesg
+cat /proc/cmdline
+cat /proc/sys/kernel/printk
+```
+
+These are read-only inspection commands, not a new test result. To observe messages live during startup, record the ST-LINK serial console at **115200 8N1** before boot; console output also depends on the current console log level. `pr_info` uses level 6. See the [Linux printk documentation](https://docs.kernel.org/core-api/printk-basics.html).
+
+The saved final evidence proves the kernel origin of the greeting, but it is filtered and is not a complete unfiltered boot transcript. No new serial/HDMI recording was taken while the board was unavailable. If assessment requires the HDMI screen itself to scroll native kernel boot messages, that display behavior has not been implemented or verified. This documentation review changes neither the runtime programs nor boot configuration.
+
 ## STEP 3 — C1 driver modules: insmod into Linux
 
 The **kernel driver** for the USB adapter is `cp210x`, depending on `usbserial`. The **SLAMTEC SDK is a user-space library**, linked into the acquisition executables. The SDK is not a `.ko` file and cannot be loaded with `insmod`.
@@ -395,7 +416,7 @@ The screenshots above were captured from the board's actual HDMI output. `eviden
 | Deployment archives | `packages/` |
 | Observed operation and output | `evidence/`, `SHA256SUMS` |
 
-Fill in the project name, group number and confirmed member order before handing in the report. The owner has made the repository public for teacher review. Share the repository and release links with the teacher, and submit the ZIP through the course's submission channel if required. The source, release attachments, displayed name, student ID and experiment evidence are publicly accessible.
+The owner has made the repository public for teacher review. Share the repository and release links with the teacher, and submit the ZIP through the course's submission channel if required. The source, release attachments, displayed name, student ID and experiment evidence are publicly accessible.
 
 ### Invalid returns and transport errors
 
@@ -408,7 +429,7 @@ sha256sum -c SHA256SUMS
 python3 scripts/verify-submission.py
 ```
 
-The verifier checks required files, SHA-256 hashes, AArch64 executable/module formats, kernel/module version agreement, image compression, nested installer contents, and consistency with recorded final hardware hashes. See [SUBMISSION-CHECKLIST.md](SUBMISSION-CHECKLIST.md) and [SUBMISSION-AUDIT.json](SUBMISSION-AUDIT.json) for the file inventory and audit results. These are package checks, not a new hardware run. Only the project name, group number and confirmed student author order remain to be filled in.
+The verifier checks required files, SHA-256 hashes, AArch64 executable/module formats, kernel/module version agreement, image compression, nested installer contents, and consistency with recorded final hardware hashes. See [SUBMISSION-CHECKLIST.md](SUBMISSION-CHECKLIST.md) and [SUBMISSION-AUDIT.json](SUBMISSION-AUDIT.json) for the file inventory and audit results. These are package checks, not a new hardware run. The project name, group number and student author order have been filled in.
 
 ## References and provenance
 
