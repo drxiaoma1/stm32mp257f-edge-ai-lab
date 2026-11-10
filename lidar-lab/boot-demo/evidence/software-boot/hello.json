@@ -1,9 +1,0 @@
-{
-  "boot_id": "0b82dd8e-f176-4cf3-91f5-6ca5fd21fd3d",
-  "kernel": "6.6.78-gkc-sdk",
-  "run_directory": "/var/lib/c1-lab/runs/0b82dd8e-1736360603586535500",
-  "phase": "hello",
-  "seconds": 10,
-  "hello_exit_status": 0,
-  "hello_uptime_s": 35.05
-}

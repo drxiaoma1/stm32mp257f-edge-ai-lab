@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a GKC package and optionally install it on the observed STM32MP257F-DK."""
+"""Validate/install only the matched kernel, DTBs and modules on STM32MP257F-DK."""
 import argparse
 import hashlib
 import os
@@ -37,7 +37,7 @@ def main():
     if "STM32MP257F-DK" not in model:
         raise RuntimeError("Unexpected board: " + model)
     running = os.uname().release
-    if running not in {"6.6.78", "6.6.78-gkc-midterm"}:
+    if running != "6.6.78":
         raise RuntimeError("Expected a known v25.06.11 baseline; got " + running)
 
     count = 0
@@ -54,8 +54,6 @@ def main():
 
     image = package / "kernel/boot/Image.gz"
     modules = package / "kernel/lib/modules" / RELEASE
-    hello = package / "hello_world/install_artifact/usr/local/bin/hello_world"
-    service = package / "systemd/hello-world.service"
     config = (package / "kernel/boot/config-gkc-sdk").read_text()
     if 'CONFIG_LOCALVERSION="-gkc-sdk"' not in config or not modules.is_dir():
         raise RuntimeError("Wrong kernel release or missing modules")
@@ -130,10 +128,6 @@ def main():
     shutil.copy2("/boot/Image.gz", backup / "Image.gz")
     for dtb in Path("/boot").glob("stm32mp257f-dk*.dtb"):
         shutil.copy2(dtb, backup / dtb.name)
-    for source, name in [(Path("/usr/local/bin/hello_world"), "hello_world.previous"),
-                         (Path("/etc/systemd/system/hello-world.service"), "hello-world.service.previous")]:
-        if source.exists():
-            shutil.copy2(source, backup / name)
     (backup / "boot-config-path.txt").write_text(str(boot_config) + "\n")
     (backup / "rollback.sh").write_text(
         "#!/bin/sh\nset -eu\ncp '" + str(backup / "extlinux.conf") + "' '" + str(boot_config)
@@ -163,13 +157,6 @@ def main():
         if digest(dtb) != digest(dtb_target / dtb.name):
             raise RuntimeError("DTB copy checksum mismatch")
     shutil.copy2(package / "kernel/boot/config-gkc-sdk", backup / ("config-" + RELEASE))
-    Path("/usr/local/bin").mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(hello, "/usr/local/bin/hello_world")
-    Path("/usr/local/bin/hello_world").chmod(0o755)
-    shutil.copyfile(service, "/etc/systemd/system/hello-world.service")
-    Path("/etc/systemd/system/hello-world.service").chmod(0o644)
-    run("systemctl", "daemon-reload")
-    run("systemctl", "enable", "hello-world.service")
     os.sync()
     pending_config = boot_config.with_name("extlinux.conf.gkc-new")
     pending_config.write_text(updated)
@@ -178,7 +165,7 @@ def main():
     pending_config.replace(boot_config)
     os.sync()
     print("Installation complete. Backup:", backup, flush=True)
-    print("Reboot separately, then verify uname -r and the current boot's hello-world journal.", flush=True)
+    print("Reboot and verify uname -r, then run the final submission's install-board.sh.", flush=True)
 
 
 if __name__ == "__main__":

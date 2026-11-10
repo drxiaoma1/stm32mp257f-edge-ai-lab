@@ -1,0 +1,19 @@
+Final application installation excerpt; the earlier checksum listing is omitted.
+
+10-kernel-before-user.conf: OK
+hello-kernel.conf: OK
+hello_kernel.ko: OK
+hello_world: OK
+install.sh: OK
+verify.sh: OK
+/opt/c1-lab/c1_capture: OK
+/opt/c1-lab/c1_demo.py: OK
+/opt/c1-lab/render_pointcloud.py: OK
+/opt/c1-lab/start-demo.sh: OK
+/etc/systemd/system/c1-demo.service: OK
+Installed. Backup: /home/root/dual-hello-backup.Wwqadn
+Kernel message, read back from driver:
+[kernel] hello, world (hello_kernel_init, boot +5.024s)
+Start the existing display/scan sequence with: c1ctl start
+Installed. Backup: /home/root/midterm-install-backup.60KqXL
+Reboot to run the complete startup sequence.

@@ -1,0 +1,20 @@
+Excerpt of the matching CP210x/USB serial driver insertion test.
+Acquisition program hashes are recorded in final-installed-hashes.txt.
+
+6.6.78-gkc-sdk
+cp210x                 36864  0
+usbserial              53248  1 cp210x
+lrwxrwxrwx 1 root root 7 Jan  8 18:42 /dev/c1lidar -> ttyUSB0
+6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
+[   32.194362] vddio3: disabling
+[   32.194442] vddio4: disabling
+[   32.194710] vdda18adc: disabling
+[   32.197974] v5v_vconn: disabling
+[ 1152.529683] usbserial: USB Serial deregistering driver cp210x
+[ 1152.530658] cp210x ttyUSB0: cp210x converter now disconnected from ttyUSB0
+[ 1152.544222] usbcore: deregistering interface driver cp210x
+[ 1152.544807] cp210x 1-1.2:1.0: device disconnected
+[ 1152.627837] usbcore: registered new interface driver cp210x
+[ 1152.627932] usbserial: USB Serial support registered for cp210x
+[ 1152.634259] cp210x 1-1.2:1.0: cp210x converter detected
+[ 1152.642905] usb 1-1.2: cp210x converter now attached to ttyUSB0

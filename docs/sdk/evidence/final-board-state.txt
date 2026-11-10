@@ -1,6 +1,0 @@
-6.6.78-gkc-sdk
-active
-Result=success
-ExecMainStartTimestampMonotonic=11416478
-ExecMainStatus=0
-WESTON_USER=weston

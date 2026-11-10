@@ -18,11 +18,15 @@ __pycache__/
 **/output/*
 !**/output/build.log
 **/obj/
-**/hello-example/hello_world
 **/simple_grabber
 **/ultra_simple
 **/c1_capture
-/hello-lab/sdk/
-/hello-lab/offline-debs/
 /downloads/
 /delivery/
+
+# Required final assessment deliverables are intentionally versioned.
+!/artifacts/drivers/*.ko
+!/artifacts/lidar/c1_capture
+!/packages/c1-boot-demo.tar.gz
+!/packages/dual-hello-deploy.tar.gz
+!/packages/gkc-kernel-6.6.78.tar.gz

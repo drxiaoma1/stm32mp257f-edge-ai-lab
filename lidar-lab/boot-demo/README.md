@@ -1,4 +1,4 @@
-# C1 touch application — current revision (2026-11-03)
+# C1 touch application — final submission
 
 The kernel provides `usbserial`, `cp210x`, and the separate `hello_kernel` greeting module. Both LiDAR acquisition modes run in user space on Linux `6.6.78-gkc-sdk`.
 
@@ -33,6 +33,4 @@ Raw results are under `/var/lib/c1-lab/boots/<boot-id>/automatic/` and `/var/lib
 
 ## Verification boundary
 
-Current evidence is under `evidence/touch-app/`. It records the two greeting contexts, real `insmod`, software-reboot automatic scanning, touch navigation, continuous scanning, and the reported empty-frame failure followed by its regression fix. A physical cold-power-cycle test of this exact revision is still separate from software-reboot verification. The board wall clock is unsynchronized; use boot IDs and monotonic uptime.
-
-Earlier Chinese guides and 2026-10-27 captures describe the previous interface. This revision supersedes their one-shot manual behavior.
+Final evidence is in the repository's top-level `evidence/` directory. It records the two greeting contexts, actual driver insertion, software-reboot automatic scanning, touch navigation and continuous scanning. A physical cold-power-cycle test of this exact revision is still separate from software-reboot verification. The board wall clock is unsynchronized; use boot IDs and monotonic uptime.

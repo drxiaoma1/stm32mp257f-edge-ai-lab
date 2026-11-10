@@ -7,8 +7,8 @@
 ```text
 /**************** (C) COPYRIGHT 2026 ShangHai Jiao Tong University ****************
 文件名称    : README.zh-CN.md（中文版）
-版本        : V1.0
-日期        : 2026-11-03
+版本        : V1.1
+日期        : 2026-11-10
 项目名称    : [待填写]
 项目组号    : [待填写]
 作者        : [姓名 1] [姓名 2] [姓名 3] [姓名 4] [姓名 5] [姓名 6]
@@ -22,11 +22,13 @@ AI 共同作者 : Codex (OpenAI)
 
 **AI 贡献说明：** Codex（OpenAI）在实验者指导下，参与了环境配置、编译与部署脚本、内核和用户空间问候程序、C1 数据采集与触屏程序、问题排查、自动检查及英文文档编写。硬件接线、要求进行的实际断电上电、屏幕与触摸效果观察以及实验结果确认由人类实验者完成。Codex 作为 AI 共同作者和技术贡献者署名；学生组员名单与排序由项目组自行确定。
 
-本报告记录的是**板卡刷机完成之后**的工作。已测试的系统版本为 OpenSTLinux **v25.06.11**，自行编译的内核版本为 **6.6.78-gkc-sdk**。老师的样例以 `6.6.116 / r3` 为例，本项目沿用已经验证的 `6.6.78 / r2` 源码、SDK、设备树和模块，保证版本配套。
+本报告记录的是**板卡刷机完成之后**的工作。已测试的系统版本为 OpenSTLinux **v25.06.11**，自行编译的内核版本为 **6.6.78-gkc-sdk**。内核源码、SDK、设备树和模块使用已经验证的配套版本。
 
 **项目仓库：** [drxiaoma1/stm32mp257f-edge-ai-lab](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab)，属于个人账号，已公开。老师和组员无需仓库邀请即可查看源码、下载发布附件。
 
-**编译产物与提交包：** [v1.0-midterm 发布页](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.0-midterm)。下载并解压 `STM32MP257F-Midterm-Submission.zip`，在解压后的目录运行 `sha256sum -c SHA256SUMS` 校验文件。Git 仓库保存源码与实验记录；发布 ZIP 包含编译好的内核、可执行文件、模块和板端安装程序。发布页也单独提供 `Image`、`Image.gz` 及其校验清单。
+**编译产物与提交包：** [v1.1-final 发布页](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.1-final)。下载并解压 `STM32MP257F-Final-Submission.zip`，在解压后的目录运行 `sha256sum -c SHA256SUMS` 校验文件。Git 仓库与发布 ZIP 均包含最终源码、实验记录、编译好的内核、可执行文件、模块和板端安装程序。发布页也单独提供 `Image`、`Image.gz` 及其校验清单。
+
+**建议先查看[提交文件核对表](SUBMISSION-CHECKLIST.md)。** 核对表逐项对应老师的五项要求，并给出文件路径和最终实验记录。`artifacts/` 直接提供必交编译产物，`packages/` 提供配套部署包。本目录只描述一套完整实现：内核问候 → 用户问候 → 开机自动扫描 10 秒 → 触屏控制持续扫描。
 
 ## 1. 实验环境
 
@@ -176,10 +178,10 @@ sha256sum "$LAB/build/kernel/arch/arm64/boot/Image" "$LAB/build/kernel/arch/arm6
 
 已经配置好的项目板卡已安装提交版本的内核。其 `/boot/Image-6.6.78-gkc-sdk.gz` 与提供的 `Image.gz` 哈希一致，不需要再次刷机。
 
-对于仍运行配套原厂 `6.6.78` 内核的板卡，发布包包含此前已验证的 `packages/gkc-sdk-6.6.78.tar.gz`。在 macOS 终端或 Windows PowerShell 中传输：
+对于运行配套原厂 `6.6.78` 内核的板卡，`packages/gkc-kernel-6.6.78.tar.gz` 提供最终内核、DTB 和完整配套模块树，包括 `galcore.ko`。该包只安装内核，完整应用在 STEP 4 安装。在 macOS 终端或 Windows PowerShell 中传输：
 
 ```sh
-scp -O packages/gkc-sdk-6.6.78.tar.gz root@192.168.7.1:/home/root/
+scp -O packages/gkc-kernel-6.6.78.tar.gz root@192.168.7.1:/home/root/
 ssh root@192.168.7.1
 ```
 
@@ -187,16 +189,16 @@ ssh root@192.168.7.1
 
 ```sh
 cd /home/root
-tar -xzf gkc-sdk-6.6.78.tar.gz
-python3 gkc-sdk/scripts/deploy-sdk-board.py /home/root/gkc-sdk
-python3 gkc-sdk/scripts/deploy-sdk-board.py /home/root/gkc-sdk --apply
+tar -xzf gkc-kernel-6.6.78.tar.gz
+python3 gkc-kernel/scripts/deploy-sdk-board.py /home/root/gkc-kernel
+python3 gkc-kernel/scripts/deploy-sdk-board.py /home/root/gkc-kernel --apply
 sync
 reboot
 ```
 
-第一次调用只检查、不安装；第二次会备份，安装新镜像、DTB 和匹配模块，并添加独立启动项，同时保留原启动项。这个早期部署包还会安装旧版 Hello World 服务；**STEP 4 的最终安装程序会禁用旧服务**，确保每次启动只执行一次用户空间问候。该早期部署程序会拒绝在已运行 `6.6.78-gkc-sdk` 的系统上重复部署。
+第一次调用只检查、不安装；第二次会备份，安装镜像、DTB 和匹配模块，并添加独立启动项，同时保留原厂启动项。安装程序会拒绝在已运行 `6.6.78-gkc-sdk` 的系统上重复部署。重启后执行 STEP 4，安装最终问候程序与 C1 应用。
 
-如需部署自己重新编译的内核，可复制一份早期部署包，将其 `kernel/` 目录替换为完整的 `install_artifact/`，包括重新编译的 GPU 模块；移除模块目录中的 `build`、`source` 符号链接，重新生成 `SHA256SUMS`。然后在版本匹配的原厂系统上使用同一检查与安装程序。不要只替换镜像而保留不兼容的模块。
+如需部署自己重新编译的内核，可复制一份内核包，将其 `kernel/` 目录替换为完整的 `install_artifact/`，包括重新编译的 GPU 模块；移除模块目录中的 `build`、`source` 符号链接，重新生成 `SHA256SUMS`。然后在版本匹配的原厂系统上使用同一检查与安装程序。不要只替换镜像而保留不兼容的模块。
 
 ### 8. 将编译结果更新到 Starter Package
 
@@ -359,30 +361,6 @@ c1ctl start
 
 C1 是 **二维**扫描雷达。有效点要求距离和质量值均大于零。转换公式为 `distance_m = dist_mm_q2 / 4000`、`angle_deg = angle_z_q14 * 90 / 16384`、`x = d cos(angle)`、`y = -d sin(angle)`。负号用于将 SDK 的顺时针角度转换为绘图坐标。近距离回波单独标记；图中展示实测传感器数据，不是三维重建或 SLAM 地图。
 
-### 可选：Week 6 终端操作演示
-
-在板卡上运行以下命令，检查实际系统，并在新建练习目录中演示文件操作：
-
-```sh
-uname -a
-cat /etc/os-release
-ip -br address
-lsusb
-pwd
-ls -l /dev/c1lidar
-mkdir -p /home/root/week6-practice
-cd /home/root/week6-practice
-printf 'hello, world\n' > message.txt
-cat message.txt
-cp message.txt copy.txt
-mv copy.txt renamed.txt
-wc -l message.txt renamed.txt
-df -h /
-free -m
-```
-
-预期可观察到自行编译的内核版本、USB 网络接口、CP210x/USB 触摸设备，以及两个各含一行内容的文本文件。完整的历史 Week 6 练习和日志保存在 Git 仓库的 `docs/sdk/` 中。
-
 ## STEP 5 — 实验结果与提交清单
 
 | 检查项 | 实测记录 |
@@ -396,7 +374,7 @@ free -m
 | 触屏导航 | 通过 evdev 测试 Start、Stop、Home；随后实验者确认亲自操作成功 |
 | 重启图形界面 | 返回 Home，不重复开机扫描或问候 |
 
-由于板卡时钟未同步，实验记录使用启动 ID 和单调递增的开机时间。已验证的软件启动 ID 为 `b47220a7-a6c4-4049-a817-27606b6d28a8`。此版本完成了**软件重启**测试，尚未再进行新的实际断电上电测试。早期版本的断电验证不用于替代当前版本的验证。
+由于板卡时钟未同步，实验记录使用启动 ID 和单调递增的开机时间。已验证的软件启动 ID 为 `b47220a7-a6c4-4049-a817-27606b6d28a8`。此版本完成了**软件重启**测试，尚未再进行新的实际断电上电测试。
 
 ![自动采集期间显示内核与用户空间两次问候](evidence/boot-hello.png)
 
@@ -420,6 +398,7 @@ free -m
 | Hello 源码、Makefile、可执行文件 | `artifacts/hello/` 和 `dual-hello/user/` |
 | 内核问候源码与模块 | `dual-hello/kernel/`、`artifacts/drivers/hello_kernel.ko` |
 | C1 USB 串口模块 | `artifacts/drivers/usbserial.ko`、`cp210x.ko` |
+| 配套显示驱动与完整模块树 | `artifacts/drivers/galcore.ko`、`packages/gkc-kernel-6.6.78.tar.gz` |
 | C1 采集源码与可执行文件 | `lidar-lab/src/`、`lidar-lab/Makefile`、`artifacts/lidar/` |
 | 触屏界面与启动服务 | `lidar-lab/boot-demo/board/`、`dual-hello/board/` |
 | 部署归档 | `packages/` |
@@ -427,11 +406,18 @@ free -m
 
 提交前填写项目名称、组号和已确认的组员顺序。仓库已由所有者设为公开，供老师查看。向老师提供仓库与发布页链接，并按课程要求另行提交 ZIP。源码、发布附件、演示姓名、学号和实验记录均已公开。
 
-### 触屏测试中发现并修复的问题
+### 无效回波与通信错误的处理
 
-最初的持续扫描程序遇到一整圈无效数据时会停止。SDK 的 `ascendScanData` 返回 `SL_RESULT_OPERATION_FAIL`（`0x80008001`），应用错误地将其视为致命通信错误。修复后的 `prepare_measured_scan` 在整圈距离均为零时跳过该排序/插值操作，继续采集；空点云界面明确提示没有有效回波，不会把上一张图片当成新数据。
+整圈距离为零时按空测量处理，继续采集，并在图中明确显示没有有效回波，不将旧点当作新数据。真正的通信错误会停止会话并显示错误。`lidar-lab/tests/` 中的回归检查只使用测试专用合成输入，这些输入不会作为实测数据展示。最终硬件测试持续运行了 189.8 秒，并按操作请求停止。
 
-回归检查使用仅供测试的合成输入复现了原 SDK 返回值，并覆盖零采样、全无效及混合有效点的情况。另有离屏绘图检查，确认空帧可正常绘制。修复后的程序在硬件上连续运行了 189.8 秒，采集进程 RSS 稳定在约 3 MB，并按操作请求成功停止。测试输入不会用于实测数据显示界面。持续运行记录和实际停止结果已随提交材料保存。
+### 检查提交文件
+
+```sh
+sha256sum -c SHA256SUMS
+python3 scripts/verify-submission.py
+```
+
+核验程序检查必交文件、SHA-256、AArch64 可执行文件和模块格式、内核与模块版本、镜像压缩内容、嵌套安装包内容，以及与最终硬件记录中哈希值的一致性。[SUBMISSION-CHECKLIST.md](SUBMISSION-CHECKLIST.md) 和 [SUBMISSION-AUDIT.json](SUBMISSION-AUDIT.json) 提供清单与核验结果。这是文件包检查，不代表新增硬件实测。目前仅需由组员补填项目名称、组号和确认后的作者顺序。
 
 ## 参考资料与来源
 
@@ -439,7 +425,6 @@ free -m
 - [ST Linux v6.6-stm32mp-r2](https://github.com/STMicroelectronics/linux/tree/v6.6-stm32mp-r2)：内核源码。
 - [固定版本的 RPLIDAR SDK 源码](https://github.com/Slamtec/rplidar_sdk/tree/99478e5fb90de3b4a6db0080acacd373f8b36869)：C1 协议与采集 API。
 - `scripts/`、`.config`、编译日志与校验值记录实际配置和编译过程；上游源码快照及许可声明仍归属于各自组件。
-- Git 仓库中保留历史中文 Week 6/7/8 文档，作为早期实验记录。当前英文 README、对应中文版及发布 ZIP 描述最终提交版本；最新手动模式为持续扫描，取代早期的单次扫描行为。
 
 ```text
 ******************* END OF FILE *******************

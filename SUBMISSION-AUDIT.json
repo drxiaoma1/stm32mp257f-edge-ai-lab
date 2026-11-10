@@ -1,0 +1,194 @@
+{
+  "audit_date": "2026-11-10",
+  "kernel_release": "6.6.78-gkc-sdk",
+  "scope": "Static final-deliverable audit; no new hardware run",
+  "requirements": {
+    "1_environment": {
+      "status": "present",
+      "files": [
+        "README.md",
+        "README.zh-CN.md",
+        "readme.txt",
+        "evidence/sdk-environment.txt",
+        "scripts/build-sdk-kernel.sh",
+        "scripts/build-sdk-gpu.sh"
+      ]
+    },
+    "2_kernel": {
+      "status": "present",
+      "files": [
+        "artifacts/kernel/Image",
+        "artifacts/kernel/Image.gz",
+        "artifacts/kernel/.config",
+        "artifacts/kernel/Module.symvers",
+        "artifacts/kernel/stm32mp257f-dk.dtb",
+        "artifacts/kernel/stm32mp257f-dk-ca35tdcid-ostl.dtb",
+        "artifacts/kernel/stm32mp257f-dk-ca35tdcid-ostl-m33-examples.dtb",
+        "artifacts/drivers/galcore.ko",
+        "packages/gkc-kernel-6.6.78.tar.gz",
+        "scripts/deploy-sdk-board.py",
+        "evidence/kernel-build.log",
+        "evidence/final-system.txt"
+      ]
+    },
+    "3_hello_world": {
+      "status": "present",
+      "files": [
+        "dual-hello/user/hello_world.c",
+        "dual-hello/user/Makefile",
+        "artifacts/hello/hello_world.c",
+        "artifacts/hello/Makefile",
+        "artifacts/hello/hello_world",
+        "dual-hello/kernel/hello_kernel.c",
+        "dual-hello/kernel/Makefile",
+        "artifacts/drivers/hello_kernel.ko",
+        "dual-hello/build.sh",
+        "dual-hello/board/verify.sh",
+        "packages/dual-hello-deploy.tar.gz",
+        "evidence/dual-greeting-final/verification.json"
+      ]
+    },
+    "4_c1_kernel_driver": {
+      "status": "present",
+      "files": [
+        "artifacts/drivers/usbserial.ko",
+        "artifacts/drivers/cp210x.ko",
+        "lidar-lab/boot-demo/board/c1-lidar.conf",
+        "lidar-lab/boot-demo/board/99-c1-lidar.rules",
+        "evidence/driver-insertion.txt"
+      ]
+    },
+    "5_c1_application": {
+      "status": "present",
+      "files": [
+        "lidar-lab/src/c1_capture.cpp",
+        "lidar-lab/src/c1_live.cpp",
+        "lidar-lab/src/scan_validity.h",
+        "lidar-lab/Makefile",
+        "lidar-lab/scripts/build.sh",
+        "lidar-lab/vendor/rplidar_sdk/LICENSE",
+        "lidar-lab/vendor/rplidar_sdk/sdk/include/sl_lidar.h",
+        "artifacts/lidar/c1_capture",
+        "artifacts/lidar/c1_live",
+        "lidar-lab/boot-demo/board/c1_demo.py",
+        "lidar-lab/boot-demo/board/render_pointcloud.py",
+        "lidar-lab/boot-demo/board/c1-demo.service",
+        "lidar-lab/boot-demo/board/start-live.sh",
+        "lidar-lab/boot-demo/board/050-c1-lidar.yaml",
+        "install-board.sh",
+        "packages/c1-boot-demo.tar.gz",
+        "evidence/automatic-final/scan.csv",
+        "evidence/automatic-final/scan.csv.json",
+        "evidence/automatic-final/state.json",
+        "evidence/continuous-fixed/session/session.json",
+        "evidence/continuous-fixed/session/scan.csv",
+        "evidence/boot-hello.png",
+        "evidence/boot-result.png",
+        "evidence/home.png",
+        "evidence/live.png",
+        "evidence/launcher.png"
+      ]
+    }
+  },
+  "checks": [
+    "Required files, exact Hello source/Makefile copies, AArch64 ELF/module versions and kernel image verified",
+    "Kernel, Hello, C1 executables and launcher match final running-board hashes",
+    "Kernel-only package contains the exact image, DTBs and all 1044 matched modules, including galcore",
+    "Greeting and C1 packages contain only their exact final sources and binaries",
+    "Final two-context greeting, software-boot automatic scan and continuous Stop evidence verified"
+  ],
+  "artifacts": {
+    "artifacts/drivers/cp210x.ko": {
+      "bytes": 58216,
+      "sha256": "4cf7f3d20e712ae56df9ed373b570825576a7d9b329b45ed686b9a69c830a109"
+    },
+    "artifacts/drivers/galcore.ko": {
+      "bytes": 593600,
+      "sha256": "a2a5d462fc4ac213c06bd63571a8133324ce03d408bec5b4ac57b00cad7283c5"
+    },
+    "artifacts/drivers/hello_kernel.ko": {
+      "bytes": 7656,
+      "sha256": "a9f0bfc3705b5b5bbc25e8b0ff64c8c66a9d39c64e178632cf273072b1e016b4"
+    },
+    "artifacts/drivers/usbserial.ko": {
+      "bytes": 89840,
+      "sha256": "6f369abcc6d8747f61d91dc85dd9d41be49e0d49b62720496a3d7b21f41802ee"
+    },
+    "artifacts/hello/Makefile": {
+      "bytes": 295,
+      "sha256": "0d417b4133d79aa0977df1c733c058747321667de30d76c4ac0975239231206a"
+    },
+    "artifacts/hello/hello_world": {
+      "bytes": 81016,
+      "sha256": "194fe6b4b08f0f9511f9b27e3e94a75a8b8a7f603d6ffa033f7d8fe497983124"
+    },
+    "artifacts/hello/hello_world.c": {
+      "bytes": 2510,
+      "sha256": "59629d548c0de68aca50f04531de6ad5fe56588f276635901a13c88ac4fcb16b"
+    },
+    "artifacts/kernel/.config": {
+      "bytes": 232270,
+      "sha256": "445ede30359592b0ea4f366caf1ed748d07e1d595a9980a1b3c5bd506d767833"
+    },
+    "artifacts/kernel/Image": {
+      "bytes": 27898368,
+      "sha256": "c2db9bf7a955e2ff2bf762d19c8b7f17e6dc505f9b3ecd73dfbcfc1aa8d0d557"
+    },
+    "artifacts/kernel/Image.gz": {
+      "bytes": 11284603,
+      "sha256": "25f5a07388989dbaa3689915435c7c9b027cb10057c39b82ce76913551e00eeb"
+    },
+    "artifacts/kernel/Module.symvers": {
+      "bytes": 1091294,
+      "sha256": "1bf277932051076e855ef3fa098cf2c9bcb53f24dd5198889ce5105d55b58983"
+    },
+    "artifacts/kernel/SHA256SUMS-images.txt": {
+      "bytes": 147,
+      "sha256": "bfb1497af2b3a6dd1f05ed35d050637b57120845eb52abadc528d31830ab9f65"
+    },
+    "artifacts/kernel/stm32mp257f-dk-ca35tdcid-ostl-m33-examples.dtb": {
+      "bytes": 115889,
+      "sha256": "5c2b1395069f42a427810823e33716513375635b56cc35865023c388706b3926"
+    },
+    "artifacts/kernel/stm32mp257f-dk-ca35tdcid-ostl.dtb": {
+      "bytes": 116241,
+      "sha256": "608688d151a59d4bfd8d64f819ec881692e0bf61fd09c19114542af68522381d"
+    },
+    "artifacts/kernel/stm32mp257f-dk.dtb": {
+      "bytes": 117096,
+      "sha256": "0b9ab92b36e495e57005ecc52fadd922c20f7d6d72909c8d76e14eedceadfd64"
+    },
+    "artifacts/lidar/c1_capture": {
+      "bytes": 1504024,
+      "sha256": "c78236e6d45e54d783c8ba906c042eeb0ea8503b4db0caa4b387cabf42b8be3e"
+    },
+    "artifacts/lidar/c1_live": {
+      "bytes": 1530176,
+      "sha256": "0560353d8f441a445b55ee52030cf0dfb1ce8079d65295945d609d8eae1708c2"
+    },
+    "packages/c1-boot-demo.tar.gz": {
+      "bytes": 1111258,
+      "sha256": "1fffbac364e321385dfdd870287c85695fa8a8ab92dcd77e54773caae9f6a672"
+    },
+    "packages/dual-hello-deploy.tar.gz": {
+      "bytes": 12961,
+      "sha256": "12e65cd45006137c729e5e77e241c0397d664e1d2ae6710ff843e4d03e755d4e"
+    },
+    "packages/gkc-kernel-6.6.78.tar.gz": {
+      "bytes": 24912978,
+      "sha256": "b22ebb2dcb23664067423e2367fb9f368c380781545eb92071b0be09dcd7a2e4"
+    }
+  },
+  "result": "PASS",
+  "remaining_human_fields": [
+    "Project name",
+    "Group number",
+    "Confirmed student author names and order"
+  ],
+  "verification_limits": [
+    "No new hardware test during this packaging audit",
+    "Latest runtime evidence covers software reboot, not a new physical power cycle",
+    "Physical USB unplug/replug recovery and full Windows reproduction were not tested",
+    "Kernel-only deployment wrapper was statically checked; its application-install section was removed without reflashing the board"
+  ]
+}

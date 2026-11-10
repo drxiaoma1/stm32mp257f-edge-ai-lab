@@ -1,8 +1,0 @@
-ST OpenSTLinux - Weston - (A Yocto Project Based Distro) SDK installer version 5.0.8-openstlinux-6.6-yocto-scarthgap-mpu-v25.06.11
-==================================================================================================================================
-You are about to install the SDK to "/home/youart.guest/edge-ai-official/SDK". Proceed [Y/n]? Y
-Extracting SDK...............................................................................................................................................................................................................................................................................done
-Setting it up...done
-SDK has been successfully set up and is ready to be used.
-Each time you wish to use the SDK in a new shell session, you need to source the environment setup script e.g.
- $ . /home/youart.guest/edge-ai-official/SDK/environment-setup-cortexa35-ostl-linux

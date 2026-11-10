@@ -1,8 +1,0 @@
-make: Entering directory '/home/youart.guest/edge-ai-official/hello_world'
-rm -f hello_world hello_world.o
-aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/youart.guest/edge-ai-official/SDK/sysroots/cortexa35-ostl-linux   -O2 -pipe -g -feliminate-unused-debug-types  -c hello_world.c -o hello_world.o
-aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/youart.guest/edge-ai-official/SDK/sysroots/cortexa35-ostl-linux -Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed  -o hello_world hello_world.o 
-install -d /home/youart.guest/edge-ai-official/hello_world/install_artifact/usr/local/bin
-install -m 0755 hello_world /home/youart.guest/edge-ai-official/hello_world/install_artifact/usr/local/bin/hello_world
-make: Leaving directory '/home/youart.guest/edge-ai-official/hello_world'
-122d942e37545d64fd199c3aa37e0dbc48345fd1c2299631a2bca5fcbf322c34  /Users/youart/Desktop/gkc/delivery/gkc-sdk-6.6.78.tar.gz

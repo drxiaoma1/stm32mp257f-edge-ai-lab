@@ -3,8 +3,8 @@
 ```text
 /**************** (C) COPYRIGHT 2026 ShangHai Jiao Tong University ****************
 File Name   : readme.txt / README.md
-Version     : V1.0
-Date        : 2026-11-03
+Version     : V1.1
+Date        : 2026-11-10
 Project     : [PROJECT NAME TO BE FILLED IN]
 Group No.   : [GROUP NUMBER TO BE FILLED IN]
 Author      : [Name 1] [Name 2] [Name 3] [Name 4] [Name 5] [Name 6]
@@ -19,11 +19,13 @@ The author order is intentionally unassigned. All members must confirm the final
 
 **AI contribution disclosure:** Codex (OpenAI) contributed to the environment setup, build and deployment scripts, kernel and user-space greetings, C1 acquisition and touchscreen application, debugging, automated checks, and English documentation under the experimenter's direction. The human experimenter connected the hardware, performed the requested physical power cycles, observed the display and touch behavior, and confirmed the experimental results. Codex is credited as an AI co-author and technical contributor; the student member roster and order remain reserved for the group.
 
-This report covers work **after the board was flashed**. The tested release is OpenSTLinux **v25.06.11**, with the self-built kernel **6.6.78-gkc-sdk**. The teacher's sample uses `6.6.116 / r3` as an example; this project retains the tested `6.6.78 / r2` source, SDK, device trees and modules as a matched set.
+This report covers work **after the board was flashed**. The tested release is OpenSTLinux **v25.06.11**, with the self-built kernel **6.6.78-gkc-sdk**. The kernel source, SDK, device trees and modules are supplied as a matched set.
 
 **Repository:** [drxiaoma1/stm32mp257f-edge-ai-lab](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab) (personal account; public). Teachers and group members can view the source and download release attachments without a repository invitation.
 
-**Submission binaries:** [v1.0-midterm release](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.0-midterm). Download `STM32MP257F-Midterm-Submission.zip`, extract it, then run `sha256sum -c SHA256SUMS` in the extracted directory. Git stores source and evidence; the release ZIP supplies the compiled kernel, executables, modules and board installers. The release also supplies the standalone `Image`, `Image.gz`, and their checksum list.
+**Submission binaries:** [v1.1-final release](https://github.com/drxiaoma1/stm32mp257f-edge-ai-lab/releases/tag/v1.1-final). Download `STM32MP257F-Final-Submission.zip`, extract it, then run `sha256sum -c SHA256SUMS` in the extracted directory. The repository and release ZIP both contain the final source, evidence, compiled kernel, executables, modules and board installers. The release also supplies the standalone `Image`, `Image.gz`, and their checksum list.
+
+**Start with the [submission checklist](SUBMISSION-CHECKLIST.md).** It maps all five assessment requirements to the exact submitted files and final evidence. `artifacts/` contains the required binaries directly; `packages/` contains matching installers. This tree documents one complete implementation: kernel greeting → user greeting → automatic 10-second scan → touchscreen-controlled continuous scanning.
 
 ## 1. Environment is required as below
 
@@ -173,10 +175,10 @@ Expected kernel release: `6.6.78-gkc-sdk`. Submitted artifacts are in `artifacts
 
 For the already configured project board, the submitted kernel is already installed. Its `/boot/Image-6.6.78-gkc-sdk.gz` hash matches the supplied `Image.gz`; no additional flashing is necessary.
 
-For a board still on the matching factory `6.6.78` baseline, the release includes the previously verified `packages/gkc-sdk-6.6.78.tar.gz`. Transfer from either macOS Terminal or Windows PowerShell:
+For a board on the matching factory `6.6.78` baseline, `packages/gkc-kernel-6.6.78.tar.gz` supplies the final kernel, DTBs and complete matching module tree, including `galcore.ko`. This package installs only the kernel; STEP 4 installs the complete application. Transfer from either macOS Terminal or Windows PowerShell:
 
 ```sh
-scp -O packages/gkc-sdk-6.6.78.tar.gz root@192.168.7.1:/home/root/
+scp -O packages/gkc-kernel-6.6.78.tar.gz root@192.168.7.1:/home/root/
 ssh root@192.168.7.1
 ```
 
@@ -184,16 +186,16 @@ Then, on the board:
 
 ```sh
 cd /home/root
-tar -xzf gkc-sdk-6.6.78.tar.gz
-python3 gkc-sdk/scripts/deploy-sdk-board.py /home/root/gkc-sdk
-python3 gkc-sdk/scripts/deploy-sdk-board.py /home/root/gkc-sdk --apply
+tar -xzf gkc-kernel-6.6.78.tar.gz
+python3 gkc-kernel/scripts/deploy-sdk-board.py /home/root/gkc-kernel
+python3 gkc-kernel/scripts/deploy-sdk-board.py /home/root/gkc-kernel --apply
 sync
 reboot
 ```
 
-The first invocation validates without installing. The second saves a backup, installs the new image, DTBs and matching modules, and adds a separate boot entry while retaining the original entry. This historical bootstrap also installs the earlier Hello World service; **STEP 4's final installer disables that older service** so the final demonstration has one user-space greeting per boot. The bootstrap deliberately refuses to redeploy onto an already running `6.6.78-gkc-sdk` system.
+The first invocation validates without installing. The second saves a backup, installs the image, DTBs and matching modules, and adds a separate boot entry while retaining the factory entry. It deliberately refuses to redeploy onto an already running `6.6.78-gkc-sdk` system. After reboot, run STEP 4 to install the final greeting and C1 application.
 
-To deploy a newly rebuilt kernel rather than the provided binary, make a new copy of the bootstrap package, replace its `kernel/` directory with your complete `install_artifact/` (including the rebuilt GPU module), remove module `build`/`source` symlinks, and regenerate its `SHA256SUMS`. Use the same validator and installer on the matching baseline. Do not replace only the image while keeping incompatible modules.
+To deploy a newly rebuilt kernel, copy the kernel package and replace its `kernel/` directory with your complete `install_artifact/` (including the rebuilt GPU module), remove module `build`/`source` symlinks, and regenerate its `SHA256SUMS`. Use the same validator and installer on the matching baseline. Do not replace only the image while keeping incompatible modules.
 
 ### 8. Update Starter Package with kernel compilation outputs
 
@@ -350,30 +352,6 @@ Automatic results: `/var/lib/c1-lab/boots/<boot-id>/automatic/`. Manual sessions
 
 The C1 is a **2D** scanner. A valid node has positive distance and quality. Conversion is `distance_m = dist_mm_q2 / 4000`, `angle_deg = angle_z_q14 * 90 / 16384`, `x = d cos(angle)`, `y = -d sin(angle)`. The minus sign converts the SDK's clockwise angles to the plotted coordinates. Very short returns are marked separately; the plots are measured sensor data, not a 3D reconstruction or SLAM map.
 
-### Optional Week 6 terminal demonstration
-
-On the board, the following commands inspect the actual system and demonstrate simple file operations in a new practice directory:
-
-```sh
-uname -a
-cat /etc/os-release
-ip -br address
-lsusb
-pwd
-ls -l /dev/c1lidar
-mkdir -p /home/root/week6-practice
-cd /home/root/week6-practice
-printf 'hello, world\n' > message.txt
-cat message.txt
-cp message.txt copy.txt
-mv copy.txt renamed.txt
-wc -l message.txt renamed.txt
-df -h /
-free -m
-```
-
-Expected observations are the rebuilt kernel release, the USB network interface, the CP210x/USB touchscreen devices, and one line in each text file. The full historical Week 6 exercises and logs are retained under `docs/sdk/` in the Git repository.
-
 ## STEP 5 — Results and submission checklist
 
 | Check | Recorded result |
@@ -387,7 +365,7 @@ Expected observations are the rebuilt kernel release, the USB network interface,
 | Touch navigation | Start, Stop and Home tested through evdev; the experimenter subsequently confirmed successful hands-on operation |
 | UI restart | Reopens Home without repeating the boot scan or greeting |
 
-Evidence uses boot IDs and monotonic uptime because the board's wall clock is not synchronized. The verified software-boot ID is `b47220a7-a6c4-4049-a817-27606b6d28a8`. This revision has a **software-reboot** test; a new physical power-cycle test has not yet been performed. Earlier physical power-cycle evidence belongs to earlier versions and is not substituted for this revision.
+Evidence uses boot IDs and monotonic uptime because the board's wall clock is not synchronized. The verified software-boot ID is `b47220a7-a6c4-4049-a817-27606b6d28a8`. This revision has a **software-reboot** test; a new physical power-cycle test has not yet been performed.
 
 ![Kernel and user greetings during automatic capture](evidence/boot-hello.png)
 
@@ -411,6 +389,7 @@ The screenshots above were captured from the board's actual HDMI output. `eviden
 | Hello source, Makefile, executable | `artifacts/hello/` and `dual-hello/user/` |
 | Kernel greeting source / module | `dual-hello/kernel/`, `artifacts/drivers/hello_kernel.ko` |
 | C1 USB serial modules | `artifacts/drivers/usbserial.ko`, `cp210x.ko` |
+| Matching display driver / complete module tree | `artifacts/drivers/galcore.ko`, `packages/gkc-kernel-6.6.78.tar.gz` |
 | C1 acquisition source and binaries | `lidar-lab/src/`, `lidar-lab/Makefile`, `artifacts/lidar/` |
 | Touch UI and startup services | `lidar-lab/boot-demo/board/`, `dual-hello/board/` |
 | Deployment archives | `packages/` |
@@ -418,11 +397,18 @@ The screenshots above were captured from the board's actual HDMI output. `eviden
 
 Fill in the project name, group number and confirmed member order before handing in the report. The owner has made the repository public for teacher review. Share the repository and release links with the teacher, and submit the ZIP through the course's submission channel if required. The source, release attachments, displayed name, student ID and experiment evidence are publicly accessible.
 
-### Corrected defect discovered during the touchscreen trial
+### Invalid returns and transport errors
 
-The first continuous implementation stopped after an all-invalid revolution. The SDK returned `SL_RESULT_OPERATION_FAIL` (`0x80008001`) from `ascendScanData`, which the application incorrectly treated as a fatal transport error. The fixed `prepare_measured_scan` helper handles an all-zero-distance revolution without calling that sorting/interpolation operation. Acquisition continues, and an empty live plot explicitly says that there are no valid returns; the previous image is not presented as fresh data.
+An all-zero-distance revolution is treated as an empty measurement. Continuous acquisition proceeds and the plot explicitly shows that no valid returns are available; stale points are not shown as fresh data. Actual transport failures stop the session and display an error. The regression checks in `lidar-lab/tests/` use test-only synthetic input, never data presented as measured sensor output. The final hardware run lasted 189.8 seconds and stopped on request.
 
-The regression test reproduces the original SDK result with test-only synthetic input and verifies zero-count, all-invalid and mixed frames. A separate off-screen render test verifies an empty frame. The fixed application then ran for 189.8 seconds, with collector RSS stable at about 3 MB, and stopped successfully on request. These test inputs are never used by the measured-data interface. The hardware soak test and its actual stop result are retained with the submission evidence.
+### Check the supplied files
+
+```sh
+sha256sum -c SHA256SUMS
+python3 scripts/verify-submission.py
+```
+
+The verifier checks required files, SHA-256 hashes, AArch64 executable/module formats, kernel/module version agreement, image compression, nested installer contents, and consistency with recorded final hardware hashes. See [SUBMISSION-CHECKLIST.md](SUBMISSION-CHECKLIST.md) and [SUBMISSION-AUDIT.json](SUBMISSION-AUDIT.json) for the file inventory and audit results. These are package checks, not a new hardware run. Only the project name, group number and confirmed student author order remain to be filled in.
 
 ## References and provenance
 
@@ -430,7 +416,6 @@ The regression test reproduces the original SDK result with test-only synthetic 
 - [ST Linux v6.6-stm32mp-r2](https://github.com/STMicroelectronics/linux/tree/v6.6-stm32mp-r2) — kernel source.
 - [Pinned RPLIDAR SDK source](https://github.com/Slamtec/rplidar_sdk/tree/99478e5fb90de3b4a6db0080acacd373f8b36869) — C1 protocol and acquisition API.
 - `scripts/`, `.config`, build logs and checksums record the actual configuration and build; upstream source snapshots and license notices remain associated with their respective components.
-- Historical Chinese Week 6/7/8 notes remain in the Git repository as earlier records. This English README and release ZIP describe the current submission. The latest continuous manual mode supersedes the older one-shot manual behavior.
 
 ```text
 ******************* END OF FILE *******************

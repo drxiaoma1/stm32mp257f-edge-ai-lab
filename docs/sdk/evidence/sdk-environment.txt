@@ -1,9 +1,0 @@
-CC=aarch64-ostl-linux-gcc  -mcpu=cortex-a35+crc -mbranch-protection=standard --sysroot=/home/youart.guest/edge-ai-official/SDK/sysroots/cortexa35-ostl-linux
-CROSS_COMPILE=aarch64-ostl-linux-
-SDKTARGETSYSROOT=/home/youart.guest/edge-ai-official/SDK/sysroots/cortexa35-ostl-linux
-aarch64-ostl-linux-gcc (GCC) 13.3.0
-Copyright (C) 2023 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-aarch64

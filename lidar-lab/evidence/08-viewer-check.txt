@@ -1,3 +1,0 @@
-HTML JavaScript tested in Node with a minimal canvas/DOM adapter.
-Initial frame: 405 points. Last frame, playback wrap, all 39986 points, and export trigger passed.
-This is a functional check, not a browser screenshot. PNG/GIF plots were separately rendered from the real CSV.

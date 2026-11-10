@@ -1,7 +1,0 @@
-6.6.78-gkc-sdk
-/lib/modules/6.6.78-gkc-sdk/kernel/drivers/usb/serial/cp210x.ko
-6.6.78-gkc-sdk SMP preempt mod_unload modversions aarch64
-4cf7f3d20e712ae56df9ed373b570825576a7d9b329b45ed686b9a69c830a109  /lib/modules/6.6.78-gkc-sdk/kernel/drivers/usb/serial/cp210x.ko
-6f369abcc6d8747f61d91dc85dd9d41be49e0d49b62720496a3d7b21f41802ee  /lib/modules/6.6.78-gkc-sdk/kernel/drivers/usb/serial/usbserial.ko
-CONFIG_USB_SERIAL=m
-CONFIG_USB_SERIAL_CP210X=m
