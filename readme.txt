@@ -243,6 +243,8 @@ The first greeting is a genuine kernel log entry: `hello_kernel_init()` calls `p
 
 The existing screen is a GTK application. It reads the saved kernel message through `/dev/hello_kernel` and displays the Hello program's output. It does **not** display the complete kernel boot log. Similarly, `dual-hello/board/verify.sh` filters journal output when saving the compact evidence file; this filtering does not delete messages from the system journal or kernel buffer.
 
+The earlier graphical terminal is no longer opened automatically: the final [installer](install-board.sh) disables `hello-lab-screen.service`, and the C1 touchscreen application now presents the startup results. That older terminal displayed program output and, in the startup-evidence view, the Hello service journal. Closing or disabling this display service does not disable kernel logging. The current application does not provide a full boot-log page.
+
 The submitted kernel enables `CONFIG_PRINTK=y`, `CONFIG_SERIAL_STM32_CONSOLE=y` and `CONFIG_CONSOLE_LOGLEVEL_DEFAULT=7`. It does not enable `CONFIG_FRAMEBUFFER_CONSOLE` or `CONFIG_DRM_FBDEV_EMULATION`. The recorded setup routes the console to `ttySTM0` at 115200 baud. The deployment script preserves the existing console arguments, and the project scripts do not clear the kernel log or add `quiet`/`loglevel` suppression. Thus, normal kernel logging is retained, while native HDMI boot-text output is not configured.
 
 When the board is available, inspect the **unfiltered** kernel log to show the greeting alongside ordinary driver and boot messages:

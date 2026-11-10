@@ -246,6 +246,8 @@ Kernel: 6.6.78-gkc-sdk
 
 当前屏幕展示的是 GTK 应用。它通过 `/dev/hello_kernel` 读取已经产生的内核问候，再显示 Hello 程序输出，**不会展示完整内核启动日志**。同样，`dual-hello/board/verify.sh` 保存精简证据时会筛选日志；筛选只影响保存的证据文件，不会删除系统日志或内核缓冲区中的消息。
 
+之前的图形终端不再自动打开：最终[安装脚本](install-board.sh)停用了 `hello-lab-screen.service`，现在由 C1 触屏应用展示启动结果。旧终端展示过程序输出，以及启动证据页面中的 Hello 服务日志。关闭或停用这个显示服务不会关闭内核日志功能。当前应用没有提供完整的启动日志页面。
+
 提交的内核启用了 `CONFIG_PRINTK=y`、`CONFIG_SERIAL_STM32_CONSOLE=y`，默认控制台日志级别为 `CONFIG_CONSOLE_LOGLEVEL_DEFAULT=7`；没有启用 `CONFIG_FRAMEBUFFER_CONSOLE` 和 `CONFIG_DRM_FBDEV_EMULATION`。已记录配置把控制台指向 115200 波特率的 `ttySTM0`。部署脚本保留原有控制台参数，项目脚本没有清空内核日志，也没有添加 `quiet`/`loglevel` 来抑制输出。因此普通内核日志仍然保留，但没有配置 HDMI 原生启动文字控制台。
 
 设备拿回后，可查看**不经过筛选**的内核日志，让这句问候与普通驱动、启动消息出现在一起：
